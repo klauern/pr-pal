@@ -51,11 +51,22 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  # Generate RBI files for better Sorbet integration [https://github.com/Shopify/tapioca]
+  gem "tapioca", require: false
 end
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+
+  # Ruby language server for IDE features [https://solargraph.org/]
+  gem "solargraph", require: false
+  gem "solargraph-rails", require: false
+
+  # Static type checker for Ruby [https://sorbet.org/]
+  gem "sorbet", require: false
+  gem "sorbet-runtime"
 end
 
 group :test do

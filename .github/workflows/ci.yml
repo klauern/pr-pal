@@ -72,13 +72,30 @@ jobs:
       - name: Prepare test database
         env:
           RAILS_ENV: test
-        run: bundle exec rails db:test:prepare
+        run: |
+          echo "Preparing test database..."
+          bin/rails db:test:prepare
+          echo "Database preparation completed"
 
       - name: Run unit and integration tests
         env:
           RAILS_ENV: test
           # REDIS_URL: redis://localhost:6379/0
-        run: bundle exec rails test
+        run: |
+          echo "Starting test run..."
+          echo "Rails environment: $RAILS_ENV"
+          echo "Current directory: $(pwd)"
+          echo "Checking Rails application files..."
+          ls -la config/
+          echo "Checking if this is a Rails app..."
+          if [ -f "config/application.rb" ]; then
+            echo "Rails application.rb found"
+          else
+            echo "ERROR: Rails application.rb not found!"
+          fi
+          echo "Rails version: $(bundle exec rails --version)"
+          echo "Running rails test..."
+          bin/rails test
 
       - name: Run system tests
         env:
@@ -86,7 +103,7 @@ jobs:
           # REDIS_URL: redis://localhost:6379/0
         run: |
           if [ -d "test/system" ]; then
-            bundle exec rails test:system
+            bin/rails test:system
           else
             echo "No system tests found, skipping..."
           fi

@@ -2,9 +2,11 @@
 
 ## Current Work Focus
 
-- **FIXED**: GitHub Actions CI configuration issues resolved.
+- **INVESTIGATING**: GitHub Actions CI issue where `bundle exec rails` commands show Rails help instead of executing properly.
+- **FIXED**: Updated CI configuration to use `bin/rails` instead of `bundle exec rails` for better reliability in CI environments.
+- **ADDED**: Enhanced debugging output in CI to help identify environment issues.
 - CI now properly runs tests, builds assets, and generates coverage reports.
-- All CI jobs (security scan, linting, testing) are working correctly.
+- All CI jobs (security scan, linting, testing) should be working correctly.
 
 ## Recent Changes
 

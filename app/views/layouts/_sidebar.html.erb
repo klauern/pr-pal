@@ -1,0 +1,21 @@
+<aside class="w-64 bg-gray-900 text-white flex flex-col h-full">
+  <div class="flex flex-col flex-1">
+    <div class="p-4 border-b border-gray-800 font-bold text-lg">Pr Pal</div>
+    <nav class="flex-1 overflow-y-auto">
+      <ul>
+        <li class="px-4 py-2 hover:bg-gray-800">
+          <%= link_to 'Home', select_tab_tabs_path(tab: 'home'), data: { turbo_frame: 'main_content' }, class: "block w-full" %>
+        </li>
+        <li class="px-4 py-2 hover:bg-gray-800">
+          <%= link_to 'Pull Requests', select_tab_tabs_path(tab: 'pull_requests'), data: { turbo_frame: 'main_content' }, class: "block w-full" %>
+        </li>
+        <% (session[:open_pr_tabs] || []).each do |pr_id| %>
+        <li class="flex items-center justify-between px-4 py-2 hover:bg-gray-800">
+          <%= link_to "PR ##{pr_id}", select_tab_tabs_path(tab: pr_id), data: { turbo_frame: 'main_content' }, class: "flex-1" %>
+          <%= button_to '×', close_pr_tabs_path(pr_id: pr_id), method: :post, form: { data: { turbo_frame: 'sidebar' } }, class: 'ml-2 text-gray-400 hover:text-red-500' %>
+        </li>
+        <% end %>
+      </ul>
+    </nav>
+  </div>
+</aside>

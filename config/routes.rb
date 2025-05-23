@@ -2,6 +2,18 @@ Rails.application.routes.draw do
   get "dashboard/index"
   resource :session
   resources :passwords, param: :token
+
+  # Tab management routes
+  resources :tabs, only: [] do
+    collection do
+      post :select_tab
+      post :open_pr
+    end
+    member do
+      post :close_pr
+    end
+  end
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

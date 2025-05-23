@@ -17,6 +17,9 @@
   - `bin/tapioca init` - Generated RBI files for all gems
   - `bin/tapioca dsl` - Generated RBI files for Rails DSLs and application models
 - Sorbet type checking is now available with `bundle exec srb tc`.
+- **FIXED**: Added missing routes for TabsController to resolve `undefined method 'select_tab_tabs_path'` error.
+- Added routes for `select_tab`, `open_pr`, and `close_pr` actions in `config/routes.rb`.
+- All tests now pass (1 run, 2 assertions, 0 failures, 0 errors).
 
 ## Next Steps
 

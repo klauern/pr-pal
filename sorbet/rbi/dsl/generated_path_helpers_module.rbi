@@ -10,6 +10,9 @@ module GeneratedPathHelpersModule
   include ::ActionDispatch::Routing::PolymorphicRoutes
 
   sig { params(args: T.untyped).returns(String) }
+  def close_pr_tab_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def dashboard_index_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -29,6 +32,9 @@ module GeneratedPathHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def new_session_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def open_pr_tabs_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def password_path(*args); end
@@ -119,6 +125,9 @@ module GeneratedPathHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def root_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def select_tab_tabs_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def session_path(*args); end

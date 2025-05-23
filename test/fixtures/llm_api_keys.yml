@@ -1,9 +1,9 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  llm_provider: MyString
+  llm_provider: openai
   api_key: MyText
 
 two:
-  llm_provider: MyString
+  llm_provider: anthropic
   api_key: MyText

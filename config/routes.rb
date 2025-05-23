@@ -7,15 +7,11 @@ Rails.application.routes.draw do
   delete "/session", to: "sessions#destroy"
   resources :passwords, param: :token
 
-  # Tab management routes
-  resources :tabs, only: [] do
-    collection do
-      post :select_tab
-      post :open_pr
-    end
-    member do
-      post :close_pr
-    end
+  # Hotwire sidebar/tab routes
+  resource :tabs, only: [] do
+    post :open_pr, on: :collection
+    post :close_pr, on: :collection
+    get :select_tab, on: :collection
   end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

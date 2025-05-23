@@ -11,7 +11,7 @@ class TabsController < ApplicationController
     pr_id = params[:pr_id]
     session[:open_pr_tabs] ||= []
     session[:open_pr_tabs].delete(pr_id)
-    session[:active_tab] = session[:open_pr_tabs].last || 'home'
+    session[:active_tab] = session[:open_pr_tabs].last || "home"
     render_sidebar_and_main
   end
 
@@ -27,8 +27,8 @@ class TabsController < ApplicationController
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: [
-          turbo_stream.replace('sidebar', partial: 'layouts/sidebar'),
-          turbo_stream.replace('main_content', partial: 'layouts/main_content', locals: { tab: session[:active_tab] })
+          turbo_stream.replace("sidebar", partial: "layouts/sidebar"),
+          turbo_stream.replace("main_content", partial: "layouts/main_content", locals: { tab: session[:active_tab] })
         ]
       end
       format.html { redirect_to root_path }

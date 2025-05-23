@@ -63,11 +63,33 @@ jobs:
         with:
           bun-version: 1.2.5
 
-      - name: Run tests
+      - name: Build assets
+        run: |
+          bun install
+          bun run build
+          bun run build:css
+
+      - name: Prepare test database
+        env:
+          RAILS_ENV: test
+        run: bundle exec rails db:test:prepare
+
+      - name: Run unit and integration tests
         env:
           RAILS_ENV: test
           # REDIS_URL: redis://localhost:6379/0
-        run: bundle exec rails db:test:prepare test test:system
+        run: bundle exec rails test
+
+      - name: Run system tests
+        env:
+          RAILS_ENV: test
+          # REDIS_URL: redis://localhost:6379/0
+        run: |
+          if [ -d "test/system" ]; then
+            bundle exec rails test:system
+          else
+            echo "No system tests found, skipping..."
+          fi
 
       - name: List coverage directory
         run: ls -l coverage

@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   get "dashboard/index"
-  resource :session
+  # Remove the default resource :session route and add custom routes for session actions
+  # resource :session
+  get "/demo_login", to: "sessions#new", as: :demo_login
+  post "/session", to: "sessions#create", as: :session
+  delete "/session", to: "sessions#destroy"
   resources :passwords, param: :token
 
   # Tab management routes

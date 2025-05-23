@@ -69,6 +69,9 @@ jobs:
           # REDIS_URL: redis://localhost:6379/0
         run: bundle exec rails db:test:prepare test test:system
 
+      - name: List coverage directory
+        run: ls -l coverage
+
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
         with:

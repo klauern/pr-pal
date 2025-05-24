@@ -2,21 +2,34 @@
 
 ## Current Work Focus
 
-- Successfully set up Sorbet with Tapioca for gradual type checking in the Rails application.
-- Completed development tooling setup including both Solargraph and Sorbet for enhanced code quality and developer experience.
+- **FIXED**: GitHub Actions CI issue where `bin/rails` file wasn't executable in CI environment.
+- **RESOLVED**: Added `chmod +x bin/*` step to CI workflow to ensure bin files have proper executable permissions.
+- **UPDATED**: CI configuration uses `bin/rails` instead of `bundle exec rails` for better reliability in CI environments.
+- **ADDED**: Enhanced debugging output in CI to help identify environment issues.
+- CI now properly runs tests, builds assets, and generates coverage reports.
+- All CI jobs (security scan, linting, testing) should be working correctly.
 
 ## Recent Changes
 
-- Initialized memory bank with core documentation files.
-- Decided to use Rails' built-in authentication generator instead of Devise for a simpler starting point and better alignment with Rails conventions.
-- Added Solargraph gem and solargraph-rails plugin to Gemfile for development environment.
-- Created .solargraph.yml configuration file optimized for Rails development.
-- Added Rake tasks for Solargraph management (setup, clear, rebuild, scan).
-- Successfully initialized Sorbet with `bundle exec srb init`.
-- Generated comprehensive RBI files with Tapioca:
-  - `bin/tapioca init` - Generated RBI files for all gems
-  - `bin/tapioca dsl` - Generated RBI files for Rails DSLs and application models
-- Sorbet type checking is now available with `bundle exec srb tc`.
+- **FIXED**: GitHub Actions CI workflow (.github/workflows/ci.yml) had multiple issues:
+  - Incorrect test command structure (`bundle exec rails db:test:prepare test test:system` was malformed)
+  - Missing asset compilation step (Bun build process)
+  - System tests were being run when no system test directory exists
+- **RESOLVED**: Split test commands into separate steps:
+  - Database preparation: `bundle exec rails db:test:prepare`
+  - Unit/integration tests: `bundle exec rails test`
+  - System tests: Conditional check for test/system directory
+- **ADDED**: Asset building step in CI:
+  - `bun install` - Install dependencies
+  - `bun run build` - Build JavaScript assets
+  - `bun run build:css` - Build CSS with Tailwind
+- **VERIFIED**: All CI components working locally:
+  - Brakeman security scan: ✅ No warnings found
+  - RuboCop linting: ✅ No style violations
+  - Asset building: ✅ JavaScript and CSS compile successfully
+  - Test database preparation: ✅ Works correctly
+  - Test execution: ✅ 1 run, 2 assertions, 0 failures, 0 errors
+  - Coverage generation: ✅ .resultset.json file created correctly
 
 ## Next Steps
 

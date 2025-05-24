@@ -10,6 +10,9 @@ module GeneratedUrlHelpersModule
   include ::ActionDispatch::Routing::PolymorphicRoutes
 
   sig { params(args: T.untyped).returns(String) }
+  def close_pr_tab_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def dashboard_index_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -29,6 +32,9 @@ module GeneratedUrlHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def new_session_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def open_pr_tabs_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def password_url(*args); end
@@ -119,6 +125,9 @@ module GeneratedUrlHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def root_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def select_tab_tabs_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def session_url(*args); end

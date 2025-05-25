@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
-  resources :repositories, only: [:index, :new, :create, :destroy]
+  resources :repositories, only: [ :index, :new, :create, :destroy ]
+  resources :pull_request_reviews, only: [ :index, :show, :create, :update, :destroy ] do
+    resources :llm_conversation_messages, only: [ :create ]
+  end
   get "dashboard/index"
   # Remove the default resource :session route and add custom routes for session actions
   # resource :session

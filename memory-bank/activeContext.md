@@ -3,6 +3,7 @@
 ## Current Work Focus
 
 - **COMPLETED**: Repository Management System - Full implementation of a separate tab for registering and de-registering repositories that the user wants to poll for active PR's.
+- **FIXED**: Critical repository deletion bug - Repository deletions now properly update UI via Turbo Streams
 - **IMPLEMENTED**: Repository model with user association, owner/name fields, and proper validation
 - **CREATED**: RepositoriesController with full CRUD operations (index, create, destroy)
 - **BUILT**: Complete UI for repository management with form inputs and repository listing
@@ -11,6 +12,19 @@
 
 ## Recent Changes
 
+- **CRITICAL BUG FIX**: Repository deletion UI refresh issue resolved
+  - **Problem**: "I removed a repo and I was prompted, but when I click OK after the pop-up, it doesn't refresh this page and still shows the old list of repositories"
+  - **Root Cause**: View structure mismatch between dashboard and controller expectations
+    - Dashboard was rendering old standalone repository view (`repositories/_index.html.erb`) with hardcoded listing
+    - Controller expected newer structure with proper Turbo Frame elements
+    - Missing Turbo Frame integration in main content layout
+    - Controller redirects incompatible with tab-based navigation system
+  - **Solution Implemented**:
+    - Updated `app/views/layouts/_main_content.html.erb` to use proper partials with correct IDs
+    - Added Turbo Frame wrapper (`<turbo-frame id="repositories_content">`)
+    - Fixed controller redirects from `repositories_path` to `root_path(tab: "repositories")`
+    - Ensured Turbo Stream responses target correct element IDs (`repositories_list`)
+  - **Verification**: Server logs show successful Turbo Stream operations for both create and delete
 - **NEW MODEL**: `Repository` model created with:
   - User association (belongs_to :user)
   - Owner and name fields (both required)
@@ -54,6 +68,7 @@
 - **Navigation Pattern**: Turbo Frame-based SPA-like experience
 - **Data Model**: Simple owner/name structure matching GitHub repository format
 - **Authentication**: Using existing Rails authentication system
+- **Turbo Integration**: Critical for seamless repository operations without page refreshes
 
 ## Important Patterns and Preferences
 
@@ -63,6 +78,7 @@
 - **Test Coverage**: Comprehensive test suite for all new functionality
 - **User Experience**: Intuitive form design with proper feedback and empty states
 - **Security**: User-scoped data access with proper authentication checks
+- **View Structure**: Proper partials with consistent element IDs for Turbo Stream targeting
 
 ## Learnings and Project Insights
 
@@ -72,12 +88,15 @@
 - **Database Design**: Simple but effective repository data model
 - **Form Handling**: Proper form validation and user feedback implementation
 - **Testing Strategy**: Test-driven development approach with comprehensive coverage
+- **Turbo Debugging**: Importance of matching view structure with controller expectations for Turbo Streams
+- **Element ID Consistency**: Critical for Turbo Stream operations to target correct DOM elements
 
 ## Current System State
 
 - **Authentication**: Fully functional with demo user (<test@example.com> / password)
-- **Repository Management**: Complete CRUD functionality implemented
+- **Repository Management**: Complete CRUD functionality implemented with working UI refresh
 - **Navigation**: Seamless tab-based navigation working
 - **Database**: Repository model with proper migrations applied
 - **Testing**: All tests passing with good coverage
 - **UI/UX**: Professional, responsive interface ready for production use
+- **Bug Status**: Repository deletion refresh issue fully resolved

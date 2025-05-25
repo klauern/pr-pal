@@ -1,0 +1,53 @@
+<div class="px-6 py-4">
+  <% if pull_request_reviews.any? %>
+    <div class="space-y-4">
+      <% pull_request_reviews.each do |review| %>
+        <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 hover:bg-gray-100 transition-colors">
+          <div class="flex items-center justify-between">
+            <div class="flex-1">
+              <h3 class="text-lg font-semibold text-gray-900">
+                <%= link_to review.github_pr_title, review.github_pr_url, target: "_blank", class: "text-blue-600 hover:text-blue-800" %>
+              </h3>
+              <p class="text-sm text-gray-600 mt-1">
+                <%= review.repository.full_name %> - PR #<%= review.github_pr_id %>
+              </p>
+              <% if review.last_viewed_at %>
+                <p class="text-xs text-gray-500 mt-1">
+                  Last viewed: <%= time_ago_in_words(review.last_viewed_at) %> ago
+                </p>
+              <% end %>
+              <% if review.total_message_count > 0 %>
+                <p class="text-xs text-blue-600 mt-1">
+                  <%= pluralize(review.total_message_count, 'message') %> in conversation
+                </p>
+              <% end %>
+            </div>
+            <div class="flex space-x-2 ml-4">
+              <%= link_to "Open Review", pull_request_review_path(review),
+                  class: "inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500",
+                  data: { turbo_frame: "review_pane" } %>
+              <%= link_to "Delete", pull_request_review_path(review), method: :delete,
+                  data: { confirm: "Are you sure you want to delete this review?" },
+                  class: "inline-flex items-center px-3 py-2 border border-gray-300 text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="text-center py-12">
+      <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+        <path d="M34 40h10v-4a6 6 0 00-10.712-3.714M34 40H14m20 0v-4a9.971 9.971 0 00-.712-3.714M14 40H4v-4a6 6 0 0110.713-3.714M14 40v-4c0-1.313.253-2.566.713-3.714m0 0A9.971 9.971 0 0124 24c4.418 0 7.865 2.239 9.287 5.286" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      <h3 class="mt-2 text-sm font-medium text-gray-900">No active reviews</h3>
+      <p class="mt-1 text-sm text-gray-500">
+        Start reviewing a pull request to see it here.
+      </p>
+    </div>
+  <% end %>
+</div>
+
+<!-- Review Pane (initially hidden, slides in from right) -->
+<turbo-frame id="review_pane" class="hidden fixed right-0 top-0 h-full w-1/2 bg-white shadow-xl z-50 overflow-y-auto">
+  <!-- Content will be loaded here when a review is opened -->
+</turbo-frame>

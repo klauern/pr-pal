@@ -16,6 +16,36 @@ class ActiveSupport::TestCase
   end
   def llm_api_keys(fixture_name = nil, *other_fixtures); end
 
+  sig { params(fixture_name: NilClass, other_fixtures: NilClass).returns(T::Array[LlmConversationMessage]) }
+  sig { params(fixture_name: T.any(String, Symbol), other_fixtures: NilClass).returns(LlmConversationMessage) }
+  sig do
+    params(
+      fixture_name: T.any(String, Symbol),
+      other_fixtures: T.any(String, Symbol)
+    ).returns(T::Array[LlmConversationMessage])
+  end
+  def llm_conversation_messages(fixture_name = nil, *other_fixtures); end
+
+  sig { params(fixture_name: NilClass, other_fixtures: NilClass).returns(T::Array[PullRequestReview]) }
+  sig { params(fixture_name: T.any(String, Symbol), other_fixtures: NilClass).returns(PullRequestReview) }
+  sig do
+    params(
+      fixture_name: T.any(String, Symbol),
+      other_fixtures: T.any(String, Symbol)
+    ).returns(T::Array[PullRequestReview])
+  end
+  def pull_request_reviews(fixture_name = nil, *other_fixtures); end
+
+  sig { params(fixture_name: NilClass, other_fixtures: NilClass).returns(T::Array[Repository]) }
+  sig { params(fixture_name: T.any(String, Symbol), other_fixtures: NilClass).returns(Repository) }
+  sig do
+    params(
+      fixture_name: T.any(String, Symbol),
+      other_fixtures: T.any(String, Symbol)
+    ).returns(T::Array[Repository])
+  end
+  def repositories(fixture_name = nil, *other_fixtures); end
+
   sig { params(fixture_name: NilClass, other_fixtures: NilClass).returns(T::Array[User]) }
   sig { params(fixture_name: T.any(String, Symbol), other_fixtures: NilClass).returns(User) }
   sig { params(fixture_name: T.any(String, Symbol), other_fixtures: T.any(String, Symbol)).returns(T::Array[User]) }

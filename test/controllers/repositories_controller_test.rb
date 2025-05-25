@@ -19,23 +19,23 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
 
   test "should create repository when authenticated" do
     post session_url, params: { email_address: @user.email_address, password: "password" }
-    assert_difference('Repository.count') do
+    assert_difference("Repository.count") do
       post repositories_url, params: { repository: { owner: "testowner", name: "testrepo" } }
     end
-    assert_redirected_to repositories_url
+    assert_redirected_to root_path(tab: "repositories")
   end
 
   test "should destroy repository when authenticated" do
     post session_url, params: { email_address: @user.email_address, password: "password" }
-    assert_difference('Repository.count', -1) do
+    assert_difference("Repository.count", -1) do
       delete repository_url(@repository)
     end
-    assert_redirected_to repositories_url
+    assert_redirected_to root_path(tab: "repositories")
   end
 
   test "should not create repository with missing owner" do
     post session_url, params: { email_address: @user.email_address, password: "password" }
-    assert_no_difference('Repository.count') do
+    assert_no_difference("Repository.count") do
       post repositories_url, params: { repository: { name: "testrepo" } }
     end
     assert_response :unprocessable_entity
@@ -45,7 +45,7 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
 
   test "should not create repository with missing name" do
     post session_url, params: { email_address: @user.email_address, password: "password" }
-    assert_no_difference('Repository.count') do
+    assert_no_difference("Repository.count") do
       post repositories_url, params: { repository: { owner: "testowner" } }
     end
     assert_response :unprocessable_entity
@@ -55,7 +55,7 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
 
   test "should not create duplicate repository for same user" do
     post session_url, params: { email_address: @user.email_address, password: "password" }
-    assert_no_difference('Repository.count') do
+    assert_no_difference("Repository.count") do
       post repositories_url, params: { repository: { owner: @repository.owner, name: @repository.name } }
     end
     assert_response :unprocessable_entity

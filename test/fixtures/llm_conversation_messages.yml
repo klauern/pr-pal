@@ -1,0 +1,22 @@
+user_message:
+  pull_request_review: sample_review
+  sender: "user"
+  content: "Can you review this PR for security vulnerabilities?"
+  order: 1
+  timestamp: <%= 1.hour.ago %>
+
+llm_response:
+  pull_request_review: sample_review
+  sender: "claude_3_opus"
+  content: "I'll analyze this pull request for security vulnerabilities. Based on the authentication changes, I can see a few areas that need attention..."
+  llm_model_used: "claude-3-opus-20240229"
+  token_count: 150
+  order: 2
+  timestamp: <%= 55.minutes.ago %>
+
+follow_up_user:
+  pull_request_review: sample_review
+  sender: "user"
+  content: "What about the password validation logic?"
+  order: 3
+  timestamp: <%= 50.minutes.ago %>

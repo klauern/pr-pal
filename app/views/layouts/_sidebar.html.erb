@@ -12,6 +12,9 @@
         <li class="px-4 py-2 hover:bg-gray-800">
           <%= link_to 'Repositories', select_tab_tabs_path(tab: 'repositories'), data: { turbo_frame: 'main_content' }, class: "block w-full" %>
         </li>
+        <li class="px-4 py-2 hover:bg-gray-800">
+          <%= link_to 'PR Reviews', select_tab_tabs_path(tab: 'pull_request_reviews'), data: { turbo_frame: 'main_content' }, class: "block w-full" %>
+        </li>
         <% (session[:open_pr_tabs] || []).each do |pr_id| %>
         <li class="flex items-center justify-between px-4 py-2 hover:bg-gray-800">
           <%= link_to "PR ##{pr_id}", select_tab_tabs_path(tab: pr_id), data: { turbo_frame: 'main_content' }, class: "flex-1" %>

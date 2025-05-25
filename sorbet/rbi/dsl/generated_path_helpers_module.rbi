@@ -10,16 +10,16 @@ module GeneratedPathHelpersModule
   include ::ActionDispatch::Routing::PolymorphicRoutes
 
   sig { params(args: T.untyped).returns(String) }
-  def close_pr_tab_path(*args); end
+  def close_pr_tabs_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def dashboard_index_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
-  def edit_password_path(*args); end
+  def demo_login_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
-  def edit_session_path(*args); end
+  def edit_password_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def new_password_path(*args); end
@@ -31,7 +31,7 @@ module GeneratedPathHelpersModule
   def new_rails_conductor_inbound_email_source_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
-  def new_session_path(*args); end
+  def new_repository_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def open_pr_tabs_path(*args); end
@@ -41,6 +41,15 @@ module GeneratedPathHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def passwords_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def pull_request_review_llm_conversation_messages_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def pull_request_review_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def pull_request_reviews_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def rails_blob_path(*args); end
@@ -122,6 +131,12 @@ module GeneratedPathHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def rails_storage_redirect_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def repositories_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def repository_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def root_path(*args); end

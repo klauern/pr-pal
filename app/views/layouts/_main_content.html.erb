@@ -1,7 +1,7 @@
-<main class="flex-1 bg-gray-100 p-8 overflow-y-auto">
-  <% case tab %>
-  <% when 'repositories' %>
-    <turbo-frame id="repositories_content">
+<turbo-frame id="main_content">
+  <main class="flex-1 bg-gray-100 p-8 overflow-y-auto">
+    <% case tab %>
+    <% when 'repositories' %>
       <div class="max-w-4xl mx-auto">
         <div class="bg-white shadow rounded-lg">
           <div class="px-6 py-4 border-b border-gray-200">
@@ -16,21 +16,53 @@
           <%= render "repositories/list", repositories: Current.user&.repositories&.order(:owner, :name) || [] %>
         </div>
       </div>
-    </turbo-frame>
-  <% when 'pull_requests' %>
-    <div class="text-2xl font-bold mb-4">
-      Pull Requests
-    </div>
-    <p>Pull requests content will go here.</p>
-  <% when 'home' %>
-    <div class="text-2xl font-bold mb-4">
-      Welcome to PR Pal
-    </div>
-    <p>Dashboard content will go here.</p>
-  <% else %>
-    <div class="text-2xl font-bold mb-4">
-      Main content for tab: <%= tab.inspect %>
-    </div>
-    <!-- Add more styled content here -->
-  <% end %>
-</main>
+    <% when 'pull_request_reviews' %>
+      <div class="max-w-4xl mx-auto">
+        <div class="bg-white shadow rounded-lg">
+          <div class="px-6 py-4 border-b border-gray-200">
+            <h1 class="text-2xl font-bold text-gray-900">Pull Request Reviews</h1>
+            <p class="mt-1 text-sm text-gray-600">Manage and review active pull requests</p>
+          </div>
+
+          <!-- In Progress Reviews List -->
+          <%= render "pull_request_reviews/index", pull_request_reviews: Current.user&.pull_request_reviews&.in_progress&.includes(:repository) || [] %>
+        </div>
+      </div>
+    <% when 'pull_requests' %>
+      <div class="max-w-4xl mx-auto">
+        <div class="bg-white shadow rounded-lg">
+          <div class="px-6 py-4 border-b border-gray-200">
+            <h1 class="text-2xl font-bold text-gray-900">Pull Requests</h1>
+            <p class="mt-1 text-sm text-gray-600">Monitor and manage pull requests from your repositories</p>
+          </div>
+          <div class="px-6 py-4">
+            <p>Pull requests content will go here.</p>
+          </div>
+        </div>
+      </div>
+    <% when 'home' %>
+      <div class="max-w-4xl mx-auto">
+        <div class="bg-white shadow rounded-lg">
+          <div class="px-6 py-4 border-b border-gray-200">
+            <h1 class="text-2xl font-bold text-gray-900">Welcome to PR Pal</h1>
+            <p class="mt-1 text-sm text-gray-600">Your AI-powered pull request review assistant</p>
+          </div>
+          <div class="px-6 py-4">
+            <p>Dashboard content will go here.</p>
+          </div>
+        </div>
+      </div>
+    <% else %>
+      <div class="max-w-4xl mx-auto">
+        <div class="bg-white shadow rounded-lg">
+          <div class="px-6 py-4">
+            <h1 class="text-2xl font-bold mb-4">
+              Main content for tab: <%= tab.inspect %>
+            </h1>
+            <p>Content will be added here.</p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </main>
+</turbo-frame>

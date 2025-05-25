@@ -11,8 +11,9 @@
 - **Repository Management System**: Complete CRUD functionality for repository registration
   - Add repositories by owner/name (e.g., "octocat/Hello-World")
   - List all registered repositories for the current user
-  - Delete repositories from monitoring list
+  - Delete repositories from monitoring list with proper UI refresh
   - User-scoped repository access with proper validation
+  - **BUG FIXED**: Repository deletion now properly updates UI via Turbo Streams
 - **Database Schema**: All necessary tables and relationships
   - Users table with authentication fields
   - Sessions table for user authentication
@@ -46,7 +47,7 @@
 
 ## Current Status
 
-- **Repository Management**: ✅ Complete and functional
+- **Repository Management**: ✅ Complete and functional with UI refresh bug fixed
 - **Authentication**: ✅ Complete and functional
 - **Navigation**: ✅ Complete and functional
 - **Database**: ✅ Complete and functional
@@ -56,6 +57,7 @@
 ## Known Issues
 
 - None currently - all implemented features are working correctly
+- **RESOLVED**: Repository deletion UI refresh issue (was: "when I click OK after the pop-up, it doesn't refresh this page and still shows the old list of repositories")
 
 ## Evolution of Project Decisions
 
@@ -65,6 +67,7 @@
 - **UI Framework**: Tailwind CSS for rapid, responsive design development
 - **Testing Strategy**: Test-driven development with comprehensive coverage
 - **Data Scope**: User-scoped repositories for security and personalization
+- **Turbo Integration**: Critical for seamless CRUD operations without page refreshes
 
 ## Technical Milestones Achieved
 
@@ -76,6 +79,7 @@
 6. **Navigation System**: Seamless tab-based navigation
 7. **Testing Coverage**: Comprehensive test suite
 8. **Turbo Integration**: Modern Rails SPA-like experience
+9. **Bug Resolution**: Repository deletion UI refresh issue resolved
 
 ## Next Development Phase
 

@@ -75,4 +75,7 @@ group :test do
   gem "selenium-webdriver"
   gem "simplecov", require: false
   gem "codecov", require: false
+
+  # For controller testing helpers like assigns [https://github.com/rails/rails-controller-testing]
+  gem "rails-controller-testing"
 end

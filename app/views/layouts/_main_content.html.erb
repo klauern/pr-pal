@@ -1,6 +1,36 @@
 <main class="flex-1 bg-gray-100 p-8 overflow-y-auto">
-  <div class="text-2xl font-bold mb-4">
-    Main content for tab: <%= tab.inspect %>
-  </div>
-  <!-- Add more styled content here -->
+  <% case tab %>
+  <% when 'repositories' %>
+    <turbo-frame id="repositories_content">
+      <div class="max-w-4xl mx-auto">
+        <div class="bg-white shadow rounded-lg">
+          <div class="px-6 py-4 border-b border-gray-200">
+            <h1 class="text-2xl font-bold text-gray-900">Repository Management</h1>
+            <p class="mt-1 text-sm text-gray-600">Manage repositories to monitor for active pull requests</p>
+          </div>
+
+          <!-- Add Repository Form -->
+          <%= render "repositories/form", repository: Repository.new %>
+
+          <!-- Repository List -->
+          <%= render "repositories/list", repositories: Current.user&.repositories&.order(:owner, :name) || [] %>
+        </div>
+      </div>
+    </turbo-frame>
+  <% when 'pull_requests' %>
+    <div class="text-2xl font-bold mb-4">
+      Pull Requests
+    </div>
+    <p>Pull requests content will go here.</p>
+  <% when 'home' %>
+    <div class="text-2xl font-bold mb-4">
+      Welcome to PR Pal
+    </div>
+    <p>Dashboard content will go here.</p>
+  <% else %>
+    <div class="text-2xl font-bold mb-4">
+      Main content for tab: <%= tab.inspect %>
+    </div>
+    <!-- Add more styled content here -->
+  <% end %>
 </main>

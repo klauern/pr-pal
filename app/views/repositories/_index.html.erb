@@ -1,0 +1,85 @@
+<%
+  # Get repositories for current user
+  repositories = Current.user&.repositories&.order(:owner, :name) || []
+  repository = Repository.new
+%>
+
+<div class="max-w-4xl mx-auto">
+  <div class="bg-white shadow rounded-lg">
+    <div class="px-6 py-4 border-b border-gray-200">
+      <h1 class="text-2xl font-bold text-gray-900">Repository Management</h1>
+      <p class="mt-1 text-sm text-gray-600">Manage repositories to monitor for active pull requests</p>
+    </div>
+
+    <!-- Add Repository Form -->
+    <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+      <%= form_with model: repository, url: repositories_path, local: true, class: "space-y-4" do |form| %>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+          <div>
+            <%= form.label :owner, class: "block text-sm font-medium text-gray-700" %>
+            <%= form.text_field :owner, placeholder: "e.g., octocat", class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+          </div>
+
+          <div>
+            <%= form.label :name, "Repository Name", class: "block text-sm font-medium text-gray-700" %>
+            <%= form.text_field :name, placeholder: "e.g., hello-world", class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+          </div>
+
+          <div>
+            <%= form.submit "Add Repository", class: "w-full bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Repository List -->
+    <div class="px-6 py-4">
+      <% if repositories.any? %>
+        <div class="space-y-3">
+          <% repositories.each do |repo| %>
+            <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
+              <div class="flex items-center space-x-3">
+                <div class="flex-shrink-0">
+                  <svg class="h-8 w-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="text-lg font-medium text-gray-900">
+                    <%= repo.owner %>/<%= repo.name %>
+                  </h3>
+                  <p class="text-sm text-gray-500">
+                    Added <%= time_ago_in_words(repo.created_at) %> ago
+                  </p>
+                </div>
+              </div>
+
+              <div class="flex items-center space-x-2">
+                <a href="https://github.com/<%= repo.owner %>/<%= repo.name %>"
+                   target="_blank"
+                   class="text-indigo-600 hover:text-indigo-900 text-sm font-medium">
+                  View on GitHub
+                </a>
+                <%= link_to "Remove",
+                    repository_path(repo),
+                    data: {
+                      turbo_method: :delete,
+                      turbo_confirm: "Are you sure you want to remove #{repo.owner}/#{repo.name}?"
+                    },
+                    class: "text-red-600 hover:text-red-900 text-sm font-medium" %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-center py-12">
+          <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+          </svg>
+          <h3 class="mt-2 text-sm font-medium text-gray-900">No repositories</h3>
+          <p class="mt-1 text-sm text-gray-500">Get started by adding a repository to monitor.</p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

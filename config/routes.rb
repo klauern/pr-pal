@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :repositories, only: [:index, :new, :create, :destroy]
   get "dashboard/index"
   # Remove the default resource :session route and add custom routes for session actions
   # resource :session

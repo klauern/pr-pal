@@ -31,7 +31,9 @@ class TabsController < ApplicationController
           turbo_stream.replace("main_content", partial: "layouts/main_content", locals: { tab: session[:active_tab] })
         ]
       end
-      format.html { redirect_to root_path }
+      format.html do
+        redirect_to root_path(tab: session[:active_tab])
+      end
     end
   end
 end

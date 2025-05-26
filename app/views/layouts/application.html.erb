@@ -25,15 +25,13 @@
 
 <body>
   <div class="flex h-screen">
-    <!-- Sidebar Frame -->
-    <turbo-frame id="sidebar">
-      <%= render 'layouts/sidebar' %>
-    </turbo-frame>
+    <!-- Sidebar -->
+    <%= render 'layouts/sidebar' %>
 
-    <!-- Main Content Frame -->
-    <turbo-frame id="main_content">
-      <%= render 'layouts/main_content', tab: @active_tab %>
-    </turbo-frame>
+    <!-- Main Content -->
+    <main class="flex-1 bg-gray-100 overflow-y-auto">
+      <%= yield %>
+    </main>
   </div>
 </body>
 

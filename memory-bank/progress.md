@@ -1,92 +1,49 @@
 # Progress
 
-## What Works
+## What Works ✅
 
-- **Authentication System**: Fully functional Rails authentication with demo user
-  - Demo credentials: <test@example.com> / password
-  - User sessions, password management, and authentication middleware
-- **Dashboard System**: Main application dashboard with tab-based navigation
-  - Home, Repositories, and Pull Requests tabs
-  - Turbo Frame-powered seamless navigation
-- **Repository Management System**: Complete CRUD functionality for repository registration
-  - Add repositories by owner/name (e.g., "octocat/Hello-World")
-  - List all registered repositories for the current user
-  - Delete repositories from monitoring list with proper UI refresh
-  - User-scoped repository access with proper validation
-  - **BUG FIXED**: Repository deletion now properly updates UI via Turbo Streams
-- **Database Schema**: All necessary tables and relationships
-  - Users table with authentication fields
-  - Sessions table for user authentication
-  - Repositories table with user associations
-  - LLM API Keys table for future AI integration
-- **UI/UX**: Professional, responsive interface
-  - Tailwind CSS styling throughout
-  - Clean form designs with proper validation feedback
-  - Empty state messaging
-  - Active tab highlighting in navigation
-- **Testing**: Enhanced comprehensive test coverage
-  - Controller tests for all repository operations with validation scenarios
-  - Model tests with validation scenarios
-  - Test fixtures for development data
-  - Added `rails-controller-testing` gem for Rails 8 compatibility
-  - Enhanced validation testing (missing fields, duplicates, authorization)
-  - All 9 tests passing with 57.32% line coverage, 70.0% branch coverage
+- **Authentication System**: Demo user (`test@example.com` / `password`)
+- **Simplified Navigation**: Standard Turbo Drive for all main tab switching
+- **Repository Management**: Full CRUD with proper Turbo Stream updates
+- **Clean Architecture**: Removed complex nested Turbo Frame structure
+- **Database Schema**: All tables and relationships working
+- **Consistent Patterns**: Single approach to Turbo usage throughout app
+- **PR Tab System**: Session-based PR review tabs in sidebar with close functionality
 
-## What's Left to Build
+## What Was Fixed
 
-- **GitHub API Integration**: Connect to GitHub API to validate repositories and fetch PR data
-- **Pull Request Polling**: Background jobs to monitor registered repositories for active PRs
-- **PR Display System**: Interface to show active pull requests from monitored repositories
-- **Notification System**: Alerts for new PRs or PR status changes
-- **Repository Status**: Indicators for active/inactive repositories
-- **Batch Operations**: Bulk add/remove repositories
-- **API Rate Limiting**: Handle GitHub API rate limits gracefully
-- **Error Handling**: Robust error handling for API failures
-- **User Preferences**: Settings for polling frequency, notification preferences
-- **Export/Import**: Ability to backup and restore repository lists
+- **Navigation Issues**: Replaced complex Turbo Frame targeting with standard Turbo Drive
+- **Authentication Context**: Current.user now works consistently across all requests
+- **Repository CRUD**: Forms use Turbo Streams for seamless updates
+- **Code Simplicity**: Eliminated conflicting Turbo patterns
+- **PR Tab Management**: Added session-based tracking for opened PR reviews
 
 ## Current Status
 
-- **Repository Management**: ✅ Complete and functional with UI refresh bug fixed
-- **Authentication**: ✅ Complete and functional
-- **Navigation**: ✅ Complete and functional
-- **Database**: ✅ Complete and functional
-- **Testing**: ✅ Complete and functional
-- **UI Design**: ✅ Complete and functional
+**✅ REFACTORING COMPLETE**: Consistent Hotwire strategy successfully implemented with PR tab functionality
 
-## Known Issues
+## Architecture
 
-- None currently - all implemented features are working correctly
-- **RESOLVED**: Repository deletion UI refresh issue (was: "when I click OK after the pop-up, it doesn't refresh this page and still shows the old list of repositories")
+- **Primary Navigation**: Turbo Drive handles sidebar tab switching with full page loads
+- **Dynamic Updates**: Turbo Streams handle form submissions and list updates
+- **Simple Layout**: Clean sidebar + main content without nested frames
+- **Standard Rails**: Conventional controller actions and view rendering
+- **PR Tab System**: Session-based tracking with automatic cleanup and limits
 
-## Evolution of Project Decisions
+## PR Tab Features
 
-- **Authentication**: Used Rails' built-in authentication generator instead of Devise for simplicity
-- **Repository Model**: Simple owner/name structure matching GitHub's format
-- **Navigation**: Chose Turbo Frames over full page refreshes for better UX
-- **UI Framework**: Tailwind CSS for rapid, responsive design development
-- **Testing Strategy**: Test-driven development with comprehensive coverage
-- **Data Scope**: User-scoped repositories for security and personalization
-- **Turbo Integration**: Critical for seamless CRUD operations without page refreshes
-
-## Technical Milestones Achieved
-
-1. **Project Setup**: Rails 8.0 application with modern tooling
-2. **Authentication**: Complete user authentication system
-3. **Database Design**: Proper schema with relationships and constraints
-4. **Repository CRUD**: Full create, read, update, delete operations
-5. **User Interface**: Professional, responsive design
-6. **Navigation System**: Seamless tab-based navigation
-7. **Testing Coverage**: Comprehensive test suite
-8. **Turbo Integration**: Modern Rails SPA-like experience
-9. **Bug Resolution**: Repository deletion UI refresh issue resolved
+- **Auto-Add on Open**: Opening a PR review automatically adds it to sidebar tabs
+- **Tab Switching**: Click between multiple open PR reviews without returning to main list
+- **Close Buttons**: Individual × buttons to close specific PR tabs
+- **Smart Limiting**: Keeps only last 5 opened tabs to prevent sidebar clutter
+- **Session Persistence**: Tabs persist across page reloads
+- **Auto-Cleanup**: Tabs removed when PR reviews are deleted or completed
 
 ## Next Development Phase
 
-The foundation is now complete for the core PR monitoring functionality. The next phase will focus on:
+With stable foundation and complete tab system now in place:
 
-1. GitHub API integration for repository validation
-2. Background job system for PR polling
-3. PR display and management interface
-4. Real-time notifications and updates
-5. Advanced repository management features
+1. **GitHub API Integration**: Connect to GitHub for real repository data
+2. **PR Monitoring**: Background jobs to fetch active pull requests
+3. **Enhanced UI**: Improve repository status indicators and management
+4. **LLM Integration**: Enhance conversation features for PR reviews

@@ -10,6 +10,9 @@ module GeneratedUrlHelpersModule
   include ::ActionDispatch::Routing::PolymorphicRoutes
 
   sig { params(args: T.untyped).returns(String) }
+  def close_pr_tab_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def close_pr_tabs_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }

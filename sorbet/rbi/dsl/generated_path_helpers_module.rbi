@@ -10,6 +10,9 @@ module GeneratedPathHelpersModule
   include ::ActionDispatch::Routing::PolymorphicRoutes
 
   sig { params(args: T.untyped).returns(String) }
+  def close_pr_tab_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def close_pr_tabs_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }

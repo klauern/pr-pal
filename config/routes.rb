@@ -11,6 +11,9 @@ Rails.application.routes.draw do
   delete "/session", to: "sessions#destroy"
   resources :passwords, param: :token
 
+  # PR tab management
+  delete "/close_pr_tab", to: "pull_request_reviews#close_tab", as: :close_pr_tab
+
   # Hotwire sidebar/tab routes
   resource :tabs, only: [] do
     post :open_pr, on: :collection

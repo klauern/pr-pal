@@ -28,6 +28,33 @@
           <%= render "pull_request_reviews/index", pull_request_reviews: Current.user&.pull_request_reviews&.in_progress&.includes(:repository) || [] %>
         </div>
       </div>
+    <% when /^pr_(\d+)$/ %>
+      <%
+        pr_id = tab.match(/^pr_(\d+)$/)[1]
+        @pull_request_review = Current.user&.pull_request_reviews&.find_by(id: pr_id)
+      %>
+      <% if @pull_request_review %>
+        <%
+          @pull_request_review.mark_as_viewed!
+          @messages = @pull_request_review.llm_conversation_messages.order(:order)
+          @new_message = @pull_request_review.llm_conversation_messages.build
+        %>
+        <%= render "pull_request_reviews/show_content",
+            pull_request_review: @pull_request_review,
+            messages: @messages,
+            new_message: @new_message %>
+      <% else %>
+        <div class="max-w-4xl mx-auto">
+          <div class="bg-white shadow rounded-lg">
+            <div class="px-6 py-4">
+              <h1 class="text-2xl font-bold mb-4 text-red-600">Review Not Found</h1>
+              <p>The requested pull request review could not be found.</p>
+              <%= link_to "Back to Reviews", select_tab_tabs_path(tab: 'pull_request_reviews'),
+                  class: "mt-4 inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
     <% when 'pull_requests' %>
       <div class="max-w-4xl mx-auto">
         <div class="bg-white shadow rounded-lg">

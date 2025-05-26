@@ -2,25 +2,43 @@
 
 ## System Architecture
 
-- Describe the overall architecture of the system (e.g., microservices, monolithic, client-server).
-- Include diagrams or high-level component interactions if possible.
+Rails 8.0 monolithic application with Hotwire frontend using consistent Turbo patterns:
+
+```mermaid
+graph TD
+    A[User clicks sidebar tab] --> B[Turbo Drive navigation]
+    B --> C[Full page load via Rails controller]
+    C --> D[Render complete page with sidebar + content]
+
+    E[User submits form/CRUD action] --> F[Turbo Stream request]
+    F --> G[Controller responds with Turbo Stream]
+    G --> H[Update specific DOM elements]
+```
 
 ## Key Technical Decisions
 
-- Document significant technical choices and their justifications (e.g., choice of database, messaging queue, framework).
-- Explain the trade-offs considered for each decision.
+1. **Turbo Drive for Navigation**: Main tab switching uses standard page loads
+2. **Turbo Streams for Updates**: CRUD operations update page sections dynamically
+3. **No Nested Frames**: Avoid complex frame-in-frame structures
+4. **Authentication via Current.user**: Consistent user context across all requests
 
 ## Design Patterns in Use
 
-- List and describe common design patterns applied throughout the codebase (e.g., Factory, Singleton, Observer, MVC).
-- Explain where and why these patterns are used.
+- **MVC Architecture**: Standard Rails controller/view/model separation
+- **RESTful Routes**: Standard REST patterns for resource management
+- **Hotwire SPA Feel**: Fast navigation without JavaScript complexity
+- **User-Scoped Data**: All resources belong to authenticated users
 
 ## Component Relationships
 
-- Detail how different components or modules within the system interact.
-- Describe data flow and communication protocols between them.
+- **Controllers**: Handle authentication, set instance variables, respond to HTML/Turbo Stream
+- **Views**: Render complete pages or stream updates to specific DOM IDs
+- **Models**: Standard Rails models with user associations
+- **Authentication**: Shared concern ensuring Current.user is available
 
 ## Critical Implementation Paths
 
-- Identify and document the most crucial or complex parts of the system's implementation.
-- Highlight areas that require careful attention during development or maintenance.
+1. **Authentication Flow**: Session management and Current.user setup
+2. **Navigation**: Sidebar links triggering full page loads
+3. **CRUD Operations**: Forms using Turbo Streams for dynamic updates
+4. **DOM Targeting**: Consistent element IDs for Turbo Stream operations

@@ -9,6 +9,9 @@ class PullRequestReviewsController < ApplicationController
     @pull_request_review.mark_as_viewed!
     @messages = @pull_request_review.llm_conversation_messages.ordered
     @new_message = @pull_request_review.llm_conversation_messages.build
+
+    # Add this PR to the open tabs session
+    add_pr_to_tabs(@pull_request_review.id)
   end
 
   def create
@@ -37,7 +40,14 @@ class PullRequestReviewsController < ApplicationController
 
   def destroy
     @pull_request_review.destroy
+    remove_pr_from_tabs(@pull_request_review.id)
     redirect_to root_path(tab: "pull_request_reviews"), notice: "Pull request review deleted."
+  end
+
+  def close_tab
+    pr_id = params[:pr_id]
+    remove_pr_from_tabs(pr_id)
+    redirect_to root_path(tab: "pull_request_reviews")
   end
 
   private
@@ -48,5 +58,16 @@ class PullRequestReviewsController < ApplicationController
 
   def pull_request_review_params
     params.require(:pull_request_review).permit(:github_pr_id, :github_pr_url, :github_pr_title, :llm_context_summary)
+  end
+
+  def add_pr_to_tabs(pr_id)
+    session[:open_pr_tabs] ||= []
+    session[:open_pr_tabs] << pr_id.to_s unless session[:open_pr_tabs].include?(pr_id.to_s)
+    session[:open_pr_tabs] = session[:open_pr_tabs].last(5) # Keep only last 5 tabs
+  end
+
+  def remove_pr_from_tabs(pr_id)
+    session[:open_pr_tabs] ||= []
+    session[:open_pr_tabs].delete(pr_id.to_s)
   end
 end

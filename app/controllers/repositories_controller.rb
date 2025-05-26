@@ -16,7 +16,7 @@ class RepositoriesController < ApplicationController
     respond_to do |format|
       if @repository.save
         @repositories = Current.user.repositories.order(:owner, :name)
-        format.html { redirect_to repositories_path, notice: "Repository was successfully added." }
+        format.html { redirect_to root_path(tab: "repositories"), notice: "Repository was successfully added." }
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.replace("repository_form", partial: "repositories/form", locals: { repository: Repository.new }),
@@ -38,7 +38,7 @@ class RepositoriesController < ApplicationController
     @repositories = Current.user.repositories.order(:owner, :name)
 
     respond_to do |format|
-      format.html { redirect_to repositories_path, notice: "Repository was successfully removed." }
+      format.html { redirect_to root_path(tab: "repositories"), notice: "Repository was successfully removed." }
       format.turbo_stream do
         render turbo_stream: turbo_stream.replace("repositories_list", partial: "repositories/list", locals: { repositories: @repositories })
       end

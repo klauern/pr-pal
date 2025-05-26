@@ -5,8 +5,7 @@
       <div class="flex items-center justify-between p-6 border-b border-gray-200">
         <div class="flex-1">
           <h1 class="text-2xl font-bold text-gray-900">
-            <%= link_to @pull_request_review.github_pr_title, @pull_request_review.github_pr_url,
-                target: "_blank", class: "text-blue-600 hover:text-blue-800" %>
+            <%= safe_pr_link(@pull_request_review) %>
           </h1>
           <p class="text-sm text-gray-600 mt-1">
             <%= @pull_request_review.repository.full_name %> - PR #<%= @pull_request_review.github_pr_id %>

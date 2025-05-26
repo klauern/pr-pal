@@ -3,6 +3,9 @@ Rails.application.routes.draw do
   resources :pull_request_reviews, only: [ :index, :show, :create, :update, :destroy ] do
     resources :llm_conversation_messages, only: [ :create ]
   end
+
+  # Direct PR review access by repository and PR number
+  get "repos/:repo_owner/:repo_name/reviews/:pr_number", to: "pull_request_reviews#show_by_details", as: :repo_pull_request_review
   get "dashboard/index"
   # Remove the default resource :session route and add custom routes for session actions
   # resource :session

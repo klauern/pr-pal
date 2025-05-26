@@ -50,6 +50,45 @@ class PullRequestReviewsController < ApplicationController
     redirect_to root_path(tab: "pull_request_reviews")
   end
 
+  def show_by_details
+    # Find or create repository
+    @repository = Current.user.repositories.find_or_create_by(
+      owner: params[:repo_owner],
+      name: params[:repo_name]
+    )
+
+    # Find or create pull request review
+    @pull_request_review = @repository.pull_request_reviews.find_or_initialize_by(
+      github_pr_id: params[:pr_number],
+      user: Current.user
+    )
+
+    # If this is a new review, set default values
+    if @pull_request_review.new_record?
+      @pull_request_review.assign_attributes(
+        github_pr_title: "Review for PR ##{params[:pr_number]} in #{@repository.full_name}",
+        github_pr_url: "#{@repository.github_url}/pull/#{params[:pr_number]}",
+        status: "in_progress"
+      )
+
+      unless @pull_request_review.save
+        redirect_to root_path, alert: "Failed to create review: #{@pull_request_review.errors.full_messages.join(', ')}"
+        return
+      end
+    end
+
+    # Mark as viewed and set up instance variables for the view
+    @pull_request_review.mark_as_viewed!
+    @messages = @pull_request_review.llm_conversation_messages.ordered
+    @new_message = @pull_request_review.llm_conversation_messages.build
+
+    # Add this PR to the open tabs session
+    add_pr_to_tabs(@pull_request_review.id)
+
+    # Render the same view as the regular show action
+    render :show
+  end
+
   private
 
   def set_pull_request_review

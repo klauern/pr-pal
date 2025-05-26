@@ -2,7 +2,40 @@
 
 ## Current Work Focus
 
-**✅ COMPLETED**: Refactored to consistent Hotwire (Turbo) strategy with full PR tab functionality - All navigation issues resolved and codebase simplified
+**✅ COMPLETED**: Implemented direct URL navigation for PR reviews with auto-registration capabilities
+
+**NEW FEATURE**: Direct PR review access via URL pattern `/repos/:owner/:repo_name/reviews/:pr_number`
+
+## Direct URL Navigation Feature - IMPLEMENTED ✅
+
+**URL Pattern**: `http://localhost:3000/repos/:owner/:repo_name/reviews/:pr_number`
+
+**Example**: `http://localhost:3000/repos/klauern/openai-orgs/reviews/3`
+
+### Implementation Details
+
+1. **New Route**: Added `get "repos/:repo_owner/:repo_name/reviews/:pr_number"` route
+2. **New Controller Action**: `PullRequestReviewsController#show_by_details`
+3. **Auto-Registration**: Creates repository if it doesn't exist for the user
+4. **PR Review Creation**: Creates new PR review with default values if it doesn't exist
+5. **Tab Integration**: Automatically adds opened PR to sidebar tabs
+6. **Status Handling**: Allows viewing reviews in any status (in_progress, completed, archived)
+
+### Key Features
+
+- **Repository Auto-Registration**: If `klauern/openai-orgs` doesn't exist, it's created automatically
+- **PR Review Auto-Creation**: If PR #3 review doesn't exist, it's created with sensible defaults
+- **GitHub URL Generation**: Automatically constructs GitHub PR URL: `https://github.com/{owner}/{name}/pull/{pr_number}`
+- **Seamless Integration**: Uses existing `show.html.erb` view and tab management system
+- **Error Handling**: Proper error messages if creation fails
+
+### Use Cases Enabled
+
+1. **GitHub Actions Integration**: Generate direct links in GHA workflows
+2. **External Link Sharing**: Share specific PR review links
+3. **Bookmarking**: Bookmark specific PR reviews for quick access
+4. **Testing**: Easily access specific PRs during development
+5. **Automation**: External services can trigger PR review prep work
 
 ## Solution Strategy - FULLY IMPLEMENTED
 

@@ -9,6 +9,7 @@
 - **Database Schema**: All tables and relationships working
 - **Consistent Patterns**: Single approach to Turbo usage throughout app
 - **PR Tab System**: Session-based PR review tabs in sidebar with close functionality
+- **Direct URL Navigation**: `/repos/:owner/:repo_name/reviews/:pr_number` pattern with auto-registration
 
 ## What Was Fixed
 

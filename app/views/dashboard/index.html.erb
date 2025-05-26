@@ -1,3 +1,40 @@
-<h1>Welcome to the Protected Dashboard!</h1>
-<p>You have successfully authenticated.</p>
-<%= link_to "Sign Out", session_path, data: { "turbo-method": :delete } %>
+<div class="p-8">
+  <% case @active_tab %>
+  <% when 'pull_requests' %>
+    <div class="max-w-4xl mx-auto">
+      <div class="bg-white shadow rounded-lg">
+        <div class="px-6 py-4 border-b border-gray-200">
+          <h1 class="text-2xl font-bold text-gray-900">Pull Requests</h1>
+          <p class="mt-1 text-sm text-gray-600">Monitor and manage pull requests from your repositories</p>
+        </div>
+        <div class="px-6 py-4">
+          <p>Pull requests content will go here.</p>
+        </div>
+      </div>
+    </div>
+  <% when 'pull_request_reviews' %>
+    <div class="max-w-4xl mx-auto">
+      <div class="bg-white shadow rounded-lg">
+        <div class="px-6 py-4 border-b border-gray-200">
+          <h1 class="text-2xl font-bold text-gray-900">Pull Request Reviews</h1>
+          <p class="mt-1 text-sm text-gray-600">Manage and review active pull requests</p>
+        </div>
+        <!-- In Progress Reviews List -->
+        <%= render "pull_request_reviews/index", pull_request_reviews: Current.user&.pull_request_reviews&.in_progress&.includes(:repository) || [] %>
+      </div>
+    </div>
+  <% else %>
+    <!-- Home tab content -->
+    <div class="max-w-4xl mx-auto">
+      <div class="bg-white shadow rounded-lg">
+        <div class="px-6 py-4 border-b border-gray-200">
+          <h1 class="text-2xl font-bold text-gray-900">Welcome to PR Pal</h1>
+          <p class="mt-1 text-sm text-gray-600">Your AI-powered pull request review assistant</p>
+        </div>
+        <div class="px-6 py-4">
+          <p>Dashboard content will go here.</p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

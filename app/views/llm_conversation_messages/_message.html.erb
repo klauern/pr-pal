@@ -1,0 +1,23 @@
+<div class="<%= message.from_user? ? 'flex justify-end' : 'flex justify-start' %>">
+  <div class="<%= message.from_user? ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-900' %> rounded-lg px-4 py-2 max-w-lg">
+    <div class="flex items-center justify-between mb-1">
+      <span class="text-xs font-medium <%= message.from_user? ? 'text-blue-100' : 'text-gray-600' %>">
+        <%= message.from_user? ? 'You' : message.sender.humanize %>
+      </span>
+      <span class="text-xs <%= message.from_user? ? 'text-blue-100' : 'text-gray-500' %>">
+        <%= time_ago_in_words(message.timestamp) %> ago
+      </span>
+    </div>
+    <div class="text-sm whitespace-pre-wrap">
+      <%= message.content %>
+    </div>
+    <% if message.from_llm? && message.llm_model_used.present? %>
+      <div class="text-xs mt-1 <%= message.from_user? ? 'text-blue-100' : 'text-gray-500' %>">
+        Model: <%= message.llm_model_used %>
+        <% if message.token_count %>
+          | Tokens: <%= message.token_count %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -60,6 +60,7 @@
   - Solargraph for IDE integration and code intelligence
   - Sorbet for gradual type checking
 - **Testing**: Rails built-in testing with Capybara and Selenium
+  - `rails-controller-testing` gem for Rails 8 controller test helpers (assigns, etc.)
 - **Development Server**: Puma web server
 - **Task Management**: Rake tasks for common operations
   - `rake solargraph:setup` - Initial Solargraph configuration

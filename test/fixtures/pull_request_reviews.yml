@@ -1,0 +1,19 @@
+sample_review:
+  user: one
+  repository: one
+  github_pr_id: 123
+  github_pr_url: "https://github.com/octocat/hello-world/pull/123"
+  github_pr_title: "Add new feature for user authentication"
+  status: "in_progress"
+  llm_context_summary: "Focus on security implications and code quality"
+  last_viewed_at: <%= 1.hour.ago %>
+
+completed_review:
+  user: one
+  repository: one
+  github_pr_id: 456
+  github_pr_url: "https://github.com/octocat/hello-world/pull/456"
+  github_pr_title: "Fix bug in payment processing"
+  status: "completed"
+  llm_context_summary: "Review payment logic and error handling"
+  last_viewed_at: <%= 2.days.ago %>

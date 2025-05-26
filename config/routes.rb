@@ -1,4 +1,11 @@
 Rails.application.routes.draw do
+  resources :repositories, only: [ :index, :new, :create, :destroy ]
+  resources :pull_request_reviews, only: [ :index, :show, :create, :update, :destroy ] do
+    resources :llm_conversation_messages, only: [ :create ]
+  end
+
+  # Direct PR review access by repository and PR number
+  get "repos/:repo_owner/:repo_name/reviews/:pr_number", to: "pull_request_reviews#show_by_details", as: :repo_pull_request_review
   get "dashboard/index"
   # Remove the default resource :session route and add custom routes for session actions
   # resource :session
@@ -6,6 +13,9 @@ Rails.application.routes.draw do
   post "/session", to: "sessions#create", as: :session
   delete "/session", to: "sessions#destroy"
   resources :passwords, param: :token
+
+  # PR tab management
+  delete "/close_pr_tab", to: "pull_request_reviews#close_tab", as: :close_pr_tab
 
   # Hotwire sidebar/tab routes
   resource :tabs, only: [] do

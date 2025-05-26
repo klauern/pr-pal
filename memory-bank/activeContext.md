@@ -2,63 +2,96 @@
 
 ## Current Work Focus
 
-- **FIXED**: GitHub Actions CI issue where `bin/rails` file wasn't executable in CI environment.
-- **RESOLVED**: Added `chmod +x bin/*` step to CI workflow to ensure bin files have proper executable permissions.
-- **UPDATED**: CI configuration uses `bin/rails` instead of `bundle exec rails` for better reliability in CI environments.
-- **ADDED**: Enhanced debugging output in CI to help identify environment issues.
-- CI now properly runs tests, builds assets, and generates coverage reports.
-- All CI jobs (security scan, linting, testing) should be working correctly.
+**✅ COMPLETED**: Implemented direct URL navigation for PR reviews with auto-registration capabilities
 
-## Recent Changes
+**NEW FEATURE**: Direct PR review access via URL pattern `/repos/:owner/:repo_name/reviews/:pr_number`
 
-- **FIXED**: GitHub Actions CI workflow (.github/workflows/ci.yml) had multiple issues:
-  - Incorrect test command structure (`bundle exec rails db:test:prepare test test:system` was malformed)
-  - Missing asset compilation step (Bun build process)
-  - System tests were being run when no system test directory exists
-- **RESOLVED**: Split test commands into separate steps:
-  - Database preparation: `bundle exec rails db:test:prepare`
-  - Unit/integration tests: `bundle exec rails test`
-  - System tests: Conditional check for test/system directory
-- **ADDED**: Asset building step in CI:
-  - `bun install` - Install dependencies
-  - `bun run build` - Build JavaScript assets
-  - `bun run build:css` - Build CSS with Tailwind
-- **VERIFIED**: All CI components working locally:
-  - Brakeman security scan: ✅ No warnings found
-  - RuboCop linting: ✅ No style violations
-  - Asset building: ✅ JavaScript and CSS compile successfully
-  - Test database preparation: ✅ Works correctly
-  - Test execution: ✅ 1 run, 2 assertions, 0 failures, 0 errors
-  - Coverage generation: ✅ .resultset.json file created correctly
+## Direct URL Navigation Feature - IMPLEMENTED ✅
 
-## Next Steps
+**URL Pattern**: `http://localhost:3000/repos/:owner/:repo_name/reviews/:pr_number`
 
-- Complete Solargraph gem caching process (currently running).
-- Run `rails generate authentication`.
-- Run `rails db:migrate`.
-- Create an initial admin user.
-- Protect application routes/controllers.
+**Example**: `http://localhost:3000/repos/klauern/openai-orgs/reviews/3`
 
-## Active Decisions and Considerations
+### Implementation Details
 
-- The initial authentication will be a simple user/password system.
-- Future work will involve integrating OIDC providers like Auth0 or Okta on top of this foundation.
-- Solargraph provides IDE features like autocomplete, go-to-definition, and documentation for Ruby code.
-- Using solargraph-rails plugin for Rails-specific features and better integration.
-- Sorbet provides gradual type checking with comprehensive RBI files for gems and Rails DSLs.
-- Type checking shows 148 errors initially, mostly from conflicts between community RBI files and generated ones (normal for fresh setup).
+1. **New Route**: Added `get "repos/:repo_owner/:repo_name/reviews/:pr_number"` route
+2. **New Controller Action**: `PullRequestReviewsController#show_by_details`
+3. **Auto-Registration**: Creates repository if it doesn't exist for the user
+4. **PR Review Creation**: Creates new PR review with default values if it doesn't exist
+5. **Tab Integration**: Automatically adds opened PR to sidebar tabs
+6. **Status Handling**: Allows viewing reviews in any status (in_progress, completed, archived)
 
-## Important Patterns and Preferences
+### Key Features
 
-- Prioritizing Rails-native solutions where possible.
-- Adding development tooling to improve code quality and developer experience.
-- Using Rake tasks for common development operations.
+- **Repository Auto-Registration**: If `klauern/openai-orgs` doesn't exist, it's created automatically
+- **PR Review Auto-Creation**: If PR #3 review doesn't exist, it's created with sensible defaults
+- **GitHub URL Generation**: Automatically constructs GitHub PR URL: `https://github.com/{owner}/{name}/pull/{pr_number}`
+- **Seamless Integration**: Uses existing `show.html.erb` view and tab management system
+- **Error Handling**: Proper error messages if creation fails
 
-## Learnings and Project Insights
+### Use Cases Enabled
 
-- Rails 8.0+ includes a robust built-in authentication generator, simplifying initial setup.
-- Solargraph requires gem documentation caching for optimal performance.
-- Ruby 3.4.4 compatibility issues with YARD parser may cause some warnings during gem caching.
-- Sorbet setup in Rails projects requires both `srb init` and Tapioca for complete RBI generation.
-- Initial Sorbet type checking will show many errors due to RBI conflicts, which is expected and normal.
-- The `sorbet/` directory structure includes config, RBI files for gems/DSLs, and Tapioca configuration.
+1. **GitHub Actions Integration**: Generate direct links in GHA workflows
+2. **External Link Sharing**: Share specific PR review links
+3. **Bookmarking**: Bookmark specific PR reviews for quick access
+4. **Testing**: Easily access specific PRs during development
+5. **Automation**: External services can trigger PR review prep work
+
+## Solution Strategy - FULLY IMPLEMENTED
+
+**Consistent Hotwire Pattern**:
+
+1. ✅ **Primary Navigation**: Standard Turbo Drive for sidebar tab switching
+2. ✅ **Dynamic Updates**: Turbo Streams for in-page CRUD operations
+3. ✅ **PR Tab System**: Session-based tracking for opened PR reviews with close functionality
+
+## Completed Implementation
+
+1. ✅ **Simplified Layout Structure**:
+   - Removed top-level `<turbo-frame>` tags from `application.html.erb`
+   - Converted sidebar navigation to standard Turbo Drive links
+   - Eliminated complex nested frame targeting
+
+2. ✅ **Refactored Controllers**:
+   - Updated `PullRequestReviewsController` with session-based tab management
+   - Repository CRUD uses Turbo Streams for dynamic updates
+   - Authentication context works consistently across all requests
+
+3. ✅ **Updated Views**:
+   - Simplified sidebar with clean PR tab section
+   - Forms use Turbo Streams for dynamic updates
+   - Proper DOM structure for all functionality
+
+4. ✅ **PR Tab Features**:
+   - Auto-add PRs to sidebar when opened
+   - Click between multiple open PR reviews
+   - Close individual tabs with × buttons
+   - Smart limiting (last 5 tabs)
+   - Session persistence and auto-cleanup
+
+## Active Decisions - IMPLEMENTED
+
+- ✅ **Navigation Pattern**: Turbo Drive for page navigation, Turbo Streams for partial updates
+- ✅ **Authentication**: `Current.user` properly set across all request types
+- ✅ **Simplicity Over Complexity**: Clear, maintainable patterns chosen and implemented
+- ✅ **PR Tab UX**: Session-based tracking without database overhead
+
+## Current System State
+
+- ✅ **Authentication**: Demo user (`test@example.com` / `password`) working
+- ✅ **Repository Management**: Full CRUD with Turbo Stream updates
+- ✅ **Navigation**: All tabs working smoothly with standard Turbo Drive
+- ✅ **PR Tab System**: Complete session-based tab management implemented
+- ✅ **Database**: All models and relationships working properly
+- ✅ **Security**: Clean Brakeman scan with 0 security warnings
+
+## Next Development Phase
+
+Ready for feature development:
+
+1. **GitHub API Integration**: Connect to real GitHub data
+2. **Background Jobs**: PR monitoring and updates
+3. **Enhanced UI**: Status indicators and improved UX
+4. **LLM Features**: Enhanced conversation capabilities
+
+**STATUS**: Foundation complete - ready for feature development

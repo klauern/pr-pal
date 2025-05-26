@@ -13,13 +13,16 @@ module GeneratedUrlHelpersModule
   def close_pr_tab_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def close_pr_tabs_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def dashboard_index_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
-  def edit_password_url(*args); end
+  def demo_login_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
-  def edit_session_url(*args); end
+  def edit_password_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def new_password_url(*args); end
@@ -31,7 +34,7 @@ module GeneratedUrlHelpersModule
   def new_rails_conductor_inbound_email_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
-  def new_session_url(*args); end
+  def new_repository_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def open_pr_tabs_url(*args); end
@@ -41,6 +44,15 @@ module GeneratedUrlHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def passwords_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def pull_request_review_llm_conversation_messages_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def pull_request_review_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def pull_request_reviews_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def rails_blob_representation_proxy_url(*args); end
@@ -122,6 +134,15 @@ module GeneratedUrlHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def rails_storage_redirect_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def repo_pull_request_review_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def repositories_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def repository_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def root_url(*args); end

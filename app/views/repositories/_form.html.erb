@@ -1,0 +1,25 @@
+<div id="repository_form" class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+  <%= form_with model: repository, local: false, class: "space-y-4" do |form| %>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+      <div>
+        <%= form.label :owner, class: "block text-sm font-medium text-gray-700" %>
+        <%= form.text_field :owner, placeholder: "e.g., octocat", class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+        <% if repository.errors[:owner].any? %>
+          <p class="mt-1 text-sm text-red-600"><%= repository.errors[:owner].first %></p>
+        <% end %>
+      </div>
+
+      <div>
+        <%= form.label :name, "Repository Name", class: "block text-sm font-medium text-gray-700" %>
+        <%= form.text_field :name, placeholder: "e.g., hello-world", class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+        <% if repository.errors[:name].any? %>
+          <p class="mt-1 text-sm text-red-600"><%= repository.errors[:name].first %></p>
+        <% end %>
+      </div>
+
+      <div>
+        <%= form.submit "Add Repository", class: "w-full bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+      </div>
+    </div>
+  <% end %>
+</div>

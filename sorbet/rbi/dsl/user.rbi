@@ -644,6 +644,51 @@ class User
     sig { void }
     def email_address_will_change!; end
 
+    sig { returns(T.nilable(::String)) }
+    def github_token; end
+
+    sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
+    def github_token=(value); end
+
+    sig { returns(T::Boolean) }
+    def github_token?; end
+
+    sig { returns(T.nilable(::String)) }
+    def github_token_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def github_token_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def github_token_came_from_user?; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def github_token_change; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def github_token_change_to_be_saved; end
+
+    sig { params(from: T.nilable(::String), to: T.nilable(::String)).returns(T::Boolean) }
+    def github_token_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def github_token_in_database; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def github_token_previous_change; end
+
+    sig { params(from: T.nilable(::String), to: T.nilable(::String)).returns(T::Boolean) }
+    def github_token_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def github_token_previously_was; end
+
+    sig { returns(T.nilable(::String)) }
+    def github_token_was; end
+
+    sig { void }
+    def github_token_will_change!; end
+
     sig { returns(::Integer) }
     def id; end
 
@@ -786,6 +831,9 @@ class User
     def restore_email_address!; end
 
     sig { void }
+    def restore_github_token!; end
+
+    sig { void }
     def restore_id!; end
 
     sig { void }
@@ -808,6 +856,12 @@ class User
 
     sig { returns(T::Boolean) }
     def saved_change_to_email_address?; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def saved_change_to_github_token; end
+
+    sig { returns(T::Boolean) }
+    def saved_change_to_github_token?; end
 
     sig { returns(T.nilable([::Integer, ::Integer])) }
     def saved_change_to_id; end
@@ -883,6 +937,9 @@ class User
 
     sig { returns(T::Boolean) }
     def will_save_change_to_email_address?; end
+
+    sig { returns(T::Boolean) }
+    def will_save_change_to_github_token?; end
 
     sig { returns(T::Boolean) }
     def will_save_change_to_id?; end

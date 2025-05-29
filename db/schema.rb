@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_25_200249) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_29_220330) do
   create_table "llm_api_keys", force: :cascade do |t|
     t.string "llm_provider"
     t.text "api_key"
@@ -48,6 +48,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_25_200249) do
     t.datetime "last_viewed_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "last_synced_at"
     t.index ["repository_id", "github_pr_id"], name: "index_pull_request_reviews_on_repository_id_and_github_pr_id", unique: true
     t.index ["repository_id"], name: "index_pull_request_reviews_on_repository_id"
     t.index ["user_id", "status"], name: "index_pull_request_reviews_on_user_id_and_status"
@@ -77,6 +78,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_25_200249) do
     t.string "password_digest", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "github_token"
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 

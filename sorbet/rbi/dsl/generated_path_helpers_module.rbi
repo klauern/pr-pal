@@ -145,6 +145,9 @@ module GeneratedPathHelpersModule
   def repository_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def reset_tabs_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def root_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }

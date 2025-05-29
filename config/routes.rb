@@ -19,6 +19,9 @@ Rails.application.routes.draw do
   # PR tab management
   delete "/close_pr_tab", to: "pull_request_reviews#close_tab", as: :close_pr_tab
 
+  # Debug route to reset session tabs
+  get "/reset_tabs", to: "pull_request_reviews#reset_tabs", as: :reset_tabs
+
   # Hotwire sidebar/tab routes
   resource :tabs, only: [] do
     post :open_pr, on: :collection

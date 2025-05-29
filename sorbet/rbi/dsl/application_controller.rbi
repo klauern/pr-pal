@@ -26,6 +26,7 @@ class ApplicationController
     include ::ActionController::Base::HelperMethods
     include ::ApplicationHelper
     include ::DashboardHelper
+    include ::SettingsHelper
 
     sig { returns(T.untyped) }
     def authenticated?; end

@@ -1,0 +1,10 @@
+<div class="max-w-4xl mx-auto">
+  <div class="bg-white shadow rounded-lg">
+    <div class="px-6 py-4 border-b border-gray-200">
+      <h1 class="text-2xl font-bold text-gray-900">Pull Request Reviews</h1>
+      <p class="mt-1 text-sm text-gray-600">Manage and review active pull requests</p>
+    </div>
+    <!-- In Progress Reviews List -->
+    <%= render "pull_request_reviews/index", pull_request_reviews: @pull_request_reviews || [] %>
+  </div>
+</div>

@@ -50,4 +50,7 @@ Rails.application.configure do
 
   # Raise error when a before_action's only/except options reference missing actions.
   config.action_controller.raise_on_missing_callback_actions = true
+
+  # Data source configuration - default to dummy data in test
+  config.x.use_dummy_data = ENV.fetch("USE_DUMMY_DATA", "true") == "true"
 end

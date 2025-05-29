@@ -51,30 +51,17 @@ class PullRequestReviewsController < ApplicationController
   end
 
   def show_by_details
-    # Find or create repository
-    @repository = Current.user.repositories.find_or_create_by(
-      owner: params[:repo_owner],
-      name: params[:repo_name]
-    )
-
-    # Find or create pull request review
-    @pull_request_review = @repository.pull_request_reviews.find_or_initialize_by(
-      github_pr_id: params[:pr_number],
-      user: Current.user
-    )
-
-    # If this is a new review, set default values
-    if @pull_request_review.new_record?
-      @pull_request_review.assign_attributes(
-        github_pr_title: "Review for PR ##{params[:pr_number]} in #{@repository.full_name}",
-        github_pr_url: "#{@repository.github_url}/pull/#{params[:pr_number]}",
-        status: "in_progress"
+    begin
+      # Use the data provider to fetch or create the PR review
+      @repository, @pull_request_review = DataProviders.pull_request_provider.fetch_or_create_pr_review(
+        owner: params[:repo_owner],
+        name: params[:repo_name],
+        pr_number: params[:pr_number],
+        user: Current.user
       )
-
-      unless @pull_request_review.save
-        redirect_to root_path, alert: "Failed to create review: #{@pull_request_review.errors.full_messages.join(', ')}"
-        return
-      end
+    rescue => e
+      redirect_to root_path, alert: "Failed to create review: #{e.message}"
+      return
     end
 
     # Mark as viewed and set up instance variables for the view

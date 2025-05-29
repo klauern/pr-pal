@@ -87,4 +87,7 @@ Rails.application.configure do
   #
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+
+  # Data source configuration - default to real data in production
+  config.x.use_dummy_data = ENV.fetch("USE_DUMMY_DATA", "false") == "true"
 end

@@ -24,6 +24,13 @@
 </head>
 
 <body>
+  <!-- Data Source Indicator (Development Only) -->
+  <% if Rails.env.development? && Rails.application.config.x.use_dummy_data %>
+    <div class="bg-yellow-100 border-b border-yellow-400 text-yellow-800 text-xs px-3 py-1 fixed top-0 right-0 z-50 rounded-bl-md shadow-sm">
+      🎭 DUMMY DATA MODE
+    </div>
+  <% end %>
+
   <div class="flex h-screen">
     <!-- Sidebar -->
     <%= render 'layouts/sidebar' %>

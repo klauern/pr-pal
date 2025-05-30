@@ -3,8 +3,12 @@ class User < ApplicationRecord
   has_many :sessions, dependent: :destroy
   has_many :repositories, dependent: :destroy
   has_many :pull_request_reviews, dependent: :destroy
+  has_many :llm_api_keys, dependent: :destroy
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
+
+  validates :email_address, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates :password, length: { minimum: 6 }, if: -> { new_record? || !password.nil? }
 
   # Encrypt GitHub token for security (skip in test environment)
   encrypts :github_token unless Rails.env.test?

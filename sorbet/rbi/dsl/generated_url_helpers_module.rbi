@@ -34,6 +34,9 @@ module GeneratedUrlHelpersModule
   def new_rails_conductor_inbound_email_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def new_registration_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def new_repository_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -134,6 +137,9 @@ module GeneratedUrlHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def rails_storage_redirect_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def registrations_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def repo_pull_request_review_url(*args); end

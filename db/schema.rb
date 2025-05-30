@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_29_220330) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_30_222253) do
   create_table "llm_api_keys", force: :cascade do |t|
     t.string "llm_provider"
     t.text "api_key"
@@ -19,7 +19,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_29_220330) do
     t.string "full_name"
     t.text "description"
     t.text "aliases"
+    t.integer "user_id", null: false
     t.index ["llm_provider"], name: "index_llm_api_keys_on_llm_provider", unique: true
+    t.index ["user_id"], name: "index_llm_api_keys_on_user_id"
   end
 
   create_table "llm_conversation_messages", force: :cascade do |t|
@@ -82,6 +84,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_29_220330) do
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
+  add_foreign_key "llm_api_keys", "users"
   add_foreign_key "llm_conversation_messages", "pull_request_reviews"
   add_foreign_key "pull_request_reviews", "repositories"
   add_foreign_key "pull_request_reviews", "users"

@@ -3,7 +3,9 @@
 one:
   llm_provider: openai
   api_key: MyText
+  user: one
 
 two:
   llm_provider: anthropic
   api_key: MyText
+  user: two

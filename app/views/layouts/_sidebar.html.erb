@@ -46,4 +46,17 @@
       </ul>
     </nav>
   </div>
+
+  <!-- User Section -->
+  <% if Current.user %>
+    <div class="border-t border-gray-700 p-4">
+      <div class="text-sm text-gray-400 mb-2">
+        Logged in as: <%= Current.user.email_address %>
+      </div>
+      <%= link_to 'Settings', settings_path, class: "block text-sm hover:text-white mb-2" %>
+      <%= link_to 'Logout', session_path, method: :delete,
+          class: "block text-sm text-red-400 hover:text-red-300",
+          data: { turbo_method: :delete } %>
+    </div>
+  <% end %>
 </aside>

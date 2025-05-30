@@ -34,13 +34,28 @@ class RepositoriesController < ApplicationController
   end
 
   def destroy
+    # Clean up open PR tabs before destroying repository
+    affected_pr_ids = @repository.pull_request_reviews.pluck(:id)
+    affected_tabs = affected_pr_ids.map { |id| "pr_#{id}" }
+
+    session[:open_pr_tabs] ||= []
+    session[:open_pr_tabs] -= affected_tabs
+
+    # If the current active tab is being removed, fall back to safe default
+    if affected_tabs.include?(session[:active_tab])
+      session[:active_tab] = session[:open_pr_tabs].last || "home"
+    end
+
     @repository.destroy
     @repositories = Current.user.repositories.order(:owner, :name)
 
     respond_to do |format|
       format.html { redirect_to root_path(tab: "repositories"), notice: "Repository was successfully removed." }
       format.turbo_stream do
-        render turbo_stream: turbo_stream.replace("repositories_list", partial: "repositories/list", locals: { repositories: @repositories })
+        render turbo_stream: [
+          turbo_stream.replace("repositories_list", partial: "repositories/list", locals: { repositories: @repositories }),
+          turbo_stream.replace("sidebar", partial: "layouts/sidebar")
+        ]
       end
     end
   end

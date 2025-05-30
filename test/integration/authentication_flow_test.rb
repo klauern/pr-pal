@@ -83,16 +83,29 @@ class AuthenticationFlowTest < ActionDispatch::IntegrationTest
     # Test updating user profile
     patch settings_path, params: {
       user: {
-        email_address: "updated@example.com",
+        form_type: "profile",
+        email_address: "updated@example.com"
+      }
+    }
+
+    assert_redirected_to settings_path
+    assert_equal "Profile updated successfully!", flash[:notice]
+
+    user.reload
+    assert_equal "updated@example.com", user.email_address
+
+    # Test updating GitHub token separately
+    patch settings_path, params: {
+      user: {
+        form_type: "github",
         github_token: "ghp_test_token"
       }
     }
 
     assert_redirected_to settings_path
-    assert_equal "Settings updated successfully!", flash[:notice]
+    assert_equal "GitHub token updated successfully!", flash[:notice]
 
     user.reload
-    assert_equal "updated@example.com", user.email_address
     assert user.github_token_configured?
   end
 

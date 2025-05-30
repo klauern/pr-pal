@@ -24,16 +24,22 @@
           <li class="px-4 py-1 border-t border-gray-700 mt-2">
             <span class="text-xs text-gray-400 uppercase tracking-wide">Open Reviews</span>
           </li>
-          <% session[:open_pr_tabs].each do |pr_id| %>
-            <% review = Current.user&.pull_request_reviews&.find_by(id: pr_id) %>
+          <% session[:open_pr_tabs].compact.uniq.each do |pr_tab| %>
+            <% next if pr_tab.blank? %>
+            <% numeric_id = pr_tab.to_s.gsub(/^pr_/, '') %>
+            <% next if numeric_id.blank? %>
+            <% review = Current.user&.pull_request_reviews&.find_by(id: numeric_id) %>
             <% if review %>
               <li class="flex items-center justify-between hover:bg-gray-800">
                 <%= link_to review.github_pr_title.truncate(25), pull_request_review_path(review),
                     class: "flex-1 text-sm pl-4 pr-2 py-2" %>
-                <%= link_to '×', close_pr_tab_path(pr_id: pr_id), method: :delete,
+                <%= link_to '×', close_pr_tab_path(pr_id: numeric_id), method: :delete,
                     class: 'pl-2 pr-4 py-2 text-gray-400 hover:text-red-500 text-lg leading-none',
                     data: { turbo_method: :delete } %>
               </li>
+            <% else %>
+              <!-- Clean up orphaned tab entries silently -->
+              <% session[:open_pr_tabs].delete(pr_tab) %>
             <% end %>
           <% end %>
         <% end %>

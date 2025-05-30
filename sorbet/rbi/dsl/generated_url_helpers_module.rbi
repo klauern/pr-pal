@@ -145,6 +145,9 @@ module GeneratedUrlHelpersModule
   def repository_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def reset_tabs_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def root_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }

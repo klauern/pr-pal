@@ -1,8 +1,9 @@
 ENV["RAILS_ENV"] ||= "test"
 require "simplecov"
 
-# Configure Codecov if running in CI
-if ENV["CI"]
+# Only configure automatic Codecov uploads in true CI environments
+# Manual uploads are handled by rake tasks
+if ENV["CI"] == "true" && ENV["GITHUB_ACTIONS"] == "true"
   require "codecov"
   codecov_formatter = SimpleCov::Formatter.const_get("Codecov")
   SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new([
@@ -10,6 +11,7 @@ if ENV["CI"]
     codecov_formatter
   ])
 else
+  # Use only HTML formatter for local development and manual uploads
   SimpleCov.formatter = SimpleCov::Formatter::HTMLFormatter
 end
 

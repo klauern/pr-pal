@@ -33,6 +33,26 @@
         </div>
         <div class="px-6 py-4">
           <p>Dashboard content will go here.</p>
+
+          <!-- Debug Tools Section -->
+          <% if Rails.env.development? %>
+            <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+              <h3 class="text-sm font-medium text-yellow-800 mb-2">Debug Tools</h3>
+              <p class="text-xs text-yellow-600 mb-3">Development only - these tools help debug session issues</p>
+              <div class="flex space-x-3">
+                <%= link_to "Reset Tabs", reset_tabs_path,
+                    class: "inline-flex items-center px-3 py-2 border border-yellow-300 text-sm font-medium rounded-md text-yellow-700 bg-yellow-100 hover:bg-yellow-200",
+                    data: { confirm: "Clear all open PR tabs from session?" } %>
+                <% if session[:open_pr_tabs]&.any? %>
+                  <span class="text-xs text-yellow-600">
+                    Current tabs: <%= session[:open_pr_tabs].join(", ") %>
+                  </span>
+                <% else %>
+                  <span class="text-xs text-yellow-600">No tabs currently open</span>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
         </div>
       </div>
     </div>

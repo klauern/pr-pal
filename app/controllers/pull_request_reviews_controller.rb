@@ -20,21 +20,56 @@ class PullRequestReviewsController < ApplicationController
     @pull_request_review = @repository.pull_request_reviews.build(pull_request_review_params)
     @pull_request_review.user = Current.user
 
-    if @pull_request_review.save
-      redirect_to root_path(tab: "pull_request_reviews"), notice: "Pull request review started."
-    else
-      redirect_to root_path(tab: "repositories"), alert: "Failed to start review: #{@pull_request_review.errors.full_messages.join(', ')}"
+    respond_to do |format|
+      if @pull_request_review.save
+        # Add this PR to the open tabs session
+        add_pr_to_tabs(@pull_request_review.id)
+
+        @pull_request_reviews = Current.user.pull_request_reviews.in_progress.includes(:repository)
+        format.html { redirect_to root_path(tab: "pull_request_reviews"), notice: "Pull request review started." }
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.replace("main_content", partial: "layouts/main_content", locals: { tab: "pull_request_reviews" }),
+            turbo_stream.prepend("flash-messages", "<div class='bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4'>Pull request review started.</div>")
+          ]
+        end
+      else
+        format.html { redirect_to root_path(tab: "repositories"), alert: "Failed to start review: #{@pull_request_review.errors.full_messages.join(', ')}" }
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.prepend("flash-messages",
+            "<div class='bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4'>Failed to start review: #{@pull_request_review.errors.full_messages.join(', ')}</div>")
+        end
+      end
     end
   end
 
   def update
-    if params[:action_type] == "complete"
-      @pull_request_review.mark_as_completed!
-      render json: { status: "completed", message: "Review marked as complete" }
-    elsif @pull_request_review.update(pull_request_review_params)
-      render json: { status: "updated", message: "Review updated successfully" }
-    else
-      render json: { status: "error", errors: @pull_request_review.errors.full_messages }
+    respond_to do |format|
+      if params[:action_type] == "complete"
+        @pull_request_review.mark_as_completed!
+        format.html { redirect_to root_path(tab: "pull_request_reviews"), notice: "Review marked as complete" }
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.replace("main_content", partial: "layouts/main_content", locals: { tab: "pull_request_reviews" }),
+            turbo_stream.prepend("flash-messages", "<div class='bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4'>Review marked as complete.</div>")
+          ]
+        end
+        format.json { render json: { status: "completed", message: "Review marked as complete" } }
+      elsif @pull_request_review.update(pull_request_review_params)
+        format.html { redirect_to pull_request_review_path(@pull_request_review), notice: "Review updated successfully" }
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.prepend("flash-messages",
+            "<div class='bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4'>Review updated successfully.</div>")
+        end
+        format.json { render json: { status: "updated", message: "Review updated successfully" } }
+      else
+        format.html { redirect_to pull_request_review_path(@pull_request_review), alert: "Failed to update review: #{@pull_request_review.errors.full_messages.join(', ')}" }
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.prepend("flash-messages",
+            "<div class='bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4'>Failed to update review: #{@pull_request_review.errors.full_messages.join(', ')}</div>")
+        end
+        format.json { render json: { status: "error", errors: @pull_request_review.errors.full_messages } }
+      end
     end
   end
 
@@ -45,7 +80,10 @@ class PullRequestReviewsController < ApplicationController
   end
 
   def close_tab
+    # Extract numeric ID from "pr_X" format if needed
     pr_id = params[:pr_id]
+    pr_id = pr_id.gsub(/^pr_/, "") if pr_id.start_with?("pr_")
+
     remove_pr_from_tabs(pr_id)
     redirect_to root_path(tab: "pull_request_reviews")
   end
@@ -76,6 +114,12 @@ class PullRequestReviewsController < ApplicationController
     render :show
   end
 
+  # Debug action to reset session tabs
+  def reset_tabs
+    session[:open_pr_tabs] = []
+    redirect_to root_path, notice: "Tab session cleared!"
+  end
+
   private
 
   def set_pull_request_review
@@ -87,13 +131,30 @@ class PullRequestReviewsController < ApplicationController
   end
 
   def add_pr_to_tabs(pr_id)
+    pr_tab = "pr_#{pr_id}"
     session[:open_pr_tabs] ||= []
-    session[:open_pr_tabs] << pr_id.to_s unless session[:open_pr_tabs].include?(pr_id.to_s)
-    session[:open_pr_tabs] = session[:open_pr_tabs].last(5) # Keep only last 5 tabs
+
+    # Debug before operation
+    Rails.logger.debug "ADD_PR_TO_TABS: Before - pr_id: #{pr_id}, pr_tab: #{pr_tab}, current tabs: #{session[:open_pr_tabs]}"
+
+    # Remove if already exists to avoid duplicates, then add to end
+    session[:open_pr_tabs].delete(pr_tab)
+    session[:open_pr_tabs] << pr_tab
+
+    # Keep only last 5 tabs
+    session[:open_pr_tabs] = session[:open_pr_tabs].last(5)
+
+    Rails.logger.debug "ADD_PR_TO_TABS: After - Current tabs: #{session[:open_pr_tabs]}"
   end
 
   def remove_pr_from_tabs(pr_id)
+    pr_tab = "pr_#{pr_id}"
     session[:open_pr_tabs] ||= []
-    session[:open_pr_tabs].delete(pr_id.to_s)
+
+    Rails.logger.debug "REMOVE_PR_FROM_TABS: Before - pr_id: #{pr_id}, pr_tab: #{pr_tab}, current tabs: #{session[:open_pr_tabs]}"
+
+    session[:open_pr_tabs].delete(pr_tab)
+
+    Rails.logger.debug "REMOVE_PR_FROM_TABS: After - Remaining tabs: #{session[:open_pr_tabs]}"
   end
 end

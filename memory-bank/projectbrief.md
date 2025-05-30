@@ -2,24 +2,26 @@
 
 ## Core Requirements and Goals
 
-- Define the overarching purpose and objectives of the project.
-- Outline the primary functionalities and features to be developed.
-- Establish key performance indicators (KPIs) or success metrics.
+- This project provides a way for users to quickly access and manage pull requests across multiple repositories using the assistance of LLM models through conversations.
+- A user should be able to register a repository to monitor, and the system should automatically track and display active pull requests.
+- The system should allow users to navigate directly to specific pull request reviews using a URL pattern.
+- The project should maintain a clean and consistent user interface using Hotwire patterns, ensuring fast navigation and dynamic updates without complex JavaScript.
 
 ## Project Scope
 
-- Clearly delineate what is included within the project boundaries.
-- Identify any out-of-scope items to manage expectations.
+- This project provides wrappers around LLMs and storage of conversations related to pull requests.
+- It includes the ability to register repositories, monitor pull requests, and provide a user-friendly interface for users to make decisions and propose changes and comments on pull requests.
 
 ## Target Audience
 
-- Describe the intended users or beneficiaries of the project.
-- Understand their needs, pain points, and how the project will address them.
+- Developers and teams of projects that use GitHub for version control and pull requests.
+- Individuals want to be able to quickly access all outstanding pull requests, seeing the status of checks, comments, and conversations in the LLM interface.
+- Users have to review and manage pull requests across multiple repositories without needing to switch contexts frequently.
 
 ## Vision Statement
 
-- A concise, inspiring statement that captures the essence of the project's future state.
+- A streamlined interface for managing pull requests across multiple repositories, leveraging LLMs to enhance decision-making and collaboration.
 
 ## Stakeholders
 
-- List key individuals or groups with an interest in the project's outcome.
+- **End Users**: Developers and teams who will use the system to manage pull requests.

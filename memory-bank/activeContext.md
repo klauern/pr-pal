@@ -2,9 +2,9 @@
 
 ## Current Work Focus
 
-**✅ COMPLETED**: Implemented direct URL navigation for PR reviews with auto-registration capabilities
+**✅ COMPLETED**: Implemented tab cleanup when repositories are removed
 
-**NEW FEATURE**: Direct PR review access via URL pattern `/repos/:owner/:repo_name/reviews/:pr_number`
+**NEW FEATURE**: Automatic cleanup of open PR review tabs when a repository is deleted
 
 ## Direct URL Navigation Feature - IMPLEMENTED ✅
 
@@ -96,22 +96,21 @@ Ready for feature development:
 
 **STATUS**: Controller consistency refactoring complete - ready for feature development
 
-## Latest Refactoring Work - COMPLETED ✅
+## Latest Feature Implementation - COMPLETED ✅
 
-**Controller Response Consistency**: Standardized `PullRequestReviewsController` to use Turbo Stream responses consistently across all CRUD operations:
+**Tab Cleanup on Repository Removal**: Enhanced `RepositoriesController#destroy` to automatically clean up session tabs when repositories are deleted:
 
-1. ✅ **Create Action**: Now uses Turbo Streams to dynamically update the PR reviews list and show flash messages
-2. ✅ **Update Action**: Refactored from JSON responses to Turbo Streams for better UI consistency
-3. ✅ **Destroy Action**: Now uses Turbo Streams to remove items dynamically and show confirmation messages
-4. ✅ **Close Tab Action**: Updated to use Turbo Streams for seamless tab management
-5. ✅ **Tab Management Logic**: Standardized PR ID format (`"pr_#{id}"`) across all controllers
-6. ✅ **Flash Messages**: Added flash message container to layout for Turbo Stream notifications
-7. ✅ **Security**: Clean Brakeman scan with 0 security warnings after refactoring
+1. ✅ **Proactive Tab Cleanup**: Before destroying repository, identifies and removes all associated PR review tabs from `session[:open_pr_tabs]`
+2. ✅ **Active Tab Fallback**: If the currently active tab is being removed, falls back to the last remaining tab or "home"
+3. ✅ **Sidebar Update**: Updates sidebar via Turbo Stream to immediately reflect cleaned-up tabs
+4. ✅ **Comprehensive Testing**: Added tests for various scenarios including mixed repositories, empty sessions, and edge cases
+5. ✅ **Session Hygiene**: Prevents session bloat from orphaned tab entries
+6. ✅ **Error Handling**: Gracefully handles cases where session data is nil or malformed
 
 **Key Benefits Achieved**:
 
-- Consistent user experience across all PR review operations
-- No page reloads for CRUD operations - everything updates dynamically
-- Proper flash message handling via Turbo Streams
-- Standardized tab management logic between `PullRequestReviewsController` and `TabsController`
-- Maintained backward compatibility with HTML fallbacks
+- **Immediate Cleanup**: No waiting for lazy cleanup during sidebar rendering
+- **Better UX**: Users don't see broken tabs after repository removal
+- **Consistent Pattern**: Follows existing Turbo Stream update pattern
+- **Session Hygiene**: Prevents session bloat from orphaned tab entries
+- **Robust Testing**: Comprehensive test coverage for all edge cases

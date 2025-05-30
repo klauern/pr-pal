@@ -76,7 +76,7 @@ GEM
       public_suffix (>= 2.0.2, < 7.0)
     ast (2.4.3)
     backport (1.2.0)
-    base64 (0.2.0)
+    base64 (0.3.0)
     bcrypt (3.1.20)
     bcrypt_pbkdf (1.1.1)
     benchmark (0.4.0)
@@ -203,8 +203,7 @@ GEM
     nokogiri (1.18.8-x86_64-linux-musl)
       racc (~> 1.4)
     observer (0.1.2)
-    octokit (8.1.0)
-      base64
+    octokit (10.0.0)
       faraday (>= 1, < 3)
       sawyer (~> 0.9)
     ostruct (0.6.1)
@@ -469,7 +468,7 @@ DEPENDENCIES
   jbuilder
   jsbundling-rails
   kamal
-  octokit (~> 8.0)
+  octokit (~> 10.0)
   propshaft
   puma (>= 5.0)
   rails (~> 8.0.2)

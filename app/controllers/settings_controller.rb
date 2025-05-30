@@ -10,7 +10,13 @@ class SettingsController < ApplicationController
   def update
     @user = Current.user
 
-    if @user.update(user_params)
+    # Handle blank password by removing it from params
+    cleaned_params = user_params
+    if cleaned_params[:password].blank?
+      cleaned_params = cleaned_params.except(:password, :password_confirmation)
+    end
+
+    if @user.update(cleaned_params)
       redirect_to settings_path, notice: "Settings updated successfully!"
     else
       render :index, status: :unprocessable_entity
@@ -20,6 +26,6 @@ class SettingsController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:github_token)
+    params.require(:user).permit(:email_address, :password, :password_confirmation, :github_token)
   end
 end

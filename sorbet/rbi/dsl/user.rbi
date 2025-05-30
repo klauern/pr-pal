@@ -366,6 +366,20 @@ class User
 
   module GeneratedAssociationMethods
     sig { returns(T::Array[T.untyped]) }
+    def llm_api_key_ids; end
+
+    sig { params(ids: T::Array[T.untyped]).returns(T::Array[T.untyped]) }
+    def llm_api_key_ids=(ids); end
+
+    # This method is created by ActiveRecord on the `User` class because it declared `has_many :llm_api_keys`.
+    # 🔗 [Rails guide for `has_many` association](https://guides.rubyonrails.org/association_basics.html#the-has-many-association)
+    sig { returns(::LlmApiKey::PrivateCollectionProxy) }
+    def llm_api_keys; end
+
+    sig { params(value: T::Enumerable[::LlmApiKey]).void }
+    def llm_api_keys=(value); end
+
+    sig { returns(T::Array[T.untyped]) }
     def pull_request_review_ids; end
 
     sig { params(ids: T::Array[T.untyped]).returns(T::Array[T.untyped]) }

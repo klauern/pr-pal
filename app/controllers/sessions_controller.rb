@@ -17,6 +17,8 @@ class SessionsController < ApplicationController
 
   def destroy
     terminate_session
-    redirect_to demo_login_path
+    # Clear PR tabs on logout
+    session[:open_pr_tabs] = nil
+    redirect_to root_path
   end
 end

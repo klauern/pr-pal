@@ -34,6 +34,9 @@ module GeneratedPathHelpersModule
   def new_rails_conductor_inbound_email_source_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def new_registration_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def new_repository_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -134,6 +137,9 @@ module GeneratedPathHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def rails_storage_redirect_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def registrations_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def repo_pull_request_review_path(*args); end

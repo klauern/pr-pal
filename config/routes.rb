@@ -14,6 +14,10 @@ Rails.application.routes.draw do
   get "/demo_login", to: "sessions#new", as: :demo_login
   post "/session", to: "sessions#create", as: :session
   delete "/session", to: "sessions#destroy"
+
+  # Registration routes
+  get "/sign_up", to: "registrations#new", as: :new_registration
+  post "/registrations", to: "registrations#create", as: :registrations
   resources :passwords, param: :token
 
   # PR tab management

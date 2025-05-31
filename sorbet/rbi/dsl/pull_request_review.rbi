@@ -402,6 +402,20 @@ class PullRequestReview
     sig { params(args: T.untyped, blk: T.untyped).returns(::User) }
     def create_user!(*args, &blk); end
 
+    sig { returns(T::Array[T.untyped]) }
+    def llm_conversation_message_ids; end
+
+    sig { params(ids: T::Array[T.untyped]).returns(T::Array[T.untyped]) }
+    def llm_conversation_message_ids=(ids); end
+
+    # This method is created by ActiveRecord on the `PullRequestReview` class because it declared `has_many :llm_conversation_messages`.
+    # 🔗 [Rails guide for `has_many` association](https://guides.rubyonrails.org/association_basics.html#the-has-many-association)
+    sig { returns(::LlmConversationMessage::PrivateCollectionProxy) }
+    def llm_conversation_messages; end
+
+    sig { params(value: T::Enumerable[::LlmConversationMessage]).void }
+    def llm_conversation_messages=(value); end
+
     sig { returns(T.nilable(::Repository)) }
     def reload_repository; end
 
@@ -911,6 +925,61 @@ class PullRequestReview
     def id_will_change!; end
 
     sig { returns(T.nilable(::ActiveSupport::TimeWithZone)) }
+    def last_synced_at; end
+
+    sig { params(value: T.nilable(::ActiveSupport::TimeWithZone)).returns(T.nilable(::ActiveSupport::TimeWithZone)) }
+    def last_synced_at=(value); end
+
+    sig { returns(T::Boolean) }
+    def last_synced_at?; end
+
+    sig { returns(T.nilable(::ActiveSupport::TimeWithZone)) }
+    def last_synced_at_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def last_synced_at_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def last_synced_at_came_from_user?; end
+
+    sig { returns(T.nilable([T.nilable(::ActiveSupport::TimeWithZone), T.nilable(::ActiveSupport::TimeWithZone)])) }
+    def last_synced_at_change; end
+
+    sig { returns(T.nilable([T.nilable(::ActiveSupport::TimeWithZone), T.nilable(::ActiveSupport::TimeWithZone)])) }
+    def last_synced_at_change_to_be_saved; end
+
+    sig do
+      params(
+        from: T.nilable(::ActiveSupport::TimeWithZone),
+        to: T.nilable(::ActiveSupport::TimeWithZone)
+      ).returns(T::Boolean)
+    end
+    def last_synced_at_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::ActiveSupport::TimeWithZone)) }
+    def last_synced_at_in_database; end
+
+    sig { returns(T.nilable([T.nilable(::ActiveSupport::TimeWithZone), T.nilable(::ActiveSupport::TimeWithZone)])) }
+    def last_synced_at_previous_change; end
+
+    sig do
+      params(
+        from: T.nilable(::ActiveSupport::TimeWithZone),
+        to: T.nilable(::ActiveSupport::TimeWithZone)
+      ).returns(T::Boolean)
+    end
+    def last_synced_at_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::ActiveSupport::TimeWithZone)) }
+    def last_synced_at_previously_was; end
+
+    sig { returns(T.nilable(::ActiveSupport::TimeWithZone)) }
+    def last_synced_at_was; end
+
+    sig { void }
+    def last_synced_at_will_change!; end
+
+    sig { returns(T.nilable(::ActiveSupport::TimeWithZone)) }
     def last_viewed_at; end
 
     sig { params(value: T.nilable(::ActiveSupport::TimeWithZone)).returns(T.nilable(::ActiveSupport::TimeWithZone)) }
@@ -1010,6 +1079,51 @@ class PullRequestReview
     sig { void }
     def llm_context_summary_will_change!; end
 
+    sig { returns(T.nilable(::Integer)) }
+    def pull_request_id; end
+
+    sig { params(value: T.nilable(::Integer)).returns(T.nilable(::Integer)) }
+    def pull_request_id=(value); end
+
+    sig { returns(T::Boolean) }
+    def pull_request_id?; end
+
+    sig { returns(T.nilable(::Integer)) }
+    def pull_request_id_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def pull_request_id_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def pull_request_id_came_from_user?; end
+
+    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
+    def pull_request_id_change; end
+
+    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
+    def pull_request_id_change_to_be_saved; end
+
+    sig { params(from: T.nilable(::Integer), to: T.nilable(::Integer)).returns(T::Boolean) }
+    def pull_request_id_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::Integer)) }
+    def pull_request_id_in_database; end
+
+    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
+    def pull_request_id_previous_change; end
+
+    sig { params(from: T.nilable(::Integer), to: T.nilable(::Integer)).returns(T::Boolean) }
+    def pull_request_id_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::Integer)) }
+    def pull_request_id_previously_was; end
+
+    sig { returns(T.nilable(::Integer)) }
+    def pull_request_id_was; end
+
+    sig { void }
+    def pull_request_id_will_change!; end
+
     sig { returns(::Integer) }
     def repository_id; end
 
@@ -1077,10 +1191,16 @@ class PullRequestReview
     def restore_id_value!; end
 
     sig { void }
+    def restore_last_synced_at!; end
+
+    sig { void }
     def restore_last_viewed_at!; end
 
     sig { void }
     def restore_llm_context_summary!; end
+
+    sig { void }
+    def restore_pull_request_id!; end
 
     sig { void }
     def restore_repository_id!; end
@@ -1137,6 +1257,12 @@ class PullRequestReview
     def saved_change_to_id_value?; end
 
     sig { returns(T.nilable([T.nilable(::ActiveSupport::TimeWithZone), T.nilable(::ActiveSupport::TimeWithZone)])) }
+    def saved_change_to_last_synced_at; end
+
+    sig { returns(T::Boolean) }
+    def saved_change_to_last_synced_at?; end
+
+    sig { returns(T.nilable([T.nilable(::ActiveSupport::TimeWithZone), T.nilable(::ActiveSupport::TimeWithZone)])) }
     def saved_change_to_last_viewed_at; end
 
     sig { returns(T::Boolean) }
@@ -1147,6 +1273,12 @@ class PullRequestReview
 
     sig { returns(T::Boolean) }
     def saved_change_to_llm_context_summary?; end
+
+    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
+    def saved_change_to_pull_request_id; end
+
+    sig { returns(T::Boolean) }
+    def saved_change_to_pull_request_id?; end
 
     sig { returns(T.nilable([::Integer, ::Integer])) }
     def saved_change_to_repository_id; end
@@ -1329,10 +1461,16 @@ class PullRequestReview
     def will_save_change_to_id_value?; end
 
     sig { returns(T::Boolean) }
+    def will_save_change_to_last_synced_at?; end
+
+    sig { returns(T::Boolean) }
     def will_save_change_to_last_viewed_at?; end
 
     sig { returns(T::Boolean) }
     def will_save_change_to_llm_context_summary?; end
+
+    sig { returns(T::Boolean) }
+    def will_save_change_to_pull_request_id?; end
 
     sig { returns(T::Boolean) }
     def will_save_change_to_repository_id?; end

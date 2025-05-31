@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   get "settings", to: "settings#index"
   patch "settings", to: "settings#update"
-  resources :repositories, only: [ :index, :new, :create, :destroy ]
+  resources :repositories, only: [ :index, :show, :new, :create, :destroy ]
   resources :pull_request_reviews, only: [ :index, :show, :create, :update, :destroy ] do
     resources :llm_conversation_messages, only: [ :create ]
   end

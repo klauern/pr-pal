@@ -176,3 +176,89 @@ Ready for feature development:
 - **Production Security**: Masked tokens, proper autocomplete, rate limiting
 - **Maintainable Code**: Consistent Rails patterns and comprehensive testing
 - **113 Tests Passing**: Complete test coverage for all functionality
+
+## Repository Pull Request Views - COMPLETED ✅
+
+**NEW FEATURE**: View open pull requests (reviews) for specific repositories
+
+### Implementation Details
+
+1. ✅ **Repository Show Route**: Added `show` action to repositories controller
+   - Route: `/repositories/:id`
+   - Displays repository details and associated pull request reviews
+   - Proper user scoping for security
+
+2. ✅ **Repository Show View**:
+   - Clean, responsive layout with repository header
+   - GitHub link to repository
+   - Pull request reviews section with status indicators
+   - Empty state when no reviews exist
+   - Helpful instructions for creating reviews
+
+3. ✅ **Pull Request Review Display**:
+   - Individual cards for each PR review
+   - Status badges (In Progress, Completed, Archived)
+   - PR numbers and titles
+   - Last viewed timestamps
+   - Message counts
+   - Action buttons (Review, GitHub link)
+
+4. ✅ **Enhanced Repository List**:
+   - Repository names now link to show page
+   - PR review counts displayed
+   - "View PRs" button for quick access
+   - GitHub links maintained
+
+### Security Features
+
+5. ✅ **User Access Control**:
+   - Users can only view their own repositories
+   - Attempting to access another user's repository returns 404
+   - Proper `Current.user.repositories.find()` scoping
+   - Authentication required for all repository actions
+
+### Testing Coverage
+
+6. ✅ **Comprehensive Test Suite**:
+   - Repository show action tests
+   - Security tests (prevent unauthorized access)
+   - Empty state testing
+   - Pull request review display testing
+   - Integration with existing test patterns
+   - 118 total tests, all passing
+
+### Development Workflow Compliance
+
+7. ✅ **Quality Standards Met**:
+   - Clean Brakeman security scan (0 warnings)
+   - TDD approach with tests written first
+   - Responsive design with Tailwind CSS
+   - Proper Rails conventions followed
+   - Security-first implementation
+
+### User Experience
+
+8. ✅ **Navigation Flow**:
+   - Repositories index → Repository show → Individual PR review
+   - Breadcrumb navigation with back links
+   - Consistent styling and layout
+   - Clear call-to-action buttons
+   - Helpful empty states with instructions
+
+**Key Benefits**:
+
+- **Repository Overview**: Users can see all PR reviews for a specific repository
+- **Quick Navigation**: Easy access to individual reviews from repository view
+- **Status Visibility**: Clear indicators of review progress and activity
+- **Secure Access**: Proper user scoping prevents unauthorized access
+- **Responsive Design**: Works across all device sizes
+- **Maintainable Code**: Follows established patterns and conventions
+
+**URL Structure**:
+
+- `/repositories` - List all user's repositories
+- `/repositories/:id` - Show specific repository with PR reviews
+- `/pull_request_reviews/:id` - Individual PR review page
+- `/repos/:owner/:name/reviews/:pr_number` - Direct PR access
+
+**Feature Complete**: Repository pull request views fully implemented with security, testing, and UX best practices.

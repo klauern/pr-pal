@@ -17,6 +17,80 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to demo_login_url
   end
 
+  test "should show repository when authenticated" do
+    post session_url, params: { email_address: @user.email_address, password: "password" }
+    get repository_url(@repository)
+    assert_response :success
+    assert_select "h1", text: @repository.full_name
+  end
+
+  test "should redirect to login when accessing show without authentication" do
+    get repository_url(@repository)
+    assert_redirected_to demo_login_url
+  end
+
+  test "should display pull request reviews on repository show page" do
+    post session_url, params: { email_address: @user.email_address, password: "password" }
+
+    # Create some pull request reviews for the repository
+    pr1 = @repository.pull_request_reviews.create!(
+      user: @user,
+      github_pr_id: 1,
+      github_pr_url: "https://github.com/test/repo/pull/1",
+      github_pr_title: "Test PR 1",
+      status: "in_progress"
+    )
+    pr2 = @repository.pull_request_reviews.create!(
+      user: @user,
+      github_pr_id: 2,
+      github_pr_url: "https://github.com/test/repo/pull/2",
+      github_pr_title: "Test PR 2",
+      status: "completed"
+    )
+
+    get repository_url(@repository)
+    assert_response :success
+
+    # Check that pull request reviews are displayed
+    assert_select "h2", text: "Pull Request Reviews"
+    assert_includes response.body, "Test PR 1"
+    assert_includes response.body, "Test PR 2"
+    assert_includes response.body, "#1"
+    assert_includes response.body, "#2"
+  end
+
+  test "should show empty state when repository has no pull request reviews" do
+    post session_url, params: { email_address: @user.email_address, password: "password" }
+
+    # Ensure repository has no pull request reviews
+    @repository.pull_request_reviews.destroy_all
+
+    get repository_url(@repository)
+    assert_response :success
+
+    # Check for empty state message
+    assert_includes response.body, "No Pull Request Reviews"
+    assert_includes response.body, "No pull requests have been reviewed"
+  end
+
+  test "should not allow user to view another user's repository" do
+    other_user = users(:two)
+    other_repository = repositories(:two)
+
+    post session_url, params: { email_address: @user.email_address, password: "password" }
+
+    # Try to view another user's repository
+    # Should either raise RecordNotFound or return 404
+    begin
+      get repository_url(other_repository)
+      # If no exception is raised, check for error response
+      assert_response :not_found
+    rescue ActiveRecord::RecordNotFound
+      # This is also acceptable behavior
+      assert true
+    end
+  end
+
   test "should create repository when authenticated" do
     post session_url, params: { email_address: @user.email_address, password: "password" }
     assert_difference("Repository.count") do

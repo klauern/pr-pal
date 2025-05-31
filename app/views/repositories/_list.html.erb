@@ -11,19 +11,26 @@
             </div>
             <div>
               <h3 class="text-lg font-medium text-gray-900">
-                <%= repository.owner %>/<%= repository.name %>
+                <%= link_to "#{repository.owner}/#{repository.name}", repository_path(repository),
+                    class: "hover:text-blue-600 transition-colors" %>
               </h3>
               <p class="text-sm text-gray-500">
                 Added <%= time_ago_in_words(repository.created_at) %> ago
+                <% pr_count = repository.pull_request_reviews.count %>
+                <% if pr_count > 0 %>
+                  • <%= pluralize(pr_count, 'PR review') %>
+                <% end %>
               </p>
             </div>
           </div>
 
           <div class="flex items-center space-x-2">
+            <%= link_to "View PRs", repository_path(repository),
+                class: "text-blue-600 hover:text-blue-900 text-sm font-medium" %>
             <a href="https://github.com/<%= repository.owner %>/<%= repository.name %>"
                target="_blank"
                class="text-indigo-600 hover:text-indigo-900 text-sm font-medium">
-              View on GitHub
+              GitHub
             </a>
             <%= link_to "Remove",
                 repository_path(repository),

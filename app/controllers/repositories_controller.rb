@@ -1,9 +1,13 @@
 class RepositoriesController < ApplicationController
-  before_action :set_repository, only: [ :destroy ]
+  before_action :set_repository, only: [ :show, :destroy ]
 
   def index
     @repositories = Current.user.repositories.order(:owner, :name)
     @repository = Repository.new
+  end
+
+  def show
+    @pull_request_reviews = @repository.pull_request_reviews.order(:github_pr_id)
   end
 
   def new

@@ -23,7 +23,7 @@ gem "jbuilder"
 gem "bcrypt", "~> 3.1.7"
 
 # GitHub API client [https://github.com/octokit/octokit.rb]
-gem "octokit", "~> 8.0"
+gem "octokit", "~> 10.0"
 # HTTP adapter with retry logic for robust API calls
 gem "faraday-retry"
 

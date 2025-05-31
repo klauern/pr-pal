@@ -50,4 +50,26 @@ class DummyPullRequestDataProvider < PullRequestDataProvider
     base_title = dummy_titles.sample
     "#{base_title} (##{pr_number})"
   end
+
+  # Fetch all pull requests for a repository (dummy data)
+  def self.fetch_repository_pull_requests(repository, user)
+    # Generate some dummy pull requests
+    pr_count = rand(3..8)
+
+    (1..pr_count).map do |i|
+      pr_number = i + rand(10..100)
+      state = [ "open", "open", "open", "closed", "merged" ].sample # More open PRs
+
+      {
+        github_pr_number: pr_number,
+        title: generate_dummy_pr_title(repository, pr_number).gsub(" (##{pr_number})", ""),
+        body: "This is a dummy pull request for testing purposes. Repository: #{repository.full_name}",
+        state: state,
+        author: [ "developer1", "codereviewer", "teamlead", "contributor" ].sample,
+        github_url: "#{repository.github_url}/pull/#{pr_number}",
+        github_created_at: rand(30.days).seconds.ago,
+        github_updated_at: rand(7.days).seconds.ago
+      }
+    end
+  end
 end

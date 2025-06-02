@@ -288,4 +288,80 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to root_path(tab: "repositories")
   end
+
+  test "should sync repository when authenticated" do
+    post session_url, params: { email_address: @user.email_address, password: "password" }
+
+    # Mock the job to prevent actual execution
+    assert_enqueued_with(job: PullRequestSyncJob, args: [ @repository.id ]) do
+      post sync_repository_url(@repository)
+    end
+
+    assert_redirected_to @repository
+    assert_equal "Repository sync started for #{@repository.full_name}. Pull requests will be updated in the background.", flash[:notice]
+  end
+
+  test "should sync all repositories when authenticated" do
+    post session_url, params: { email_address: @user.email_address, password: "password" }
+
+    # Create additional repository for the user
+    additional_repo = @user.repositories.create!(owner: "test", name: "additional")
+
+    # Instead of mocking, just verify the request succeeds
+    post sync_all_repositories_url
+
+    assert_redirected_to repositories_path
+    assert_equal "Sync started for all repositories. Pull requests will be updated in the background.", flash[:notice]
+  end
+
+  test "should not allow sync of another user's repository" do
+    other_user = users(:two)
+    other_repository = repositories(:two)
+
+    post session_url, params: { email_address: @user.email_address, password: "password" }
+
+    # Try to sync another user's repository
+    begin
+      post sync_repository_url(other_repository)
+      # If no exception is raised, check for error response
+      assert_response :not_found
+    rescue ActiveRecord::RecordNotFound
+      # This is also acceptable behavior
+      assert true
+    end
+  end
+
+  test "should redirect to login when syncing without authentication" do
+    post sync_repository_url(@repository)
+    assert_redirected_to demo_login_url
+  end
+
+  test "should redirect to login when syncing all without authentication" do
+    post sync_all_repositories_url
+    assert_redirected_to demo_login_url
+  end
+
+  test "should respond to turbo stream for individual repository sync" do
+    post session_url, params: { email_address: @user.email_address, password: "password" }
+
+    # Mock the job to prevent actual execution
+    assert_enqueued_with(job: PullRequestSyncJob, args: [ @repository.id ]) do
+      post sync_repository_url(@repository), headers: { "Accept" => "text/vnd.turbo-stream.html" }
+    end
+
+    assert_response :success
+    assert_match "turbo-stream", response.content_type
+    assert_includes response.body, "Repository sync started"
+  end
+
+  test "should respond to turbo stream for sync all repositories" do
+    post session_url, params: { email_address: @user.email_address, password: "password" }
+
+    # Just verify the request succeeds
+    post sync_all_repositories_url, headers: { "Accept" => "text/vnd.turbo-stream.html" }
+
+    assert_response :success
+    assert_match "turbo-stream", response.content_type
+    assert_includes response.body, "Sync started for all repositories"
+  end
 end

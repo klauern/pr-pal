@@ -579,10 +579,55 @@ class PullRequest
   end
 
   module GeneratedAttributeMethods
-    sig { returns(::String) }
+    sig { returns(T.nilable(::Integer)) }
+    def additions; end
+
+    sig { params(value: T.nilable(::Integer)).returns(T.nilable(::Integer)) }
+    def additions=(value); end
+
+    sig { returns(T::Boolean) }
+    def additions?; end
+
+    sig { returns(T.nilable(::Integer)) }
+    def additions_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def additions_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def additions_came_from_user?; end
+
+    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
+    def additions_change; end
+
+    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
+    def additions_change_to_be_saved; end
+
+    sig { params(from: T.nilable(::Integer), to: T.nilable(::Integer)).returns(T::Boolean) }
+    def additions_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::Integer)) }
+    def additions_in_database; end
+
+    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
+    def additions_previous_change; end
+
+    sig { params(from: T.nilable(::Integer), to: T.nilable(::Integer)).returns(T::Boolean) }
+    def additions_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::Integer)) }
+    def additions_previously_was; end
+
+    sig { returns(T.nilable(::Integer)) }
+    def additions_was; end
+
+    sig { void }
+    def additions_will_change!; end
+
+    sig { returns(T.nilable(::String)) }
     def author; end
 
-    sig { params(value: ::String).returns(::String) }
+    sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
     def author=(value); end
 
     sig { returns(T::Boolean) }
@@ -597,22 +642,22 @@ class PullRequest
     sig { returns(T::Boolean) }
     def author_came_from_user?; end
 
-    sig { returns(T.nilable([::String, ::String])) }
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
     def author_change; end
 
-    sig { returns(T.nilable([::String, ::String])) }
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
     def author_change_to_be_saved; end
 
-    sig { params(from: ::String, to: ::String).returns(T::Boolean) }
+    sig { params(from: T.nilable(::String), to: T.nilable(::String)).returns(T::Boolean) }
     def author_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable(::String)) }
     def author_in_database; end
 
-    sig { returns(T.nilable([::String, ::String])) }
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
     def author_previous_change; end
 
-    sig { params(from: ::String, to: ::String).returns(T::Boolean) }
+    sig { params(from: T.nilable(::String), to: T.nilable(::String)).returns(T::Boolean) }
     def author_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable(::String)) }
@@ -623,6 +668,51 @@ class PullRequest
 
     sig { void }
     def author_will_change!; end
+
+    sig { returns(T.nilable(::String)) }
+    def base_branch; end
+
+    sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
+    def base_branch=(value); end
+
+    sig { returns(T::Boolean) }
+    def base_branch?; end
+
+    sig { returns(T.nilable(::String)) }
+    def base_branch_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def base_branch_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def base_branch_came_from_user?; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def base_branch_change; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def base_branch_change_to_be_saved; end
+
+    sig { params(from: T.nilable(::String), to: T.nilable(::String)).returns(T::Boolean) }
+    def base_branch_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def base_branch_in_database; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def base_branch_previous_change; end
+
+    sig { params(from: T.nilable(::String), to: T.nilable(::String)).returns(T::Boolean) }
+    def base_branch_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def base_branch_previously_was; end
+
+    sig { returns(T.nilable(::String)) }
+    def base_branch_was; end
+
+    sig { void }
+    def base_branch_will_change!; end
 
     sig { returns(T.nilable(::String)) }
     def body; end
@@ -669,6 +759,51 @@ class PullRequest
     sig { void }
     def body_will_change!; end
 
+    sig { returns(T.nilable(::Integer)) }
+    def changed_files; end
+
+    sig { params(value: T.nilable(::Integer)).returns(T.nilable(::Integer)) }
+    def changed_files=(value); end
+
+    sig { returns(T::Boolean) }
+    def changed_files?; end
+
+    sig { returns(T.nilable(::Integer)) }
+    def changed_files_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def changed_files_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def changed_files_came_from_user?; end
+
+    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
+    def changed_files_change; end
+
+    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
+    def changed_files_change_to_be_saved; end
+
+    sig { params(from: T.nilable(::Integer), to: T.nilable(::Integer)).returns(T::Boolean) }
+    def changed_files_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::Integer)) }
+    def changed_files_in_database; end
+
+    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
+    def changed_files_previous_change; end
+
+    sig { params(from: T.nilable(::Integer), to: T.nilable(::Integer)).returns(T::Boolean) }
+    def changed_files_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::Integer)) }
+    def changed_files_previously_was; end
+
+    sig { returns(T.nilable(::Integer)) }
+    def changed_files_was; end
+
+    sig { void }
+    def changed_files_will_change!; end
+
     sig { returns(::ActiveSupport::TimeWithZone) }
     def created_at; end
 
@@ -713,6 +848,96 @@ class PullRequest
 
     sig { void }
     def created_at_will_change!; end
+
+    sig { returns(T.nilable(::Integer)) }
+    def deletions; end
+
+    sig { params(value: T.nilable(::Integer)).returns(T.nilable(::Integer)) }
+    def deletions=(value); end
+
+    sig { returns(T::Boolean) }
+    def deletions?; end
+
+    sig { returns(T.nilable(::Integer)) }
+    def deletions_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def deletions_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def deletions_came_from_user?; end
+
+    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
+    def deletions_change; end
+
+    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
+    def deletions_change_to_be_saved; end
+
+    sig { params(from: T.nilable(::Integer), to: T.nilable(::Integer)).returns(T::Boolean) }
+    def deletions_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::Integer)) }
+    def deletions_in_database; end
+
+    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
+    def deletions_previous_change; end
+
+    sig { params(from: T.nilable(::Integer), to: T.nilable(::Integer)).returns(T::Boolean) }
+    def deletions_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::Integer)) }
+    def deletions_previously_was; end
+
+    sig { returns(T.nilable(::Integer)) }
+    def deletions_was; end
+
+    sig { void }
+    def deletions_will_change!; end
+
+    sig { returns(T.nilable(T::Boolean)) }
+    def draft; end
+
+    sig { params(value: T.nilable(T::Boolean)).returns(T.nilable(T::Boolean)) }
+    def draft=(value); end
+
+    sig { returns(T::Boolean) }
+    def draft?; end
+
+    sig { returns(T.nilable(T::Boolean)) }
+    def draft_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def draft_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def draft_came_from_user?; end
+
+    sig { returns(T.nilable([T.nilable(T::Boolean), T.nilable(T::Boolean)])) }
+    def draft_change; end
+
+    sig { returns(T.nilable([T.nilable(T::Boolean), T.nilable(T::Boolean)])) }
+    def draft_change_to_be_saved; end
+
+    sig { params(from: T.nilable(T::Boolean), to: T.nilable(T::Boolean)).returns(T::Boolean) }
+    def draft_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(T::Boolean)) }
+    def draft_in_database; end
+
+    sig { returns(T.nilable([T.nilable(T::Boolean), T.nilable(T::Boolean)])) }
+    def draft_previous_change; end
+
+    sig { params(from: T.nilable(T::Boolean), to: T.nilable(T::Boolean)).returns(T::Boolean) }
+    def draft_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(T::Boolean)) }
+    def draft_previously_was; end
+
+    sig { returns(T.nilable(T::Boolean)) }
+    def draft_was; end
+
+    sig { void }
+    def draft_will_change!; end
 
     sig { returns(T.nilable(::ActiveSupport::TimeWithZone)) }
     def github_created_at; end
@@ -770,49 +995,94 @@ class PullRequest
     def github_created_at_will_change!; end
 
     sig { returns(::Integer) }
-    def github_pr_number; end
+    def github_pr_id; end
 
     sig { params(value: ::Integer).returns(::Integer) }
-    def github_pr_number=(value); end
+    def github_pr_id=(value); end
 
     sig { returns(T::Boolean) }
-    def github_pr_number?; end
+    def github_pr_id?; end
 
     sig { returns(T.nilable(::Integer)) }
-    def github_pr_number_before_last_save; end
+    def github_pr_id_before_last_save; end
 
     sig { returns(T.untyped) }
-    def github_pr_number_before_type_cast; end
+    def github_pr_id_before_type_cast; end
 
     sig { returns(T::Boolean) }
-    def github_pr_number_came_from_user?; end
+    def github_pr_id_came_from_user?; end
 
     sig { returns(T.nilable([::Integer, ::Integer])) }
-    def github_pr_number_change; end
+    def github_pr_id_change; end
 
     sig { returns(T.nilable([::Integer, ::Integer])) }
-    def github_pr_number_change_to_be_saved; end
+    def github_pr_id_change_to_be_saved; end
 
     sig { params(from: ::Integer, to: ::Integer).returns(T::Boolean) }
-    def github_pr_number_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def github_pr_id_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable(::Integer)) }
-    def github_pr_number_in_database; end
+    def github_pr_id_in_database; end
 
     sig { returns(T.nilable([::Integer, ::Integer])) }
-    def github_pr_number_previous_change; end
+    def github_pr_id_previous_change; end
 
     sig { params(from: ::Integer, to: ::Integer).returns(T::Boolean) }
-    def github_pr_number_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    def github_pr_id_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable(::Integer)) }
-    def github_pr_number_previously_was; end
+    def github_pr_id_previously_was; end
 
     sig { returns(T.nilable(::Integer)) }
-    def github_pr_number_was; end
+    def github_pr_id_was; end
 
     sig { void }
-    def github_pr_number_will_change!; end
+    def github_pr_id_will_change!; end
+
+    sig { returns(::String) }
+    def github_pr_url; end
+
+    sig { params(value: ::String).returns(::String) }
+    def github_pr_url=(value); end
+
+    sig { returns(T::Boolean) }
+    def github_pr_url?; end
+
+    sig { returns(T.nilable(::String)) }
+    def github_pr_url_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def github_pr_url_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def github_pr_url_came_from_user?; end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def github_pr_url_change; end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def github_pr_url_change_to_be_saved; end
+
+    sig { params(from: ::String, to: ::String).returns(T::Boolean) }
+    def github_pr_url_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def github_pr_url_in_database; end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def github_pr_url_previous_change; end
+
+    sig { params(from: ::String, to: ::String).returns(T::Boolean) }
+    def github_pr_url_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def github_pr_url_previously_was; end
+
+    sig { returns(T.nilable(::String)) }
+    def github_pr_url_was; end
+
+    sig { void }
+    def github_pr_url_will_change!; end
 
     sig { returns(T.nilable(::ActiveSupport::TimeWithZone)) }
     def github_updated_at; end
@@ -869,50 +1139,50 @@ class PullRequest
     sig { void }
     def github_updated_at_will_change!; end
 
-    sig { returns(::String) }
-    def github_url; end
+    sig { returns(T.nilable(::String)) }
+    def head_branch; end
 
-    sig { params(value: ::String).returns(::String) }
-    def github_url=(value); end
+    sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
+    def head_branch=(value); end
 
     sig { returns(T::Boolean) }
-    def github_url?; end
+    def head_branch?; end
 
     sig { returns(T.nilable(::String)) }
-    def github_url_before_last_save; end
+    def head_branch_before_last_save; end
 
     sig { returns(T.untyped) }
-    def github_url_before_type_cast; end
+    def head_branch_before_type_cast; end
 
     sig { returns(T::Boolean) }
-    def github_url_came_from_user?; end
+    def head_branch_came_from_user?; end
 
-    sig { returns(T.nilable([::String, ::String])) }
-    def github_url_change; end
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def head_branch_change; end
 
-    sig { returns(T.nilable([::String, ::String])) }
-    def github_url_change_to_be_saved; end
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def head_branch_change_to_be_saved; end
 
-    sig { params(from: ::String, to: ::String).returns(T::Boolean) }
-    def github_url_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::String)) }
-    def github_url_in_database; end
-
-    sig { returns(T.nilable([::String, ::String])) }
-    def github_url_previous_change; end
-
-    sig { params(from: ::String, to: ::String).returns(T::Boolean) }
-    def github_url_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+    sig { params(from: T.nilable(::String), to: T.nilable(::String)).returns(T::Boolean) }
+    def head_branch_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable(::String)) }
-    def github_url_previously_was; end
+    def head_branch_in_database; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def head_branch_previous_change; end
+
+    sig { params(from: T.nilable(::String), to: T.nilable(::String)).returns(T::Boolean) }
+    def head_branch_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
 
     sig { returns(T.nilable(::String)) }
-    def github_url_was; end
+    def head_branch_previously_was; end
+
+    sig { returns(T.nilable(::String)) }
+    def head_branch_was; end
 
     sig { void }
-    def github_url_will_change!; end
+    def head_branch_will_change!; end
 
     sig { returns(::Integer) }
     def id; end
@@ -1003,6 +1273,51 @@ class PullRequest
 
     sig { void }
     def id_will_change!; end
+
+    sig { returns(T.nilable(::String)) }
+    def labels; end
+
+    sig { params(value: T.nilable(::String)).returns(T.nilable(::String)) }
+    def labels=(value); end
+
+    sig { returns(T::Boolean) }
+    def labels?; end
+
+    sig { returns(T.nilable(::String)) }
+    def labels_before_last_save; end
+
+    sig { returns(T.untyped) }
+    def labels_before_type_cast; end
+
+    sig { returns(T::Boolean) }
+    def labels_came_from_user?; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def labels_change; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def labels_change_to_be_saved; end
+
+    sig { params(from: T.nilable(::String), to: T.nilable(::String)).returns(T::Boolean) }
+    def labels_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def labels_in_database; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def labels_previous_change; end
+
+    sig { params(from: T.nilable(::String), to: T.nilable(::String)).returns(T::Boolean) }
+    def labels_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
+
+    sig { returns(T.nilable(::String)) }
+    def labels_previously_was; end
+
+    sig { returns(T.nilable(::String)) }
+    def labels_was; end
+
+    sig { void }
+    def labels_will_change!; end
 
     sig { returns(T.nilable(::ActiveSupport::TimeWithZone)) }
     def last_synced_at; end
@@ -1105,25 +1420,43 @@ class PullRequest
     def repository_id_will_change!; end
 
     sig { void }
+    def restore_additions!; end
+
+    sig { void }
     def restore_author!; end
+
+    sig { void }
+    def restore_base_branch!; end
 
     sig { void }
     def restore_body!; end
 
     sig { void }
+    def restore_changed_files!; end
+
+    sig { void }
     def restore_created_at!; end
+
+    sig { void }
+    def restore_deletions!; end
+
+    sig { void }
+    def restore_draft!; end
 
     sig { void }
     def restore_github_created_at!; end
 
     sig { void }
-    def restore_github_pr_number!; end
+    def restore_github_pr_id!; end
+
+    sig { void }
+    def restore_github_pr_url!; end
 
     sig { void }
     def restore_github_updated_at!; end
 
     sig { void }
-    def restore_github_url!; end
+    def restore_head_branch!; end
 
     sig { void }
     def restore_id!; end
@@ -1132,13 +1465,13 @@ class PullRequest
     def restore_id_value!; end
 
     sig { void }
+    def restore_labels!; end
+
+    sig { void }
     def restore_last_synced_at!; end
 
     sig { void }
     def restore_repository_id!; end
-
-    sig { void }
-    def restore_review_interest!; end
 
     sig { void }
     def restore_state!; end
@@ -1149,56 +1482,23 @@ class PullRequest
     sig { void }
     def restore_updated_at!; end
 
-    sig { returns(T.nilable(::Integer)) }
-    def review_interest; end
-
-    sig { params(value: T.nilable(::Integer)).returns(T.nilable(::Integer)) }
-    def review_interest=(value); end
+    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
+    def saved_change_to_additions; end
 
     sig { returns(T::Boolean) }
-    def review_interest?; end
+    def saved_change_to_additions?; end
 
-    sig { returns(T.nilable(::Integer)) }
-    def review_interest_before_last_save; end
-
-    sig { returns(T.untyped) }
-    def review_interest_before_type_cast; end
-
-    sig { returns(T::Boolean) }
-    def review_interest_came_from_user?; end
-
-    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
-    def review_interest_change; end
-
-    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
-    def review_interest_change_to_be_saved; end
-
-    sig { params(from: T.nilable(::Integer), to: T.nilable(::Integer)).returns(T::Boolean) }
-    def review_interest_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::Integer)) }
-    def review_interest_in_database; end
-
-    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
-    def review_interest_previous_change; end
-
-    sig { params(from: T.nilable(::Integer), to: T.nilable(::Integer)).returns(T::Boolean) }
-    def review_interest_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::Integer)) }
-    def review_interest_previously_was; end
-
-    sig { returns(T.nilable(::Integer)) }
-    def review_interest_was; end
-
-    sig { void }
-    def review_interest_will_change!; end
-
-    sig { returns(T.nilable([::String, ::String])) }
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
     def saved_change_to_author; end
 
     sig { returns(T::Boolean) }
     def saved_change_to_author?; end
+
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def saved_change_to_base_branch; end
+
+    sig { returns(T::Boolean) }
+    def saved_change_to_base_branch?; end
 
     sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
     def saved_change_to_body; end
@@ -1206,11 +1506,29 @@ class PullRequest
     sig { returns(T::Boolean) }
     def saved_change_to_body?; end
 
+    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
+    def saved_change_to_changed_files; end
+
+    sig { returns(T::Boolean) }
+    def saved_change_to_changed_files?; end
+
     sig { returns(T.nilable([::ActiveSupport::TimeWithZone, ::ActiveSupport::TimeWithZone])) }
     def saved_change_to_created_at; end
 
     sig { returns(T::Boolean) }
     def saved_change_to_created_at?; end
+
+    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
+    def saved_change_to_deletions; end
+
+    sig { returns(T::Boolean) }
+    def saved_change_to_deletions?; end
+
+    sig { returns(T.nilable([T.nilable(T::Boolean), T.nilable(T::Boolean)])) }
+    def saved_change_to_draft; end
+
+    sig { returns(T::Boolean) }
+    def saved_change_to_draft?; end
 
     sig { returns(T.nilable([T.nilable(::ActiveSupport::TimeWithZone), T.nilable(::ActiveSupport::TimeWithZone)])) }
     def saved_change_to_github_created_at; end
@@ -1219,10 +1537,16 @@ class PullRequest
     def saved_change_to_github_created_at?; end
 
     sig { returns(T.nilable([::Integer, ::Integer])) }
-    def saved_change_to_github_pr_number; end
+    def saved_change_to_github_pr_id; end
 
     sig { returns(T::Boolean) }
-    def saved_change_to_github_pr_number?; end
+    def saved_change_to_github_pr_id?; end
+
+    sig { returns(T.nilable([::String, ::String])) }
+    def saved_change_to_github_pr_url; end
+
+    sig { returns(T::Boolean) }
+    def saved_change_to_github_pr_url?; end
 
     sig { returns(T.nilable([T.nilable(::ActiveSupport::TimeWithZone), T.nilable(::ActiveSupport::TimeWithZone)])) }
     def saved_change_to_github_updated_at; end
@@ -1230,11 +1554,11 @@ class PullRequest
     sig { returns(T::Boolean) }
     def saved_change_to_github_updated_at?; end
 
-    sig { returns(T.nilable([::String, ::String])) }
-    def saved_change_to_github_url; end
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def saved_change_to_head_branch; end
 
     sig { returns(T::Boolean) }
-    def saved_change_to_github_url?; end
+    def saved_change_to_head_branch?; end
 
     sig { returns(T.nilable([::Integer, ::Integer])) }
     def saved_change_to_id; end
@@ -1248,6 +1572,12 @@ class PullRequest
     sig { returns(T::Boolean) }
     def saved_change_to_id_value?; end
 
+    sig { returns(T.nilable([T.nilable(::String), T.nilable(::String)])) }
+    def saved_change_to_labels; end
+
+    sig { returns(T::Boolean) }
+    def saved_change_to_labels?; end
+
     sig { returns(T.nilable([T.nilable(::ActiveSupport::TimeWithZone), T.nilable(::ActiveSupport::TimeWithZone)])) }
     def saved_change_to_last_synced_at; end
 
@@ -1259,12 +1589,6 @@ class PullRequest
 
     sig { returns(T::Boolean) }
     def saved_change_to_repository_id?; end
-
-    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
-    def saved_change_to_review_interest; end
-
-    sig { returns(T::Boolean) }
-    def saved_change_to_review_interest?; end
 
     sig { returns(T.nilable([::String, ::String])) }
     def saved_change_to_state; end
@@ -1420,25 +1744,43 @@ class PullRequest
     def updated_at_will_change!; end
 
     sig { returns(T::Boolean) }
+    def will_save_change_to_additions?; end
+
+    sig { returns(T::Boolean) }
     def will_save_change_to_author?; end
+
+    sig { returns(T::Boolean) }
+    def will_save_change_to_base_branch?; end
 
     sig { returns(T::Boolean) }
     def will_save_change_to_body?; end
 
     sig { returns(T::Boolean) }
+    def will_save_change_to_changed_files?; end
+
+    sig { returns(T::Boolean) }
     def will_save_change_to_created_at?; end
+
+    sig { returns(T::Boolean) }
+    def will_save_change_to_deletions?; end
+
+    sig { returns(T::Boolean) }
+    def will_save_change_to_draft?; end
 
     sig { returns(T::Boolean) }
     def will_save_change_to_github_created_at?; end
 
     sig { returns(T::Boolean) }
-    def will_save_change_to_github_pr_number?; end
+    def will_save_change_to_github_pr_id?; end
+
+    sig { returns(T::Boolean) }
+    def will_save_change_to_github_pr_url?; end
 
     sig { returns(T::Boolean) }
     def will_save_change_to_github_updated_at?; end
 
     sig { returns(T::Boolean) }
-    def will_save_change_to_github_url?; end
+    def will_save_change_to_head_branch?; end
 
     sig { returns(T::Boolean) }
     def will_save_change_to_id?; end
@@ -1447,13 +1789,13 @@ class PullRequest
     def will_save_change_to_id_value?; end
 
     sig { returns(T::Boolean) }
+    def will_save_change_to_labels?; end
+
+    sig { returns(T::Boolean) }
     def will_save_change_to_last_synced_at?; end
 
     sig { returns(T::Boolean) }
     def will_save_change_to_repository_id?; end
-
-    sig { returns(T::Boolean) }
-    def will_save_change_to_review_interest?; end
 
     sig { returns(T::Boolean) }
     def will_save_change_to_state?; end

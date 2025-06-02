@@ -1,0 +1,9 @@
+<% if message.present? %>
+  <div class="p-4 mb-4 text-sm rounded-lg
+              <%= type == 'notice' ? 'text-green-800 bg-green-50 border border-green-200' :
+                  type == 'alert' ? 'text-red-800 bg-red-50 border border-red-200' :
+                  'text-blue-800 bg-blue-50 border border-blue-200' %>"
+       role="alert">
+    <%= message %>
+  </div>
+<% end %>

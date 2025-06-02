@@ -3,7 +3,7 @@ class PullRequest < ApplicationRecord
   has_many :pull_request_reviews, dependent: :destroy
 
   validates :repository_id, presence: true
-  validates :github_pr_number, presence: true, uniqueness: { scope: :repository_id }
+  validates :github_pr_id, presence: true, uniqueness: { scope: :repository_id }
   validates :title, presence: true
   validates :state, presence: true
   validates :author, presence: true
@@ -27,6 +27,6 @@ class PullRequest < ApplicationRecord
   end
 
   def number
-    github_pr_number
+    github_pr_id
   end
 end

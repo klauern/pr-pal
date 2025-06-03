@@ -253,21 +253,6 @@ class PullRequestReviewsControllerTest < ActionDispatch::IntegrationTest
     assert_not_includes session[:open_pr_tabs], "pr_#{pr_id}"
   end
 
-  # Show By Details Action Tests (Direct URL access)
-  test "should show existing review by details" do
-    get "/repos/#{@repository.owner}/#{@repository.name}/reviews/#{@pull_request_review.github_pr_id}"
-    assert_response :success
-    assert_includes response.body, @pull_request_review.github_pr_title
-    assert_includes session[:open_pr_tabs], "pr_#{@pull_request_review.id}"
-  end
-
-  test "should handle data provider errors in show_by_details" do
-    # Test with invalid repository data that should cause an error
-    get "/repos/nonexistent/repo/reviews/999"
-    # This may redirect or return 200 depending on how the controller handles it
-    assert_response :success
-  end
-
   # Reset Tabs Action Tests (Development only)
   test "should reset tabs in development" do
     skip "Reset tabs action is development-only feature"

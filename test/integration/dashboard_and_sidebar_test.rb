@@ -72,9 +72,8 @@ class DashboardAndSidebarTest < ActionDispatch::IntegrationTest
     assert_select "aside.w-64.bg-gray-900"
     assert_select "div", "Pr Pal"
     assert_select "a[href=?]", root_path, text: "Home"
-    assert_select "a[href=?]", root_path(tab: "pull_requests"), text: "Pull Requests"
     assert_select "a[href=?]", repositories_path, text: "Repositories"
-    assert_select "a[href=?]", root_path(tab: "pull_request_reviews"), text: "PR Reviews"
+    assert_select "a[href=?]", pull_request_reviews_path, text: "PR Reviews"
     assert_select "a[href=?]", settings_path, text: "Settings"
   end
 

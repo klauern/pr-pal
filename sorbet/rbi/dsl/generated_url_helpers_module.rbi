@@ -142,9 +142,6 @@ module GeneratedUrlHelpersModule
   def registrations_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
-  def repo_pull_request_review_url(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
   def repositories_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }

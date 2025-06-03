@@ -142,9 +142,6 @@ module GeneratedPathHelpersModule
   def registrations_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
-  def repo_pull_request_review_path(*args); end
-
-  sig { params(args: T.untyped).returns(String) }
   def repositories_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }

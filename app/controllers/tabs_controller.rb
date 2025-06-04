@@ -9,7 +9,7 @@ class TabsController < ApplicationController
   end
 
   def close_pr
-    pr_tab = params[:pr_id] # This will be like "pr_1", "pr_2", etc.
+    pr_tab = params[:pr_id] # Contains the numeric ID string, e.g. "1" (not "pr_1")
     session[:open_pr_tabs] ||= []
     session[:open_pr_tabs].delete(pr_tab)
     session[:active_tab] = session[:open_pr_tabs].last || "home"

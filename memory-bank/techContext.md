@@ -10,7 +10,7 @@
 - **CSS**: Bundled with cssbundling-rails, using Tailwind CSS
 - **Frontend Framework**: Hotwire (Turbo + Stimulus)
 - **Authentication**: bcrypt for password hashing
-- **Caching/Queue/Cable**: Solid Cache, Solid Queue, Solid Cable
+- **Caching/Queue/Cable**: Solid Cache, Solid Queue, Solid Cable (for background jobs)
 - **Development Tools**:
   - Solargraph (Ruby language server)
   - solargraph-rails (Rails-specific Solargraph features)
@@ -45,6 +45,7 @@
 
 ## Dependencies
 
+- **Background Jobs**: Solid Queue for processing background tasks like PR synchronization.
 - **External Services**: None currently configured
 - **Third-party Integrations**:
   - Future OIDC providers (Auth0/Okta) planned

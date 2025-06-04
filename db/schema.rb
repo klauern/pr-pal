@@ -26,16 +26,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_04_165101) do
 
   create_table "llm_conversation_messages", force: :cascade do |t|
     t.integer "pull_request_review_id", null: false
-    t.string "sender"
-    t.text "content"
+    t.string "sender", null: false
+    t.text "content", null: false
     t.string "llm_model_used"
     t.integer "token_count"
     t.text "metadata"
-    t.datetime "timestamp"
-    t.integer "order"
+    t.datetime "timestamp", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.integer "order", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["pull_request_review_id", "order"], name: "idx_on_pull_request_review_id_order_193136b580"
     t.index ["pull_request_review_id"], name: "index_llm_conversation_messages_on_pull_request_review_id"
+    t.index ["timestamp"], name: "index_llm_conversation_messages_on_timestamp"
   end
 
   create_table "pull_request_reviews", force: :cascade do |t|
@@ -51,10 +53,42 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_04_165101) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "last_synced_at"
+    t.integer "pull_request_id", null: false
+    t.string "ci_status"
+    t.string "ci_url"
+    t.integer "github_comment_count"
+    t.string "github_review_status"
+    t.index ["pull_request_id"], name: "index_pull_request_reviews_on_pull_request_id"
     t.index ["repository_id", "github_pr_id"], name: "index_pull_request_reviews_on_repository_id_and_github_pr_id", unique: true
     t.index ["repository_id"], name: "index_pull_request_reviews_on_repository_id"
     t.index ["user_id", "status"], name: "index_pull_request_reviews_on_user_id_and_status"
     t.index ["user_id"], name: "index_pull_request_reviews_on_user_id"
+  end
+
+  create_table "pull_requests", force: :cascade do |t|
+    t.integer "repository_id", null: false
+    t.integer "github_pr_id", null: false
+    t.string "github_pr_url", null: false
+    t.string "title", null: false
+    t.string "state", null: false
+    t.string "author"
+    t.text "body"
+    t.datetime "github_created_at"
+    t.datetime "github_updated_at"
+    t.integer "additions"
+    t.integer "deletions"
+    t.integer "changed_files"
+    t.boolean "draft", default: false
+    t.string "base_branch"
+    t.string "head_branch"
+    t.text "labels"
+    t.datetime "last_synced_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["github_created_at"], name: "index_pull_requests_on_github_created_at"
+    t.index ["repository_id", "github_pr_id"], name: "index_pull_requests_on_repository_id_and_github_pr_id", unique: true
+    t.index ["repository_id"], name: "index_pull_requests_on_repository_id"
+    t.index ["state"], name: "index_pull_requests_on_state"
   end
 
   create_table "repositories", force: :cascade do |t|
@@ -86,8 +120,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_04_165101) do
 
   add_foreign_key "llm_api_keys", "users"
   add_foreign_key "llm_conversation_messages", "pull_request_reviews"
+  add_foreign_key "pull_request_reviews", "pull_requests"
   add_foreign_key "pull_request_reviews", "repositories"
   add_foreign_key "pull_request_reviews", "users"
+  add_foreign_key "pull_requests", "repositories"
   add_foreign_key "repositories", "users"
   add_foreign_key "sessions", "users"
 end

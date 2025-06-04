@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_30_222253) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_04_165101) do
   create_table "llm_api_keys", force: :cascade do |t|
     t.string "llm_provider"
     t.text "api_key"
@@ -20,7 +20,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_30_222253) do
     t.text "description"
     t.text "aliases"
     t.integer "user_id", null: false
-    t.index ["llm_provider"], name: "index_llm_api_keys_on_llm_provider", unique: true
+    t.index ["user_id", "llm_provider"], name: "index_llm_api_keys_on_user_id_and_llm_provider", unique: true
     t.index ["user_id"], name: "index_llm_api_keys_on_user_id"
   end
 

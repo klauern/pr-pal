@@ -70,7 +70,7 @@ class DashboardAndSidebarTest < ActionDispatch::IntegrationTest
 
     # Check main navigation items
     assert_select "aside.w-64.bg-gray-900"
-    assert_select "div", "Pr Pal"
+    assert_select "div", "PR Pal"
     assert_select "a[href=?]", root_path, text: "Home"
     assert_select "a[href=?]", repositories_path, text: "Repositories"
     assert_select "a[href=?]", pull_request_reviews_path, text: "PR Reviews"

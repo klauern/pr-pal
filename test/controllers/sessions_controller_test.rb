@@ -73,6 +73,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to root_path
     # PR tabs should be cleared (this is handled in the controller)
+    assert_nil session[:open_pr_tabs]
   end
 
   test "should use login layout for new action" do

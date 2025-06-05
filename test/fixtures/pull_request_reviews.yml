@@ -1,6 +1,7 @@
 sample_review:
   user: one
   repository: one
+  pull_request_id: <%= ActiveRecord::FixtureSet.identify(:pr_one) %>
   github_pr_id: 123
   github_pr_url: "https://github.com/octocat/hello-world/pull/123"
   github_pr_title: "Add new feature for user authentication"
@@ -11,6 +12,7 @@ sample_review:
 completed_review:
   user: one
   repository: one
+  pull_request_id: <%= ActiveRecord::FixtureSet.identify(:pr_two) %>
   github_pr_id: 456
   github_pr_url: "https://github.com/octocat/hello-world/pull/456"
   github_pr_title: "Fix bug in payment processing"

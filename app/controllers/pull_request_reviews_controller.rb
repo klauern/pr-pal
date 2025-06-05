@@ -17,8 +17,26 @@ class PullRequestReviewsController < ApplicationController
   def create
     @repository = Current.user.repositories.find(params[:repository_id])
 
-    @pull_request_review = @repository.pull_request_reviews.build(pull_request_review_params)
+    # Find or create the PullRequest record first
+    pr_params = pull_request_review_params
+    
+    # Handle case where github_pr_id is nil or invalid
+    if pr_params[:github_pr_id].present?
+      @pull_request = @repository.pull_requests.find_or_create_by!(
+        github_pr_id: pr_params[:github_pr_id]
+      ) do |pr|
+        pr.github_pr_url = pr_params[:github_pr_url]
+        pr.title = pr_params[:github_pr_title]
+        pr.state = "open" # default state
+        pr.author = "unknown" # default author
+      end
+    else
+      @pull_request = nil
+    end
+
+    @pull_request_review = @repository.pull_request_reviews.build(pr_params)
     @pull_request_review.user = Current.user
+    @pull_request_review.pull_request = @pull_request
 
     respond_to do |format|
       if @pull_request_review.save

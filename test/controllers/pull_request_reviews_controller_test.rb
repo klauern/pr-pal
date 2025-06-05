@@ -65,9 +65,18 @@ class PullRequestReviewsControllerTest < ActionDispatch::IntegrationTest
   test "should not allow access to other user's reviews" do
     other_user = users(:two)
     other_repo = repositories(:two)
+    pull_request = PullRequest.create!(
+      repository: other_repo,
+      github_pr_id: 789,
+      github_pr_url: "https://github.com/test/test/pull/789",
+      title: "Other user's review",
+      state: "open",
+      author: "testuser"
+    )
     other_review = PullRequestReview.create!(
       user: other_user,
       repository: other_repo,
+      pull_request: pull_request,
       github_pr_id: 789,
       github_pr_url: "https://github.com/test/test/pull/789",
       github_pr_title: "Other user's review"
@@ -268,9 +277,18 @@ class PullRequestReviewsControllerTest < ActionDispatch::IntegrationTest
   test "should limit tabs to 5 most recent" do
     # Create multiple reviews and add them to tabs
     6.times do |i|
+      pull_request = PullRequest.create!(
+        repository: @repository,
+        github_pr_id: 1000 + i,
+        github_pr_url: "https://github.com/test/test/pull/#{1000 + i}",
+        title: "Test PR #{i}",
+        state: "open",
+        author: "testuser"
+      )
       review = PullRequestReview.create!(
         user: @user,
         repository: @repository,
+        pull_request: pull_request,
         github_pr_id: 1000 + i,
         github_pr_url: "https://github.com/test/test/pull/#{1000 + i}",
         github_pr_title: "Test PR #{i}"
@@ -292,9 +310,18 @@ class PullRequestReviewsControllerTest < ActionDispatch::IntegrationTest
 
   test "should move accessed PR to end of tab list" do
     # Create another review and add both to tabs
+    other_pull_request = PullRequest.create!(
+      repository: @repository,
+      github_pr_id: 1001,
+      github_pr_url: "https://github.com/test/test/pull/1001",
+      title: "Other test PR",
+      state: "open",
+      author: "testuser"
+    )
     other_review = PullRequestReview.create!(
       user: @user,
       repository: @repository,
+      pull_request: other_pull_request,
       github_pr_id: 1001,
       github_pr_url: "https://github.com/test/test/pull/1001",
       github_pr_title: "Other test PR"

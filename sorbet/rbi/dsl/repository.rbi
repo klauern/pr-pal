@@ -389,6 +389,12 @@ class Repository
     def create_user!(*args, &blk); end
 
     sig { returns(T::Array[T.untyped]) }
+    def pull_request_ids; end
+
+    sig { params(ids: T::Array[T.untyped]).returns(T::Array[T.untyped]) }
+    def pull_request_ids=(ids); end
+
+    sig { returns(T::Array[T.untyped]) }
     def pull_request_review_ids; end
 
     sig { params(ids: T::Array[T.untyped]).returns(T::Array[T.untyped]) }
@@ -401,6 +407,14 @@ class Repository
 
     sig { params(value: T::Enumerable[::PullRequestReview]).void }
     def pull_request_reviews=(value); end
+
+    # This method is created by ActiveRecord on the `Repository` class because it declared `has_many :pull_requests`.
+    # 🔗 [Rails guide for `has_many` association](https://guides.rubyonrails.org/association_basics.html#the-has-many-association)
+    sig { returns(::PullRequest::PrivateCollectionProxy) }
+    def pull_requests; end
+
+    sig { params(value: T::Enumerable[::PullRequest]).void }
+    def pull_requests=(value); end
 
     sig { returns(T.nilable(::User)) }
     def reload_user; end

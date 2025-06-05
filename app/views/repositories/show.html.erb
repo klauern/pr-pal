@@ -1,17 +1,97 @@
 <div class="container mx-auto px-4 py-8">
+  <div id="flash_messages"></div>
   <div class="bg-white rounded-lg shadow-lg p-6">
     <!-- Repository Header -->
     <div class="border-b border-gray-200 pb-4 mb-6">
-      <h1 class="text-3xl font-bold text-gray-900"><%= @repository.full_name %></h1>
-      <p class="text-gray-600 mt-2">
-        <a href="<%= @repository.github_url %>" target="_blank" class="text-blue-600 hover:text-blue-800 underline">
-          View on GitHub →
-        </a>
-      </p>
+      <div class="flex justify-between items-start">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900"><%= @repository.full_name %></h1>
+          <p class="text-gray-600 mt-2">
+            <a href="<%= @repository.github_url %>" target="_blank" class="text-blue-600 hover:text-blue-800 underline">
+              View on GitHub →
+            </a>
+          </p>
+        </div>
+        <div>
+          <%= button_to "Sync Repository", sync_repository_path(@repository),
+              method: :post,
+              class: "bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md transition-colors",
+              data: { turbo_method: :post },
+              form: { data: { turbo_frame: "_top" } } %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pull Requests Section -->
+    <div>
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-semibold text-gray-800">Pull Requests</h2>
+        <span class="text-sm text-gray-500">
+          <%= pluralize(@repository.pull_requests.count, 'pull request') %> synced
+        </span>
+      </div>
+
+      <% if @repository.pull_requests.any? %>
+        <div class="space-y-3">
+          <% @repository.pull_requests.order(github_created_at: :desc).each do |pr| %>
+            <div class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors">
+              <div class="flex justify-between items-start">
+                <div class="flex-1">
+                  <div class="flex items-center space-x-2 mb-2">
+                    <h3 class="text-lg font-medium text-gray-900">
+                      <a href="<%= pr.github_pr_url %>" target="_blank" class="hover:text-blue-600">
+                        #<%= pr.github_pr_id %> - <%= pr.title %>
+                      </a>
+                    </h3>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                      <%= pr.state == 'open' ? 'bg-green-100 text-green-800' :
+                          pr.state == 'closed' ? 'bg-red-100 text-red-800' :
+                          'bg-purple-100 text-purple-800' %>">
+                      <%= pr.state.capitalize %>
+                    </span>
+                  </div>
+                  <div class="text-sm text-gray-600 mb-2">
+                    by <span class="font-medium"><%= pr.author %></span>
+                    • Created <%= time_ago_in_words(pr.github_created_at) %> ago
+                    <% if pr.github_updated_at != pr.github_created_at %>
+                      • Updated <%= time_ago_in_words(pr.github_updated_at) %> ago
+                    <% end %>
+                  </div>
+                  <% if pr.body.present? %>
+                    <div class="text-sm text-gray-700 line-clamp-2">
+                      <%= truncate(pr.body, length: 200) %>
+                    </div>
+                  <% end %>
+                </div>
+                <div class="ml-4 flex-shrink-0">
+                  <div class="text-xs text-gray-500">
+                    Updated: <%= time_ago_in_words(pr.github_updated_at) %> ago
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-center py-8 text-gray-500">
+          <div class="mb-4">
+            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-medium text-gray-900 mb-2">No Pull Requests</h3>
+          <p class="text-gray-500 mb-4">
+            No pull requests have been synced for this repository yet.
+          </p>
+          <p class="text-sm text-gray-400">
+            Click the "Sync Repository" button above to fetch pull requests from GitHub.
+          </p>
+        </div>
+      <% end %>
     </div>
 
     <!-- Pull Request Reviews Section -->
-    <div>
+    <div class="mt-8">
       <div class="flex justify-between items-center mb-4">
         <h2 class="text-xl font-semibold text-gray-800">Pull Request Reviews</h2>
         <span class="text-sm text-gray-500">

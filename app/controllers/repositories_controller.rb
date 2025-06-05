@@ -1,5 +1,5 @@
 class RepositoriesController < ApplicationController
-  before_action :set_repository, only: [ :show, :destroy ]
+  before_action :set_repository, only: [ :show, :destroy, :sync ]
 
   def index
     @repositories = Current.user.repositories.order(:owner, :name)
@@ -60,6 +60,30 @@ class RepositoriesController < ApplicationController
           turbo_stream.replace("repositories_list", partial: "repositories/list", locals: { repositories: @repositories }),
           turbo_stream.replace("sidebar", partial: "layouts/sidebar")
         ]
+      end
+    end
+  end
+
+  def sync
+    PullRequestSyncJob.perform_later(@repository.id)
+
+    respond_to do |format|
+      format.html { redirect_to @repository, notice: "Repository sync started for #{@repository.full_name}. Pull requests will be updated in the background." }
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace("flash_messages", partial: "shared/flash_message",
+          locals: { type: "notice", message: "Repository sync started for #{@repository.full_name}. Pull requests will be updated in the background." })
+      end
+    end
+  end
+
+  def sync_all
+    PullRequestSyncJob.sync_user_repositories(Current.user)
+
+    respond_to do |format|
+      format.html { redirect_to repositories_path, notice: "Sync started for all repositories. Pull requests will be updated in the background." }
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace("flash_messages", partial: "shared/flash_message",
+          locals: { type: "notice", message: "Sync started for all repositories. Pull requests will be updated in the background." })
       end
     end
   end

@@ -5,7 +5,10 @@
       "Bash(grep:*)",
       "Bash(find:*)",
       "Bash(rg:*)",
-      "Bash(bin/rails test:*)"
+      "Bash(bin/rails test:*)",
+      "Bash(bundle exec rails:*)",
+      "Bash(sed:*)",
+      "Bash(bin/rails:*)"
     ]
   },
   "enableAllProjectMcpServers": false

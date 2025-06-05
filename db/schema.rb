@@ -54,6 +54,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_04_165101) do
     t.datetime "updated_at", null: false
     t.datetime "last_synced_at"
     t.integer "pull_request_id", null: false
+    t.string "ci_status"
+    t.string "ci_url"
+    t.integer "github_comment_count"
+    t.string "github_review_status"
     t.index ["pull_request_id"], name: "index_pull_request_reviews_on_pull_request_id"
     t.index ["repository_id", "github_pr_id"], name: "index_pull_request_reviews_on_repository_id_and_github_pr_id", unique: true
     t.index ["repository_id"], name: "index_pull_request_reviews_on_repository_id"

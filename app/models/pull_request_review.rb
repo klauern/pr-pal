@@ -1,6 +1,7 @@
 class PullRequestReview < ApplicationRecord
   belongs_to :user
   belongs_to :repository
+  belongs_to :pull_request
   has_many :llm_conversation_messages, dependent: :destroy
 
   validates :github_pr_id, presence: true

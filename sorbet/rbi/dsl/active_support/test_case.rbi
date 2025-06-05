@@ -36,6 +36,16 @@ class ActiveSupport::TestCase
   end
   def pull_request_reviews(fixture_name = nil, *other_fixtures); end
 
+  sig { params(fixture_name: NilClass, other_fixtures: NilClass).returns(T::Array[PullRequest]) }
+  sig { params(fixture_name: T.any(String, Symbol), other_fixtures: NilClass).returns(PullRequest) }
+  sig do
+    params(
+      fixture_name: T.any(String, Symbol),
+      other_fixtures: T.any(String, Symbol)
+    ).returns(T::Array[PullRequest])
+  end
+  def pull_requests(fixture_name = nil, *other_fixtures); end
+
   sig { params(fixture_name: NilClass, other_fixtures: NilClass).returns(T::Array[Repository]) }
   sig { params(fixture_name: T.any(String, Symbol), other_fixtures: NilClass).returns(Repository) }
   sig do

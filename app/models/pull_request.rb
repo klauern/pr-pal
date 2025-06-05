@@ -7,12 +7,12 @@ class PullRequest < ApplicationRecord
   validates :title, presence: true
   validates :state, presence: true
   validates :author, presence: true
-  validates :github_url, presence: true
+  validates :github_pr_url, presence: true
 
   scope :open, -> { where(state: "open") }
   scope :closed, -> { where(state: "closed") }
   scope :merged, -> { where(state: "merged") }
-  scope :by_interest, -> { order(review_interest: :desc) }
+  scope :by_recent, -> { order(github_updated_at: :desc) }
 
   def closed?
     state == "closed"

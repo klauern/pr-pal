@@ -435,7 +435,7 @@ class PullRequest
     def arel_columns(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
-    def by_interest(*args, &blk); end
+    def by_recent(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
     def closed(*args, &blk); end
@@ -1821,7 +1821,7 @@ class PullRequest
     def arel_columns(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
-    def by_interest(*args, &blk); end
+    def by_recent(*args, &blk); end
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateRelation) }
     def closed(*args, &blk); end

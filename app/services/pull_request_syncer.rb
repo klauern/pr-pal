@@ -83,17 +83,16 @@ class PullRequestSyncer
       body: pr_data[:body],
       state: pr_data[:state],
       author: pr_data[:author],
-      github_url: pr_data[:github_url],
+      github_pr_url: pr_data[:github_url],
       github_created_at: pr_data[:github_created_at],
       github_updated_at: pr_data[:github_updated_at],
       last_synced_at: Time.current
     )
     Rails.logger.info "[PullRequestSyncer] Assigned attributes for PullRequest GitHub PR ##{pr_data[:github_pr_number]} in repo #{@repository.full_name} (ID: #{@repository.id})"
 
-    # Set review_interest if it's a new record (default to medium interest)
+    # Log whether this is a new or existing record
     if pull_request.new_record?
-      Rails.logger.info "[PullRequestSyncer] New PullRequest record for GitHub PR ##{pr_data[:github_pr_number]} in repo #{@repository.full_name} (ID: #{@repository.id}). Setting default review_interest."
-      pull_request.review_interest = 5
+      Rails.logger.info "[PullRequestSyncer] New PullRequest record for GitHub PR ##{pr_data[:github_pr_number]} in repo #{@repository.full_name} (ID: #{@repository.id})."
     else
       Rails.logger.info "[PullRequestSyncer] Existing PullRequest record ID #{pull_request.id} for GitHub PR ##{pr_data[:github_pr_number]} in repo #{@repository.full_name} (ID: #{@repository.id})."
     end

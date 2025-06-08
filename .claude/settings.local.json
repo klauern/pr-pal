@@ -8,7 +8,13 @@
       "Bash(bin/rails test:*)",
       "Bash(bundle exec rails:*)",
       "Bash(sed:*)",
-      "Bash(bin/rails:*)"
+      "Bash(bin/rails:*)",
+      "Bash(rake test:*)",
+      "Bash(open:*)",
+      "Bash(rm:*)",
+      "Bash(./bin/rails test:coverage)",
+      "Bash(./bin/rails test)",
+      "Bash(mv:*)"
     ]
   },
   "enableAllProjectMcpServers": false

@@ -12,6 +12,10 @@ PR Pal is a Rails 8.0 web application for managing pull requests with LLM integr
 - **User**: Authentication with normalized emails and secure passwords
 - **Session**: Session management with IP/user agent tracking  
 - **LlmApiKey**: Encrypted storage for different LLM provider API keys
+- **Repository**: GitHub repositories linked to users
+- **PullRequest**: Individual PRs with GitHub metadata
+- **PullRequestReview**: Central entity linking users to PR reviews and LLM conversations
+- **LlmConversationMessage**: Individual messages in LLM conversations
 
 ### Authentication System
 - Custom authentication using `Authentication` concern in controllers
@@ -39,8 +43,12 @@ bin/dev  # Starts Rails server + asset watchers (uses Procfile.dev)
 
 ### Testing
 ```bash
-bin/rails test        # Run all tests
-bin/rails test:system # Run system tests only
+bin/rails test                    # Run all tests
+bin/rails test:system             # Run system tests only
+bin/rails test test/models/       # Run specific test directory
+bin/rails test test/models/user_test.rb  # Run single test file
+rake test:coverage                 # Run tests with coverage reporting
+rake test:coverage_open           # Run tests with coverage and open report
 ```
 
 ### Database Operations
@@ -81,6 +89,28 @@ bin/kamal dbc         # Production database console
 - **Docker** deployment using multi-stage builds with Thruster for asset serving
 - Modern Rails patterns: no Devise, no external auth gems, leveraging built-in features
 
+## Service Layer Architecture
+
+### Data Provider Pattern
+- **PullRequestDataProvider**: Abstract base class defining interface for PR data sources
+- **GithubPullRequestDataProvider**: Real GitHub API integration using Octokit
+- **DummyPullRequestDataProvider**: Generates realistic dummy data for testing/demo
+- **PullRequestDataProviderFactory**: Factory that chooses provider based on user config and environment
+
+### Core Services
+- **PullRequestSyncer**: Main service for syncing PRs from external sources to database
+
+### Model Relationships
+```
+User (1) ─── (many) Repository (1) ─── (many) PullRequest
+ │                      │                        │
+ │                      └── (many) PullRequestReview ──┘
+ │                                     │
+ │                                     └── (many) LlmConversationMessage
+ │
+ └── (many) LlmApiKey, Session
+```
+
 ## Testing Setup
 
-Uses **Minitest** with parallel execution, **Capybara + Selenium** for system tests, and fixture-based test data. Tests are organized in standard Rails structure under `test/`.
+Uses **Minitest** with parallel execution, **Capybara + Selenium** for system tests, and fixture-based test data. Tests are organized in standard Rails structure under `test/`. SimpleCov provides coverage reporting with optional Codecov integration.

@@ -1,1 +1,1 @@
-- we can't continue adding things until we fix tests or refactor such that we don't need to
+- run all rake, rails, etc. apps from the ./bin/ folder

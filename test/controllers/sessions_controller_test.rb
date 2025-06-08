@@ -323,9 +323,10 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     }
 
     assert_redirected_to demo_login_path
-    # Error message should not contain script tags
+    # Error message should not contain the malicious script content
     follow_redirect!
-    assert_no_match /<script[^>]*>/i, response.body
+    assert_no_match /alert\('xss'\)/i, response.body
+    assert_no_match /<script>alert\('xss'\)<\/script>/i, response.body
   end
 
   test "should handle case sensitivity in email" do

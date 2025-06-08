@@ -85,6 +85,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_04_165101) do
     t.datetime "last_synced_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "ci_status"
+    t.text "ci_status_raw"
+    t.datetime "ci_status_updated_at"
     t.index ["github_created_at"], name: "index_pull_requests_on_github_created_at"
     t.index ["repository_id", "github_pr_id"], name: "index_pull_requests_on_repository_id_and_github_pr_id", unique: true
     t.index ["repository_id"], name: "index_pull_requests_on_repository_id"

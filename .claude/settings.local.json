@@ -14,7 +14,10 @@
       "Bash(rm:*)",
       "Bash(./bin/rails test:coverage)",
       "Bash(./bin/rails test)",
-      "Bash(mv:*)"
+      "Bash(mv:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh pr list:*)",
+      "Bash(gh api:*)"
     ]
   },
   "enableAllProjectMcpServers": false

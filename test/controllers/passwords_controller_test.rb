@@ -72,7 +72,7 @@ class PasswordsControllerTest < ActionDispatch::IntegrationTest
     assert_response :redirect
     # Ensure no script tags are present in flash messages
     follow_redirect!
-    assert_no_match /<script>/, response.body
+    assert_no_match /<script>/i, response.body
   end
 
   test "should handle SQL injection attempts in email parameter" do

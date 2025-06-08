@@ -21,6 +21,10 @@ class PullRequestSyncerTest < ActiveSupport::TestCase
         @return_data
       end
     end
+
+    def fetch_pr_ci_statuses(owner, repo, pr_number, user)
+      # Implementation of fetch_pr_ci_statuses method
+    end
   end
   setup do
     @user = users(:one)
@@ -426,5 +430,113 @@ class PullRequestSyncerTest < ActiveSupport::TestCase
     end
 
     assert_equal 1, mock_provider.call_count
+  end
+
+  # --- CI/CD Status Tests ---
+  test "should store ci_status and ci_status_raw when data provider returns CI/CD status" do
+    pr_data = @sample_pr_data.merge(github_pr_number: 99)
+    mock_provider = MockDataProvider.new([ pr_data ])
+    # Stub fetch_pr_ci_statuses to simulate CI/CD status
+    def mock_provider.fetch_pr_ci_statuses(owner, repo, pr_number, user)
+      {
+        sha: "abc123",
+        statuses: [
+          { type: :status, context: "ci/circleci", state: "success", description: "CircleCI passed", target_url: "http://ci.example.com/1" }
+        ],
+        check_runs: [
+          { type: :check_run, name: "build", status: "completed", conclusion: "success", details_url: "http://ci.example.com/2", output_title: "Build passed", output_summary: "All good" }
+        ]
+      }
+    end
+    @syncer.instance_variable_set(:@data_provider, mock_provider)
+
+    assert_difference "@repository.pull_requests.count", 1 do
+      @syncer.sync!
+    end
+    pr = @repository.pull_requests.find_by(github_pr_id: 99)
+    assert_equal "success", pr.ci_status
+    assert pr.ci_status_raw.include?("CircleCI passed")
+    assert pr.ci_status_raw.include?("Build passed")
+    assert pr.ci_status_updated_at.present?
+  end
+
+  test "should store ci_status as failure if any check_run fails" do
+    pr_data = @sample_pr_data.merge(github_pr_number: 100)
+    mock_provider = MockDataProvider.new([ pr_data ])
+    def mock_provider.fetch_pr_ci_statuses(owner, repo, pr_number, user)
+      {
+        sha: "def456",
+        statuses: [],
+        check_runs: [
+          { type: :check_run, name: "test", status: "completed", conclusion: "failure", details_url: "http://ci.example.com/3", output_title: "Test failed", output_summary: "Some tests failed" }
+        ]
+      }
+    end
+    @syncer.instance_variable_set(:@data_provider, mock_provider)
+
+    assert_difference "@repository.pull_requests.count", 1 do
+      @syncer.sync!
+    end
+    pr = @repository.pull_requests.find_by(github_pr_id: 100)
+    assert_equal "failure", pr.ci_status
+    assert pr.ci_status_raw.include?("Test failed")
+  end
+
+  test "should store ci_status as pending if any check_run is in progress" do
+    pr_data = @sample_pr_data.merge(github_pr_number: 101)
+    mock_provider = MockDataProvider.new([ pr_data ])
+    def mock_provider.fetch_pr_ci_statuses(owner, repo, pr_number, user)
+      {
+        sha: "ghi789",
+        statuses: [],
+        check_runs: [
+          { type: :check_run, name: "deploy", status: "in_progress", conclusion: nil, details_url: "http://ci.example.com/4", output_title: "Deploying", output_summary: "Deployment running" }
+        ]
+      }
+    end
+    @syncer.instance_variable_set(:@data_provider, mock_provider)
+
+    assert_difference "@repository.pull_requests.count", 1 do
+      @syncer.sync!
+    end
+    pr = @repository.pull_requests.find_by(github_pr_id: 101)
+    assert_equal "pending", pr.ci_status
+    assert pr.ci_status_raw.include?("Deploying")
+  end
+
+  test "should store ci_status as none if no statuses or check_runs" do
+    pr_data = @sample_pr_data.merge(github_pr_number: 102)
+    mock_provider = MockDataProvider.new([ pr_data ])
+    def mock_provider.fetch_pr_ci_statuses(owner, repo, pr_number, user)
+      { sha: "jkl012", statuses: [], check_runs: [] }
+    end
+    @syncer.instance_variable_set(:@data_provider, mock_provider)
+
+    assert_difference "@repository.pull_requests.count", 1 do
+      @syncer.sync!
+    end
+    pr = @repository.pull_requests.find_by(github_pr_id: 102)
+    assert_equal "none", pr.ci_status
+    assert pr.ci_status_raw.include?("statuses")
+    assert pr.ci_status_raw.include?("check_runs")
+  end
+
+  # --- Integration test (real GitHub API, requires valid token) ---
+  test "integration: should fetch and store real ci_status for octocat/hello-world PR if token configured" do
+    user = users(:one)
+    repo = repositories(:one)
+    # Only run if a GitHub token is configured
+    if user.github_token_configured?
+      syncer = PullRequestSyncer.new(repo)
+      assert_nothing_raised do
+        syncer.sync!
+      end
+      pr = repo.pull_requests.first
+      assert pr.ci_status.present?
+      assert pr.ci_status_raw.present?
+      assert pr.ci_status_updated_at.present?
+    else
+      skip "No GitHub token configured for integration test."
+    end
   end
 end

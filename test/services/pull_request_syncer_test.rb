@@ -14,7 +14,7 @@ class PullRequestSyncerTest < ActiveSupport::TestCase
     def fetch_repository_pull_requests(repository, user)
       @call_count += 1
       @expected_calls << { repository: repository, user: user }
-      
+
       if @return_data.is_a?(Proc)
         @return_data.call
       else
@@ -26,7 +26,7 @@ class PullRequestSyncerTest < ActiveSupport::TestCase
     @user = users(:one)
     @repository = repositories(:one)
     @syncer = PullRequestSyncer.new(@repository)
-    
+
     # Sample PR data for testing direct method calls
     @sample_pr_data = {
       github_pr_number: 1,
@@ -45,7 +45,7 @@ class PullRequestSyncerTest < ActiveSupport::TestCase
     assert_difference "@repository.pull_requests.count", 1 do
       @syncer.send(:sync_pull_request, @sample_pr_data)
     end
-    
+
     pr = @repository.pull_requests.last
     assert_equal 1, pr.github_pr_id
     assert_equal "Add new feature", pr.title
@@ -67,18 +67,18 @@ class PullRequestSyncerTest < ActiveSupport::TestCase
       github_created_at: 1.week.ago,
       github_updated_at: 1.week.ago
     )
-    
+
     # Sync with updated data
     updated_data = @sample_pr_data.merge(
       title: "Updated title",
       state: "closed",
       body: "Updated body content"
     )
-    
+
     assert_no_difference "@repository.pull_requests.count" do
       @syncer.send(:sync_pull_request, updated_data)
     end
-    
+
     existing_pr.reload
     assert_equal "Updated title", existing_pr.title
     assert_equal "closed", existing_pr.state
@@ -88,7 +88,7 @@ class PullRequestSyncerTest < ActiveSupport::TestCase
 
   test "should handle validation failures gracefully" do
     invalid_data = @sample_pr_data.merge(title: "")  # Empty title should fail validation
-    
+
     assert_no_difference "@repository.pull_requests.count" do
       assert_raises RuntimeError do
         @syncer.send(:sync_pull_request, invalid_data)
@@ -98,7 +98,7 @@ class PullRequestSyncerTest < ActiveSupport::TestCase
 
   test "should correctly parse timestamps" do
     @syncer.send(:sync_pull_request, @sample_pr_data)
-    
+
     pr = @repository.pull_requests.last
     assert_equal Time.parse("2025-01-01T10:00:00Z"), pr.github_created_at
     assert_equal Time.parse("2025-01-02T15:30:00Z"), pr.github_updated_at
@@ -115,11 +115,11 @@ class PullRequestSyncerTest < ActiveSupport::TestCase
       github_updated_at: Time.parse("2025-01-01T10:00:00Z")
       # Missing: body, additions, deletions, etc.
     }
-    
+
     assert_difference "@repository.pull_requests.count", 1 do
       @syncer.send(:sync_pull_request, minimal_data)
     end
-    
+
     pr = @repository.pull_requests.last
     assert_equal "Minimal PR", pr.title
     assert_nil pr.body
@@ -131,11 +131,11 @@ class PullRequestSyncerTest < ActiveSupport::TestCase
       body: "This PR fixes issues with unicode: 中文, العربية, русский",
       author: "usér-with-spëcial-chars"
     )
-    
+
     assert_difference "@repository.pull_requests.count", 1 do
       @syncer.send(:sync_pull_request, special_data)
     end
-    
+
     pr = @repository.pull_requests.last
     assert_equal "Fix: Handle émojis 🚀 and spëcial chârs", pr.title
     assert_includes pr.body, "中文"
@@ -145,16 +145,16 @@ class PullRequestSyncerTest < ActiveSupport::TestCase
   test "should handle very long titles and bodies" do
     long_title = "A" * 1000
     long_body = "B" * 10000
-    
+
     long_data = @sample_pr_data.merge(
       title: long_title,
       body: long_body
     )
-    
+
     assert_difference "@repository.pull_requests.count", 1 do
       @syncer.send(:sync_pull_request, long_data)
     end
-    
+
     pr = @repository.pull_requests.last
     assert_equal long_title, pr.title
     assert_equal long_body, pr.body
@@ -185,10 +185,10 @@ class PullRequestSyncerTest < ActiveSupport::TestCase
       github_created_at: 1.day.ago,
       github_updated_at: 1.day.ago
     )
-    
+
     # Should update, not create new
     result = @syncer.send(:sync_pull_request, @sample_pr_data)
-    
+
     assert result.persisted?
     assert_equal existing_pr.id, result.id
     assert_equal "Add new feature", result.title  # Should be updated
@@ -210,7 +210,7 @@ class PullRequestSyncerTest < ActiveSupport::TestCase
 
     assert_difference "@repository.pull_requests.count", 2 do
       result = @syncer.sync!
-      
+
       assert_equal 2, result[:synced]
       assert_empty result[:errors]
       assert_equal :success, result[:status]
@@ -225,7 +225,7 @@ class PullRequestSyncerTest < ActiveSupport::TestCase
 
     assert_no_difference "@repository.pull_requests.count" do
       result = @syncer.sync!
-      
+
       assert_equal 0, result[:synced]
       assert_empty result[:errors]
       assert_equal :no_prs, result[:status]
@@ -240,7 +240,7 @@ class PullRequestSyncerTest < ActiveSupport::TestCase
 
     assert_no_difference "@repository.pull_requests.count" do
       result = @syncer.sync!
-      
+
       assert_equal 0, result[:synced]
       assert_equal 1, result[:errors].size
       assert_includes result[:errors].first, "GitHub API error"
@@ -266,7 +266,7 @@ class PullRequestSyncerTest < ActiveSupport::TestCase
 
     assert_difference "@repository.pull_requests.count", 1 do
       result = @syncer.sync!
-      
+
       assert_equal 1, result[:synced]
       assert_equal 1, result[:errors].size
       assert_includes result[:errors].first, "Failed to sync PR #2"
@@ -280,12 +280,12 @@ class PullRequestSyncerTest < ActiveSupport::TestCase
     # Create invalid PR data
     invalid_pr_data = @sample_pr_data.merge(title: "")  # Empty title
 
-    mock_provider = MockDataProvider.new([invalid_pr_data])
+    mock_provider = MockDataProvider.new([ invalid_pr_data ])
     @syncer.instance_variable_set(:@data_provider, mock_provider)
 
     assert_no_difference "@repository.pull_requests.count" do
       result = @syncer.sync!
-      
+
       assert_equal 0, result[:synced]
       assert_equal 1, result[:errors].size
       assert_includes result[:errors].first, "Validation failed"
@@ -301,12 +301,12 @@ class PullRequestSyncerTest < ActiveSupport::TestCase
       raise StandardError.new("Unexpected error")
     end
 
-    mock_provider = MockDataProvider.new([@sample_pr_data])
+    mock_provider = MockDataProvider.new([ @sample_pr_data ])
     @syncer.instance_variable_set(:@data_provider, mock_provider)
 
     assert_no_difference "@repository.pull_requests.count" do
       result = @syncer.sync!
-      
+
       assert_equal 0, result[:synced]
       assert_equal 1, result[:errors].size
       assert_includes result[:errors].first, "Failed to sync PR #1"
@@ -318,7 +318,7 @@ class PullRequestSyncerTest < ActiveSupport::TestCase
   end
 
   test "should update repository timestamp after sync" do
-    mock_provider = MockDataProvider.new([@sample_pr_data])
+    mock_provider = MockDataProvider.new([ @sample_pr_data ])
     @syncer.instance_variable_set(:@data_provider, mock_provider)
 
     original_updated_at = @repository.updated_at
@@ -334,13 +334,13 @@ class PullRequestSyncerTest < ActiveSupport::TestCase
 
   test "should handle concurrent sync operations" do
     # Create separate mock providers for each syncer
-    mock_provider1 = MockDataProvider.new([@sample_pr_data])
-    mock_provider2 = MockDataProvider.new([@sample_pr_data])
+    mock_provider1 = MockDataProvider.new([ @sample_pr_data ])
+    mock_provider2 = MockDataProvider.new([ @sample_pr_data ])
 
     # Create two syncers for the same repository
     syncer1 = PullRequestSyncer.new(@repository)
     syncer2 = PullRequestSyncer.new(@repository)
-    
+
     syncer1.instance_variable_set(:@data_provider, mock_provider1)
     syncer2.instance_variable_set(:@data_provider, mock_provider2)
 
@@ -360,7 +360,7 @@ class PullRequestSyncerTest < ActiveSupport::TestCase
   end
 
   test "should log sync operations appropriately" do
-    mock_provider = MockDataProvider.new([@sample_pr_data])
+    mock_provider = MockDataProvider.new([ @sample_pr_data ])
     @syncer.instance_variable_set(:@data_provider, mock_provider)
 
     # Capture log output
@@ -370,7 +370,7 @@ class PullRequestSyncerTest < ActiveSupport::TestCase
 
     begin
       @syncer.sync!
-      
+
       log_content = log_output.string
       assert_includes log_content, "Starting PR sync"
       assert_includes log_content, "PR sync completed"
@@ -393,9 +393,9 @@ class PullRequestSyncerTest < ActiveSupport::TestCase
   test "should use appropriate provider based on user configuration" do
     # Test that the factory returns a valid provider
     syncer = PullRequestSyncer.new(@repository)
-    
+
     # Should get a valid provider class
-    assert [GithubPullRequestDataProvider, DummyPullRequestDataProvider].include?(syncer.data_provider)
+    assert [ GithubPullRequestDataProvider, DummyPullRequestDataProvider ].include?(syncer.data_provider)
   end
 
   test "should raise error when initialized with nil repository" do
@@ -419,7 +419,7 @@ class PullRequestSyncerTest < ActiveSupport::TestCase
 
     assert_difference "@repository.pull_requests.count", 100 do
       result = @syncer.sync!
-      
+
       assert_equal 100, result[:synced]
       assert_empty result[:errors]
       assert_equal :success, result[:status]

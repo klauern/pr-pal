@@ -385,7 +385,7 @@ class PullRequestReviewsControllerTest < ActionDispatch::IntegrationTest
     # Test with nil parameters
     get show_by_details_pull_request_reviews_url(
       repo_owner: nil,
-      repo_name: nil, 
+      repo_name: nil,
       pr_number: nil
     )
     # Should handle gracefully - may depend on data provider implementation
@@ -418,13 +418,13 @@ class PullRequestReviewsControllerTest < ActionDispatch::IntegrationTest
 
   test "should require authentication for show_by_details" do
     delete session_url  # Log out
-    
+
     get show_by_details_pull_request_reviews_url(
       repo_owner: "owner",
-      repo_name: "repo", 
+      repo_name: "repo",
       pr_number: 123
     )
-    
+
     assert_redirected_to demo_login_url
   end
 
@@ -435,10 +435,10 @@ class PullRequestReviewsControllerTest < ActionDispatch::IntegrationTest
   # Reset Tabs Debug Action Tests
   test "should reset tabs debug action" do
     # Set up some tabs first
-    session[:open_pr_tabs] = ["pr_1", "pr_2", "pr_3"]
-    
+    session[:open_pr_tabs] = [ "pr_1", "pr_2", "pr_3" ]
+
     post reset_tabs_pull_request_reviews_url
-    
+
     assert_redirected_to root_path
     assert_equal "Tab session cleared!", flash[:notice]
     assert_equal [], session[:open_pr_tabs]
@@ -446,9 +446,9 @@ class PullRequestReviewsControllerTest < ActionDispatch::IntegrationTest
 
   test "should handle reset tabs with nil session" do
     session[:open_pr_tabs] = nil
-    
+
     post reset_tabs_pull_request_reviews_url
-    
+
     assert_redirected_to root_path
     assert_equal "Tab session cleared!", flash[:notice]
     assert_equal [], session[:open_pr_tabs]
@@ -456,7 +456,7 @@ class PullRequestReviewsControllerTest < ActionDispatch::IntegrationTest
 
   test "should require authentication for reset tabs" do
     delete session_url  # Log out
-    
+
     post reset_tabs_pull_request_reviews_url
     assert_redirected_to demo_login_url
   end

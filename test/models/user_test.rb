@@ -44,7 +44,7 @@ class UserTest < ActiveSupport::TestCase
       "in valid@example.com",
       "invalid@ex ample.com"
     ]
-    
+
     invalid_emails.each do |email|
       user = User.new(@valid_attributes.merge(email_address: email))
       assert_not user.valid?, "#{email} should be invalid"
@@ -60,7 +60,7 @@ class UserTest < ActiveSupport::TestCase
       "user123@example123.com",
       "user@subdomain.example.com"
     ]
-    
+
     valid_emails.each do |email|
       user = User.new(@valid_attributes.merge(email_address: email))
       assert user.valid?, "#{email} should be valid"
@@ -70,7 +70,7 @@ class UserTest < ActiveSupport::TestCase
   test "should enforce email uniqueness" do
     # Create first user
     User.create!(@valid_attributes)
-    
+
     # Try to create second user with same email
     duplicate_user = User.new(@valid_attributes)
     assert_not duplicate_user.valid?
@@ -80,7 +80,7 @@ class UserTest < ActiveSupport::TestCase
   test "should enforce email uniqueness case insensitively" do
     # Create first user with lowercase email
     User.create!(@valid_attributes.merge(email_address: "test@example.com"))
-    
+
     # Try to create second user with uppercase email
     duplicate_user = User.new(@valid_attributes.merge(email_address: "TEST@EXAMPLE.COM"))
     assert_not duplicate_user.valid?
@@ -88,8 +88,8 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "should enforce minimum password length" do
-    short_passwords = ["", "a", "ab", "abc", "abcd", "abcde"]
-    
+    short_passwords = [ "", "a", "ab", "abc", "abcd", "abcde" ]
+
     short_passwords.each do |password|
       user = User.new(@valid_attributes.merge(password: password, password_confirmation: password))
       assert_not user.valid?, "Password '#{password}' should be too short"
@@ -128,7 +128,7 @@ class UserTest < ActiveSupport::TestCase
     repository = @user.repositories.create!(owner: "testowner", name: "testrepo")
     session = @user.sessions.create!(ip_address: "127.0.0.1", user_agent: "Test Agent")
     llm_key = @user.llm_api_keys.create!(llm_provider: "test-unique-provider", api_key: "test-key")
-    
+
     pull_request = repository.pull_requests.create!(
       github_pr_id: 1,
       github_pr_url: "https://github.com/test/repo/pull/1",
@@ -138,7 +138,7 @@ class UserTest < ActiveSupport::TestCase
       github_created_at: 1.day.ago,
       github_updated_at: 1.hour.ago
     )
-    
+
     pr_review = @user.pull_request_reviews.create!(
       repository: repository,
       pull_request: pull_request,
@@ -206,7 +206,7 @@ class UserTest < ActiveSupport::TestCase
   test "should mask github token for display" do
     @user.update!(github_token: "ghp_1234567890abcdef")
     masked_token = @user.github_token_display
-    
+
     assert_not_equal "ghp_1234567890abcdef", masked_token
     assert_includes masked_token, "*"
     assert masked_token.length < @user.github_token.length
@@ -238,7 +238,7 @@ class UserTest < ActiveSupport::TestCase
   test "should encrypt github token when stored" do
     original_token = "ghp_very_secret_token_123"
     @user.update!(github_token: original_token)
-    
+
     # In test environment, tokens might not be encrypted
     # This test ensures the method exists and works
     assert_respond_to @user, :github_token
@@ -249,7 +249,7 @@ class UserTest < ActiveSupport::TestCase
   test "should handle very long email addresses" do
     long_email = "a" * 50 + "@" + "b" * 50 + ".com"
     user = User.new(@valid_attributes.merge(email_address: long_email))
-    
+
     # Should either be valid or fail gracefully
     if user.valid?
       assert user.save
@@ -270,10 +270,10 @@ class UserTest < ActiveSupport::TestCase
   test "should handle unicode characters in email" do
     unicode_emails = [
       "tëst@example.com",
-      "用户@example.com", 
+      "用户@example.com",
       "user@exämple.com"
     ]
-    
+
     unicode_emails.each do |email|
       user = User.new(@valid_attributes.merge(email_address: email))
       # Should either be valid or fail gracefully with clear error
@@ -291,20 +291,20 @@ class UserTest < ActiveSupport::TestCase
   # Performance Tests
   test "should create user efficiently" do
     start_time = Time.current
-    
+
     User.create!(@valid_attributes.merge(email_address: "performance@test.com"))
-    
+
     end_time = Time.current
     assert (end_time - start_time) < 1.second, "User creation should be fast"
   end
 
   test "should find user by email efficiently" do
     user = User.create!(@valid_attributes.merge(email_address: "findme@test.com"))
-    
+
     start_time = Time.current
     found_user = User.find_by(email_address: "findme@test.com")
     end_time = Time.current
-    
+
     assert_equal user.id, found_user.id
     assert (end_time - start_time) < 0.1.seconds, "User lookup should be very fast"
   end
@@ -312,11 +312,11 @@ class UserTest < ActiveSupport::TestCase
   # Database Constraint Tests
   test "should handle database level email uniqueness constraint" do
     User.create!(@valid_attributes)
-    
+
     # Try to bypass ActiveRecord validations and insert duplicate directly
     assert_raises ActiveRecord::RecordNotUnique do
       User.connection.execute(
-        "INSERT INTO users (email_address, password_digest, created_at, updated_at) 
+        "INSERT INTO users (email_address, password_digest, created_at, updated_at)
          VALUES ('#{@valid_attributes[:email_address]}', 'fake_digest', datetime('now'), datetime('now'))"
       )
     end
@@ -326,7 +326,7 @@ class UserTest < ActiveSupport::TestCase
     # Simulate concurrent user creation attempts
     threads = []
     results = []
-    
+
     5.times do |i|
       threads << Thread.new do
         begin
@@ -337,9 +337,9 @@ class UserTest < ActiveSupport::TestCase
         end
       end
     end
-    
+
     threads.each(&:join)
-    
+
     # All user creations should succeed
     assert results.all? { |result| result == true }
   end

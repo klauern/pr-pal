@@ -19,7 +19,7 @@ class PullRequestReviewsController < ApplicationController
 
     # Find or create the PullRequest record first
     pr_params = pull_request_review_params
-    
+
     # Handle case where github_pr_id is nil or invalid
     if pr_params[:github_pr_id].present?
       @pull_request = @repository.pull_requests.find_or_create_by!(

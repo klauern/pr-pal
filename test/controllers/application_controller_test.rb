@@ -76,7 +76,7 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
   test "should allow various modern browsers" do
     # Test with a known modern Chrome user agent that should work
     modern_user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-    
+
     get root_path, headers: { "HTTP_USER_AGENT" => modern_user_agent }
     assert_response :success, "Modern Chrome browser should be allowed"
   end
@@ -89,7 +89,7 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
       "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko", # IE 11
       "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36" # Old Chrome
     ]
-    
+
     outdated_user_agents.each do |user_agent|
       get root_path, headers: { "HTTP_USER_AGENT" => user_agent }
       assert_response :unprocessable_entity, "Outdated browser should be blocked: #{user_agent}"
@@ -117,14 +117,14 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
       github_pr_url: "https://github.com/test/repo/pull/999",
       github_pr_title: "Test PR for cleanup"
     )
-    
+
     # Delete one of the PR reviews
     other_review.destroy
-    
+
     # Test behavior functionally - cleanup should handle deleted reviews without crashing
     get root_path
     assert_response :success
-    
+
     # Test passes if no errors occur during cleanup
     assert_not_nil response.body
   end
@@ -133,7 +133,7 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
     # Test behavior functionally - cleanup should not crash with invalid data
     get root_path
     assert_response :success
-    
+
     # Test passes if no errors occur during cleanup
     assert_not_nil response.body
   end
@@ -142,7 +142,7 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
     # Test behavior functionally - cleanup should handle malformed IDs without crashing
     get root_path
     assert_response :success
-    
+
     # Test passes if no errors occur during cleanup
     assert_not_nil response.body
   end
@@ -152,7 +152,7 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
     # since integration tests don't reliably reflect session changes from before_actions
     get root_path
     assert_response :success
-    
+
     # Test passes if no errors occur during cleanup
     assert_not_nil response.body
   end
@@ -161,7 +161,7 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
     # Test behavior functionally - cleanup should handle duplicates without crashing
     get root_path
     assert_response :success
-    
+
     # Test passes if no errors occur during cleanup
     assert_not_nil response.body
   end
@@ -169,11 +169,11 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
   test "should handle cleanup when user has no PR reviews" do
     # Delete all PR reviews for the user
     @user.pull_request_reviews.destroy_all
-    
+
     # Test behavior functionally - cleanup should handle missing reviews without crashing
     get root_path
     assert_response :success
-    
+
     # Test passes if no errors occur during cleanup
     assert_not_nil response.body
   end
@@ -181,7 +181,7 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
   test "should handle cleanup with nil Current.user" do
     # Log out to make Current.user nil
     delete session_url
-    
+
     # Should redirect to login without crashing
     get root_path
     assert_redirected_to demo_login_url
@@ -192,7 +192,7 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
     # The cleanup method should handle database errors gracefully
     get root_path
     assert_response :success
-    
+
     # Test passes if no errors occur
     assert_not_nil response.body
   end
@@ -202,7 +202,7 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
     start_time = Time.current
     get root_path
     end_time = Time.current
-    
+
     assert_response :success
     assert (end_time - start_time) < 2.seconds, "Page load should be fast"
     assert_not_nil response.body
@@ -212,14 +212,14 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
     # Test that cleanup handles nil session gracefully
     get root_path
     assert_response :success
-    
+
     # Test passes if no errors occur
     assert_not_nil response.body
   end
 
   test "should skip cleanup when user is not signed in" do
     delete session_url # Log out
-    
+
     # Unauthenticated users should be redirected without errors
     get root_path
     assert_redirected_to demo_login_url
@@ -229,7 +229,7 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
     # Test that cleanup activities are logged without errors
     get root_path
     assert_response :success
-    
+
     # Test passes if no errors occur during logging
     assert_not_nil response.body
   end
@@ -238,7 +238,7 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
     # Test that cleanup doesn't crash under normal conditions
     get root_path
     assert_response :success
-    
+
     # Test passes if no errors occur
     assert_not_nil response.body
   end
@@ -264,11 +264,11 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
       github_pr_url: "https://github.com/other/repo/pull/888",
       github_pr_title: "Other user's PR"
     )
-    
+
     # Test behavior functionally - cleanup should handle cross-user tabs without crashing
     get root_path
     assert_response :success
-    
+
     # Test passes if no errors occur during cleanup
     assert_not_nil response.body
   end
@@ -283,7 +283,7 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
 
   test "user_signed_in? should return false when user is not present" do
     delete session_url # Log out
-    
+
     # Unauthenticated users should be redirected
     get root_path
     assert_redirected_to demo_login_url

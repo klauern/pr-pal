@@ -129,7 +129,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
         password: "password"
       }
       assert_redirected_to root_path
-      
+
       # Log out for next attempt
       delete session_url
     end
@@ -145,7 +145,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
       assert_redirected_to demo_login_path
       assert_equal "Try another email address or password.", flash[:alert]
     end
-    
+
     # 10th attempt should still work (not rate limited)
     post session_url, params: {
       email_address: @user.email_address,
@@ -158,7 +158,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     skip "Rate limiting test requires actual rate limiting enforcement"
     # Note: This test would require setting up actual rate limiting storage
     # and making 11+ requests within 3 minutes to trigger the limit
-    
+
     # 10 failed attempts
     10.times do
       post session_url, params: {
@@ -166,7 +166,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
         password: "wrong_password"
       }
     end
-    
+
     # 11th attempt should be rate limited
     post session_url, params: {
       email_address: @user.email_address,
@@ -194,11 +194,11 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
       password: "password"
     }
     assert_redirected_to root_path
-    
+
     # Delete the user while session exists
     user_id = @user.id
     @user.destroy
-    
+
     # Next request should handle missing user gracefully
     get root_path
     assert_redirected_to demo_login_url
@@ -207,7 +207,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   test "should handle concurrent login attempts" do
     threads = []
     results = []
-    
+
     # Simulate concurrent login attempts
     5.times do
       threads << Thread.new do
@@ -222,28 +222,28 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
         end
       end
     end
-    
+
     threads.each(&:join)
-    
+
     # All should succeed (or at least not crash)
-    assert results.all? { |result| result.is_a?(Integer) && [200, 302].include?(result) }
+    assert results.all? { |result| result.is_a?(Integer) && [ 200, 302 ].include?(result) }
   end
 
   test "should prevent session fixation attacks" do
     # Get initial session ID
     get demo_login_url
     initial_session = request.session_options[:id]
-    
+
     # Log in
     post session_url, params: {
       email_address: @user.email_address,
       password: "password"
     }
-    
+
     # Session ID should change after login (Rails handles this automatically)
     follow_redirect!
     new_session = request.session_options[:id]
-    
+
     # In production, Rails regenerates session ID, but in test it might not
     # Just ensure login succeeded
     assert_response :success
@@ -254,12 +254,12 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     post session_url, params: {}
     assert_redirected_to demo_login_path
     assert_equal "Try another email address or password.", flash[:alert]
-    
+
     # Test with nil parameters
     post session_url, params: { email_address: nil, password: nil }
     assert_redirected_to demo_login_path
     assert_equal "Try another email address or password.", flash[:alert]
-    
+
     # Test with empty parameters
     post session_url, params: { email_address: "", password: "" }
     assert_redirected_to demo_login_path
@@ -272,7 +272,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
       "'; DROP TABLE users; --",
       "admin'/**/OR/**/1=1/**/--"
     ]
-    
+
     malicious_inputs.each do |malicious_input|
       assert_nothing_raised do
         post session_url, params: {
@@ -288,7 +288,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
   test "should handle extremely long login parameters" do
     long_string = "a" * 10000
-    
+
     post session_url, params: {
       email_address: long_string,
       password: long_string
@@ -303,7 +303,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
       "test🚀@example.com",
       "test@例え.co.jp"
     ]
-    
+
     unicode_inputs.each do |unicode_input|
       post session_url, params: {
         email_address: unicode_input,
@@ -316,12 +316,12 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
   test "should properly sanitize error messages" do
     malicious_email = "<script>alert('xss')</script>@example.com"
-    
+
     post session_url, params: {
       email_address: malicious_email,
       password: "password"
     }
-    
+
     assert_redirected_to demo_login_path
     # Error message should not contain script tags
     follow_redirect!
@@ -331,7 +331,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   test "should handle case sensitivity in email" do
     # Test that login works with different cases
     uppercase_email = @user.email_address.upcase
-    
+
     post session_url, params: {
       email_address: uppercase_email,
       password: "password"
@@ -343,7 +343,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   test "should handle whitespace in email" do
     # Test login with leading/trailing whitespace
     spaced_email = "  #{@user.email_address}  "
-    
+
     post session_url, params: {
       email_address: spaced_email,
       password: "password"

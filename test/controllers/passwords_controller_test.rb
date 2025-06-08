@@ -66,9 +66,9 @@ class PasswordsControllerTest < ActionDispatch::IntegrationTest
   # Security edge cases
   test "should escape HTML in error messages to prevent XSS" do
     malicious_email = "<script>alert('xss')</script>@example.com"
-    
+
     post passwords_url, params: { email_address: malicious_email }
-    
+
     assert_response :redirect
     # Ensure no script tags are present in flash messages
     follow_redirect!
@@ -81,7 +81,7 @@ class PasswordsControllerTest < ActionDispatch::IntegrationTest
       "'; DROP TABLE users; --",
       "admin'/**/OR/**/1=1/**/--"
     ]
-    
+
     sql_injection_attempts.each do |malicious_email|
       assert_nothing_raised do
         post passwords_url, params: { email_address: malicious_email }
@@ -92,7 +92,7 @@ class PasswordsControllerTest < ActionDispatch::IntegrationTest
 
   test "should handle very long email input gracefully" do
     long_email = "a" * 1000 + "@example.com"
-    
+
     post passwords_url, params: { email_address: long_email }
     assert_response :redirect
     assert_equal "Password reset instructions sent (if user with that email address exists).", flash[:notice]
@@ -110,7 +110,7 @@ class PasswordsControllerTest < ActionDispatch::IntegrationTest
 
   test "should handle Unicode characters in email field" do
     unicode_email = "测试@example.com"
-    
+
     post passwords_url, params: { email_address: unicode_email }
     assert_response :redirect
     assert_equal "Password reset instructions sent (if user with that email address exists).", flash[:notice]

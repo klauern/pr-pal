@@ -38,7 +38,7 @@ class RepositoryTest < ActiveSupport::TestCase
   test "should enforce uniqueness of owner/name combination per user" do
     # Create first repository
     Repository.create!(@valid_attributes)
-    
+
     # Try to create second repository with same owner/name for same user
     duplicate_repository = Repository.new(@valid_attributes)
     assert_not duplicate_repository.valid?
@@ -47,7 +47,7 @@ class RepositoryTest < ActiveSupport::TestCase
   test "should allow same owner/name for different users" do
     # Create first repository for user one
     Repository.create!(@valid_attributes)
-    
+
     # Create same owner/name for different user - should be allowed
     other_user = users(:two)
     other_repository = Repository.new(@valid_attributes.merge(user: other_user))
@@ -56,17 +56,17 @@ class RepositoryTest < ActiveSupport::TestCase
 
   # Note: Repository model currently doesn't have format validations
   # These would be good to add in the future for security and GitHub API compatibility
-  
+
   test "should accept various owner formats" do
     valid_owners = [
       "user",
-      "user123", 
+      "user123",
       "user-name",
       "organization",
       "my-org-123",
       "user_name"  # underscores are allowed for now
     ]
-    
+
     valid_owners.each do |owner|
       repository = Repository.new(@valid_attributes.merge(owner: owner, name: "unique-#{owner}"))
       assert repository.valid?, "#{owner} should be valid"
@@ -81,7 +81,7 @@ class RepositoryTest < ActiveSupport::TestCase
       "awesome-project",
       "web-app-2024"
     ]
-    
+
     valid_names.each do |name|
       repository = Repository.new(@valid_attributes.merge(name: name, owner: "unique-#{name}"))
       assert repository.valid?, "#{name} should be valid"
@@ -191,7 +191,7 @@ class RepositoryTest < ActiveSupport::TestCase
     )
 
     older_repo = Repository.create!(
-      owner: "older", 
+      owner: "older",
       name: "older-repo",
       user: @user,
       created_at: 1.day.ago
@@ -206,7 +206,7 @@ class RepositoryTest < ActiveSupport::TestCase
   test "should handle very long owner and name" do
     long_owner = "a" * 39  # GitHub allows up to 39 chars
     long_name = "b" * 100  # GitHub allows up to 100 chars
-    
+
     repository = Repository.new(@valid_attributes.merge(owner: long_owner, name: long_name))
     # Should either be valid or fail gracefully
     assert_nothing_raised { repository.valid? }
@@ -217,7 +217,7 @@ class RepositoryTest < ActiveSupport::TestCase
   test "should handle unicode characters in owner and name" do
     unicode_owner = "tëst-owner"
     unicode_name = "tëst-repo"
-    
+
     repository = Repository.new(@valid_attributes.merge(owner: unicode_owner, name: unicode_name))
     # Should either be valid or fail gracefully
     assert_nothing_raised { repository.valid? }
@@ -228,7 +228,7 @@ class RepositoryTest < ActiveSupport::TestCase
   test "should handle case sensitivity in names" do
     # Create repository with lowercase
     Repository.create!(@valid_attributes.merge(owner: "testowner", name: "testrepo"))
-    
+
     # Try to create with different case
     different_case = Repository.new(@valid_attributes.merge(owner: "TestOwner", name: "TestRepo"))
     # GitHub repos are case sensitive, so this should be allowed
@@ -246,20 +246,20 @@ class RepositoryTest < ActiveSupport::TestCase
   # Performance Tests
   test "should create repository efficiently" do
     start_time = Time.current
-    
+
     Repository.create!(@valid_attributes.merge(owner: "performance", name: "test"))
-    
+
     end_time = Time.current
     assert (end_time - start_time) < 1.second, "Repository creation should be fast"
   end
 
   test "should find repository by owner/name efficiently" do
     repo = Repository.create!(@valid_attributes.merge(owner: "findme", name: "quickly"))
-    
+
     start_time = Time.current
     found_repo = Repository.find_by(owner: "findme", name: "quickly")
     end_time = Time.current
-    
+
     assert_equal repo.id, found_repo.id
     assert (end_time - start_time) < 0.1.seconds, "Repository lookup should be very fast"
   end
@@ -271,12 +271,12 @@ class RepositoryTest < ActiveSupport::TestCase
     # Simulate concurrent repository creation attempts with unique names
     threads = []
     results = []
-    
+
     5.times do |i|
       threads << Thread.new do
         begin
           repo = Repository.create!(@valid_attributes.merge(
-            owner: "concurrent#{i}", 
+            owner: "concurrent#{i}",
             name: "test#{i}"  # Make names unique too
           ))
           results << repo.persisted?
@@ -285,9 +285,9 @@ class RepositoryTest < ActiveSupport::TestCase
         end
       end
     end
-    
+
     threads.each(&:join)
-    
+
     # All repository creations should succeed
     assert results.all? { |result| result == true }
   end
@@ -296,10 +296,10 @@ class RepositoryTest < ActiveSupport::TestCase
   test "should count pull_requests correctly" do
     # Clear any existing PRs from fixtures
     @repository.pull_requests.destroy_all
-    
+
     # Start with no PRs
     assert_equal 0, @repository.pull_requests.count
-    
+
     # Add some PRs
     3.times do |i|
       @repository.pull_requests.create!(
@@ -312,7 +312,7 @@ class RepositoryTest < ActiveSupport::TestCase
         github_updated_at: i.hours.ago
       )
     end
-    
+
     assert_equal 3, @repository.pull_requests.count
   end
 
@@ -320,10 +320,10 @@ class RepositoryTest < ActiveSupport::TestCase
     # Clear any existing data from fixtures
     @repository.pull_request_reviews.destroy_all
     @repository.pull_requests.destroy_all
-    
+
     # Start with no reviews
     assert_equal 0, @repository.pull_request_reviews.count
-    
+
     # Add some reviews with unique github_pr_ids
     2.times do |i|
       # Create a unique pull request for each review
@@ -336,7 +336,7 @@ class RepositoryTest < ActiveSupport::TestCase
         github_created_at: 1.day.ago,
         github_updated_at: 1.hour.ago
       )
-      
+
       @repository.pull_request_reviews.create!(
         user: @user,
         pull_request: pr,
@@ -345,7 +345,7 @@ class RepositoryTest < ActiveSupport::TestCase
         github_pr_title: "Test PR #{i}"
       )
     end
-    
+
     assert_equal 2, @repository.pull_request_reviews.count
   end
 
@@ -361,7 +361,7 @@ class RepositoryTest < ActiveSupport::TestCase
       github_created_at: 1.day.ago,
       github_updated_at: 1.hour.ago
     )
-    
+
     # Verify workflow completed
     assert @repository.pull_requests.any?
     assert_equal "Synced PR", pr.title

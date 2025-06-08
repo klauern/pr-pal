@@ -102,6 +102,57 @@ class GithubPullRequestDataProvider < PullRequestDataProvider
     )
   end
 
+  # Fetch CI/CD status checks for a PR (by head SHA)
+  def self.fetch_pr_ci_statuses(owner, repo, pr_number, user)
+    client = github_client(user)
+    repo_full_name = "#{owner}/#{repo}"
+
+    begin
+      pr = client.pull_request(repo_full_name, pr_number)
+      sha = pr.head.sha
+
+      # Fetch combined status (legacy status API)
+      combined_status = client.combined_status(repo_full_name, sha)
+      statuses = combined_status.statuses.map do |status|
+        {
+          type: :status,
+          context: status.context,
+          state: status.state, # success, failure, pending
+          description: status.description,
+          target_url: status.target_url
+        }
+      end
+
+      # Fetch check runs (GitHub Actions, etc.)
+      check_runs_resp = client.check_runs_for_ref(repo_full_name, sha)
+      check_runs = check_runs_resp.check_runs.map do |run|
+        {
+          type: :check_run,
+          name: run.name,
+          status: run.status, # queued, in_progress, completed
+          conclusion: run.conclusion, # success, failure, etc.
+          details_url: run.details_url,
+          output_title: run.output&.title,
+          output_summary: run.output&.summary
+        }
+      end
+
+      {
+        sha: sha,
+        statuses: statuses,
+        check_runs: check_runs
+      }
+    rescue Octokit::NotFound
+      raise NotFoundError, "PR or commit not found for CI status checks"
+    rescue Octokit::Unauthorized, Octokit::Forbidden
+      raise AuthenticationError, "Invalid GitHub token or insufficient permissions for CI status checks"
+    rescue Octokit::TooManyRequests
+      raise RateLimitError, "GitHub API rate limit exceeded for CI status checks"
+    rescue Octokit::Error => e
+      raise GitHubError, "GitHub API error (CI status checks): #{e.message}"
+    end
+  end
+
   private
 
   # Create basic PR review without GitHub API (fallback)

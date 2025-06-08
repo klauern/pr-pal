@@ -17,10 +17,34 @@ end
 repo1 = demo_user.repositories.find_or_create_by!(owner: "octocat", name: "Hello-World")
 repo2 = demo_user.repositories.find_or_create_by!(owner: "rails", name: "rails")
 
+# Create sample pull requests
+pr1 = repo1.pull_requests.find_or_create_by!(
+  github_pr_id: 123
+) do |pr|
+  pr.github_pr_url = "https://github.com/octocat/Hello-World/pull/123"
+  pr.title = "Add new authentication feature"
+  pr.state = "open"
+  pr.author = "octocat"
+  pr.github_created_at = 2.days.ago
+  pr.github_updated_at = 1.hour.ago
+end
+
+pr2 = repo2.pull_requests.find_or_create_by!(
+  github_pr_id: 456
+) do |pr|
+  pr.github_pr_url = "https://github.com/rails/rails/pull/456"
+  pr.title = "Improve database performance for ActiveRecord queries"
+  pr.state = "open"
+  pr.author = "rails"
+  pr.github_created_at = 3.days.ago
+  pr.github_updated_at = 30.minutes.ago
+end
+
 # Create sample PR reviews
 review1 = demo_user.pull_request_reviews.find_or_create_by!(
   repository: repo1,
-  github_pr_id: 123
+  github_pr_id: 123,
+  pull_request: pr1
 ) do |review|
   review.github_pr_url = "https://github.com/octocat/Hello-World/pull/123"
   review.github_pr_title = "Add new authentication feature"
@@ -31,7 +55,8 @@ end
 
 review2 = demo_user.pull_request_reviews.find_or_create_by!(
   repository: repo2,
-  github_pr_id: 456
+  github_pr_id: 456,
+  pull_request: pr2
 ) do |review|
   review.github_pr_url = "https://github.com/rails/rails/pull/456"
   review.github_pr_title = "Improve database performance for ActiveRecord queries"

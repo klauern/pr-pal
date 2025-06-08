@@ -5,7 +5,7 @@ class Repository < ApplicationRecord
 
   validates :owner, presence: true
   validates :name, presence: true
-  validates :owner, :name, uniqueness: { scope: :user_id }
+  validates :name, uniqueness: { scope: [ :owner, :user_id ], message: "has already been added for this owner" }
 
   def full_name
     "#{owner}/#{name}"

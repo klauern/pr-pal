@@ -26,67 +26,76 @@
     <div>
       <div class="flex justify-between items-center mb-4">
         <h2 class="text-xl font-semibold text-gray-800">Pull Requests</h2>
-        <span class="text-sm text-gray-500">
-          <%= pluralize(@repository.pull_requests.count, 'pull request') %> synced
-        </span>
+        <div class="flex items-center gap-2">
+          <span class="text-sm text-gray-500">
+            <%= pluralize(@pull_requests.count, 'pull request') %> <%= @show_all_prs ? 'shown' : 'open' %>
+          </span>
+          <% if @show_all_prs %>
+          <%= link_to 'Show Only Open', repository_path(@repository), class: 'text-xs px-2 py-1 rounded bg-gray-200 hover:bg-gray-300 text-gray-700' %>
+          <% else %>
+          <%= link_to 'Show All', repository_path(@repository, show: 'all'), class: 'text-xs px-2 py-1 rounded bg-gray-200 hover:bg-gray-300 text-gray-700' %>
+          <% end %>
+        </div>
       </div>
 
-      <% if @repository.pull_requests.any? %>
-        <div class="space-y-3">
-          <% @repository.pull_requests.order(github_created_at: :desc).each do |pr| %>
-            <div class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors">
-              <div class="flex justify-between items-start">
-                <div class="flex-1">
-                  <div class="flex items-center space-x-2 mb-2">
-                    <h3 class="text-lg font-medium text-gray-900">
-                      <a href="<%= pr.github_pr_url %>" target="_blank" class="hover:text-blue-600">
-                        #<%= pr.github_pr_id %> - <%= pr.title %>
-                      </a>
-                    </h3>
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+      <% if @pull_requests.any? %>
+      <div class="space-y-3">
+        <% @pull_requests.each do |pr| %>
+        <div class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors">
+          <div class="flex justify-between items-start">
+            <div class="flex-1">
+              <div class="flex items-center space-x-2 mb-2">
+                <h3 class="text-lg font-medium text-gray-900">
+                  <a href="<%= pr.github_pr_url %>" target="_blank" class="hover:text-blue-600">
+                    #<%= pr.github_pr_id %> - <%= pr.title %>
+                  </a>
+                </h3>
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
                       <%= pr.state == 'open' ? 'bg-green-100 text-green-800' :
                           pr.state == 'closed' ? 'bg-red-100 text-red-800' :
                           'bg-purple-100 text-purple-800' %>">
-                      <%= pr.state.capitalize %>
-                    </span>
-                  </div>
-                  <div class="text-sm text-gray-600 mb-2">
-                    by <span class="font-medium"><%= pr.author %></span>
-                    • Created <%= time_ago_in_words(pr.github_created_at) %> ago
-                    <% if pr.github_updated_at != pr.github_created_at %>
-                      • Updated <%= time_ago_in_words(pr.github_updated_at) %> ago
-                    <% end %>
-                  </div>
-                  <% if pr.body.present? %>
-                    <div class="text-sm text-gray-700 line-clamp-2">
-                      <%= truncate(pr.body, length: 200) %>
-                    </div>
-                  <% end %>
-                </div>
-                <div class="ml-4 flex-shrink-0">
-                  <div class="text-xs text-gray-500">
-                    Updated: <%= time_ago_in_words(pr.github_updated_at) %> ago
-                  </div>
-                </div>
+                  <%= pr.state.capitalize %>
+                </span>
               </div>
+              <div class="text-sm text-gray-600 mb-2">
+                by <span class="font-medium"><%= pr.author %></span>
+                • Created <%= time_ago_in_words(pr.github_created_at) %> ago
+                <% if pr.github_updated_at != pr.github_created_at %>
+                • Updated <%= time_ago_in_words(pr.github_updated_at) %> ago
+                <% end %>
+              </div>
+              <% if pr.body.present? %>
+              <div class="text-sm text-gray-700 line-clamp-2">
+                <%= truncate(pr.body, length: 200) %>
+              </div>
+              <% end %>
             </div>
-          <% end %>
-        </div>
-      <% else %>
-        <div class="text-center py-8 text-gray-500">
-          <div class="mb-4">
-            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
+            <div class="ml-4 flex flex-col items-end gap-2">
+              <div class="text-xs text-gray-500 mb-2">
+                Updated: <%= time_ago_in_words(pr.github_updated_at) %> ago
+              </div>
+              <%= link_to 'Review', "/repos/#{@repository.owner}/#{@repository.name}/reviews/#{pr.github_pr_id}",
+                class: 'inline-flex items-center px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md transition-colors' %>
+            </div>
           </div>
-          <h3 class="text-lg font-medium text-gray-900 mb-2">No Pull Requests</h3>
-          <p class="text-gray-500 mb-4">
-            No pull requests have been synced for this repository yet.
-          </p>
-          <p class="text-sm text-gray-400">
-            Click the "Sync Repository" button above to fetch pull requests from GitHub.
-          </p>
         </div>
+        <% end %>
+      </div>
+      <% else %>
+      <div class="text-center py-8 text-gray-500">
+        <div class="mb-4">
+          <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+        </div>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">No Pull Requests</h3>
+        <p class="text-gray-500 mb-4">
+          No pull requests have been synced for this repository yet.
+        </p>
+        <p class="text-sm text-gray-400">
+          Click the "Sync Repository" button above to fetch pull requests from GitHub.
+        </p>
+      </div>
       <% end %>
     </div>
 
@@ -100,27 +109,27 @@
       </div>
 
       <% if @pull_request_reviews.any? %>
-        <div class="space-y-3">
-          <% @pull_request_reviews.each do |pr_review| %>
-            <%= render 'pull_request_review_item', pr_review: pr_review %>
-          <% end %>
-        </div>
+      <div class="space-y-3">
+        <% @pull_request_reviews.each do |pr_review| %>
+        <%= render 'pull_request_review_item', pr_review: pr_review %>
+        <% end %>
+      </div>
       <% else %>
-        <div class="text-center py-8 text-gray-500">
-          <div class="mb-4">
-            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-          </div>
-          <h3 class="text-lg font-medium text-gray-900 mb-2">No Pull Request Reviews</h3>
-          <p class="text-gray-500 mb-4">
-            No pull requests have been reviewed for this repository yet.
-          </p>
-          <p class="text-sm text-gray-400">
-            Pull request reviews are created automatically when you navigate to them using the direct URL pattern:<br>
-            <code class="bg-gray-100 px-2 py-1 rounded">/repos/<%= @repository.owner %>/<%= @repository.name %>/reviews/{pr_number}</code>
-          </p>
+      <div class="text-center py-8 text-gray-500">
+        <div class="mb-4">
+          <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
         </div>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">No Pull Request Reviews</h3>
+        <p class="text-gray-500 mb-4">
+          No pull requests have been reviewed for this repository yet.
+        </p>
+        <p class="text-sm text-gray-400">
+          Pull request reviews are created automatically when you navigate to them using the direct URL pattern:<br>
+          <code class="bg-gray-100 px-2 py-1 rounded">/repos/<%= @repository.owner %>/<%= @repository.name %>/reviews/{pr_number}</code>
+        </p>
+      </div>
       <% end %>
     </div>
 

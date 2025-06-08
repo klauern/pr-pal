@@ -31,11 +31,25 @@ class GithubPullRequestDataProvider < PullRequestDataProvider
       begin
         pr_data = fetch_pr_details(owner, name, pr_number, user)
 
+        # Find or create the PullRequest record
+        pull_request = repository.pull_requests.find_or_create_by!(
+          github_pr_id: pr_number
+        ) do |pr|
+          pr.title = pr_data[:title]
+          pr.body = pr_data[:body]
+          pr.state = pr_data[:state]
+          pr.author = pr_data[:user]
+          pr.github_pr_url = pr_data[:html_url]
+          pr.github_created_at = pr_data[:created_at]
+          pr.github_updated_at = pr_data[:updated_at]
+        end
+
         pull_request_review.assign_attributes(
           github_pr_title: pr_data[:title],
           github_pr_url: pr_data[:html_url],
           status: "in_progress",
-          last_synced_at: Time.current
+          last_synced_at: Time.current,
+          pull_request: pull_request
         )
 
         unless pull_request_review.save

@@ -35,6 +35,15 @@
 
 ## ✅ Recently Completed
 
+### PR Review Creation & UI Improvements (2025-06)
+
+1. ✅ **PR Review Creation from PR List** - Users can now start a review for any PR directly from the repository page using the 'Review' button. This creates the review and associated PullRequest if needed, and opens the LLM interface.
+2. ✅ **Bugfix: pull_request Association** - Fixed a bug where reviews were not being created due to missing pull_request association. Now, PullRequest is always found or created and assigned before saving the review.
+3. ✅ **UI/UX Improvements** - Repository page defaults to showing only open PRs, with a toggle to show all. Each PR row has a 'Review' button for starting or continuing a review.
+4. ✅ **CI/CD Status Indicators** - PRs now show CI/CD status badges in the UI.
+5. ✅ **Error Handling** - If review creation fails, the user now sees the actual error message in the UI.
+6. ✅ **Tested and Verified** - All changes tested and verified in the UI and with automated tests. Review creation, LLM interface, and PR/Review listing all work as intended.
+
 ### GitHub API Integration (COMPLETED)
 
 1. ✅ **Octokit.rb Integration** - Added Octokit gem for GitHub API access

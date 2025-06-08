@@ -21,12 +21,43 @@
           </span>
         </div>
 
+        <%# CI/CD Status Badge %>
+        <% if pr_review.ci_status.present? && pr_review.ci_status != 'none' %>
+        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium
+            <%= case pr_review.ci_status
+                when 'success' then 'bg-green-100 text-green-800'
+                when 'pending' then 'bg-yellow-100 text-yellow-800'
+                when 'failure' then 'bg-red-100 text-red-800'
+                else 'bg-gray-100 text-gray-800' end %>">
+          <%# Icon %>
+          <% if pr_review.ci_status == 'success' %>
+          <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          <% elsif pr_review.ci_status == 'pending' %>
+          <svg class="h-4 w-4 mr-1 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none" />
+            <path d="M4 12a8 8 0 018-8" stroke="currentColor" stroke-width="4" fill="none" />
+          </svg>
+          <% elsif pr_review.ci_status == 'failure' %>
+          <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+          <% else %>
+          <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none" />
+          </svg>
+          <% end %>
+          <%= pr_review.ci_status.capitalize %>
+        </span>
+        <% end %>
+
         <% if pr_review.last_viewed_at %>
-          <span>Last viewed <%= time_ago_in_words(pr_review.last_viewed_at) %> ago</span>
+        <span>Last viewed <%= time_ago_in_words(pr_review.last_viewed_at) %> ago</span>
         <% end %>
 
         <% if pr_review.total_message_count > 0 %>
-          <span><%= pluralize(pr_review.total_message_count, 'message') %></span>
+        <span><%= pluralize(pr_review.total_message_count, 'message') %></span>
         <% end %>
       </div>
     </div>
@@ -35,8 +66,7 @@
       <%= link_to "Review", pull_request_review_path(pr_review),
           class: "inline-flex items-center px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md transition-colors" %>
 
-      <a href="<%= pr_review.github_pr_url %>" target="_blank"
-         class="inline-flex items-center px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-md transition-colors">
+      <a href="<%= pr_review.github_pr_url %>" target="_blank" class="inline-flex items-center px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-md transition-colors">
         GitHub
         <svg class="ml-1 h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />

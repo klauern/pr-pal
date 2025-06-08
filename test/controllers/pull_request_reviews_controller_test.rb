@@ -472,9 +472,10 @@ class PullRequestReviewsControllerTest < ActionDispatch::IntegrationTest
       @pull_request_review.update!(ci_status: status)
       get pull_request_review_url(@pull_request_review)
       if status == "none"
-        assert_no_match(/#{css_class}/, response.body, "Should not show CI/CD badge for 'none'")
+        # Should not render the badge at all
+        assert_no_match(/data-testid=\"ci-status-badge\"/, response.body, "Should not show CI/CD badge for 'none'")
       else
-        assert_match(/#{css_class}/, response.body, "Should show CI/CD badge for '#{status}'")
+        assert_match(/<span[^>]*data-testid=\"ci-status-badge\"[^>]*class=\"[^"]*#{css_class}/, response.body, "Should show CI/CD badge for '#{status}'")
         assert_match(/#{status.capitalize}/, response.body, "Should show status text for '#{status}'")
       end
     end

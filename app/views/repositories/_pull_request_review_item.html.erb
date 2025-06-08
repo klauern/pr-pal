@@ -23,7 +23,7 @@
 
         <%# CI/CD Status Badge %>
         <% if pr_review.ci_status.present? && pr_review.ci_status != 'none' %>
-        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium
+        <span data-testid="ci-status-badge" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium
             <%= case pr_review.ci_status
                 when 'success' then 'bg-green-100 text-green-800'
                 when 'pending' then 'bg-yellow-100 text-yellow-800'

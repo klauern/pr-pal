@@ -1,0 +1,1 @@
+- run all rake, rails, etc. apps from the ./bin/ folder

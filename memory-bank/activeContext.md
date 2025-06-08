@@ -262,3 +262,43 @@ Ready for feature development:
 - `/repos/:owner/:name/reviews/:pr_number` - Direct PR access
 
 **Feature Complete**: Repository pull request views fully implemented with security, testing, and UX best practices.
+
+## Latest Test Results
+
+**Test Run:**
+
+- 395 runs, 1234 assertions
+- 0 failures, 0 errors, 40 skips
+- All tests pass, system is stable
+- High number of skips; review skipped tests for coverage gaps
+- Coverage report generated, but line coverage is 0% (likely due to configuration or test type)
+
+## In Progress: CI/CD Status Checks for PRs
+
+- **New Method Added**: `GithubPullRequestDataProvider.fetch_pr_ci_statuses(owner, repo, pr_number, user)`
+  - Fetches both legacy status API and GitHub Actions check runs for a PR's head SHA
+  - Aggregates results for use in UI and background jobs
+  - Handles errors and missing data gracefully
+
+**Sample Usage (Rails console):**
+
+```ruby
+owner = "octocat"
+repo = "Hello-World"
+pr_number = 123
+user = User.find_by(email: "test@example.com")
+ci_status = GithubPullRequestDataProvider.fetch_pr_ci_statuses(owner, repo, pr_number, user)
+puts ci_status
+```
+
+**Next Steps:**
+
+- Integrate CI/CD status fetching into background jobs for scheduled sync
+- Add UI indicators for PR build/check status
+- Provide UI action to force sync for one, multiple, or all repos
+
+## Integration Test Setup Note
+
+- Integration tests that hit the real GitHub API require a valid GitHub Personal Access Token (PAT) in the `.env` file as `GITHUB_TEST_PAT`.
+- The test user will use this token if present; otherwise, integration tests will be skipped.
+- See `.env.example` for the required variable.

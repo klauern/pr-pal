@@ -1,5 +1,6 @@
 class Repository < ApplicationRecord
   belongs_to :user
+  has_many :pull_requests, dependent: :destroy
   has_many :pull_request_reviews, dependent: :destroy
 
   validates :owner, presence: true

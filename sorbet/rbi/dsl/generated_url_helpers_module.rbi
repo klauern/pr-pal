@@ -148,6 +148,9 @@ module GeneratedUrlHelpersModule
   def repository_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def reset_tabs_pull_request_reviews_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def reset_tabs_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -161,6 +164,15 @@ module GeneratedUrlHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def settings_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def show_by_details_pull_request_reviews_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def sync_all_repositories_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def sync_repository_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def turbo_recede_historical_location_url(*args); end

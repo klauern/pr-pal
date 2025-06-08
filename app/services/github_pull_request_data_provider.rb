@@ -151,4 +151,51 @@ class GithubPullRequestDataProvider < PullRequestDataProvider
       per_page: 100
     )
   end
+
+  # Fetch all pull requests for a repository
+  def self.fetch_repository_pull_requests(repository, user)
+    return [] unless user.github_token_configured?
+
+    begin
+      client = github_client(user)
+      repo_full_name = repository.full_name
+
+      Rails.logger.info "🔗 Fetching PRs for #{repo_full_name}"
+
+      # Fetch open PRs
+      prs = client.pull_requests(repo_full_name, state: "open")
+
+      # Also fetch recently closed/merged PRs (last 30 days)
+      closed_prs = client.pull_requests(repo_full_name, state: "closed", sort: "updated", direction: "desc")
+      recent_closed = closed_prs.select { |pr| pr.updated_at > 30.days.ago }
+
+      all_prs = prs + recent_closed
+
+      # Convert to our format
+      all_prs.map do |pr|
+        {
+          github_pr_number: pr.number,
+          title: pr.title,
+          body: pr.body,
+          state: pr.state,
+          author: pr.user.login,
+          github_url: pr.html_url,
+          github_created_at: pr.created_at,
+          github_updated_at: pr.updated_at
+        }
+      end
+    rescue Octokit::NotFound
+      Rails.logger.warn "Repository #{repo_full_name} not found"
+      []
+    rescue Octokit::Unauthorized, Octokit::Forbidden
+      Rails.logger.warn "Unauthorized access to #{repo_full_name}"
+      []
+    rescue Octokit::TooManyRequests
+      Rails.logger.warn "Rate limit exceeded for #{repo_full_name}"
+      []
+    rescue Octokit::Error => e
+      Rails.logger.error "GitHub API error for #{repo_full_name}: #{e.message}"
+      []
+    end
+  end
 end

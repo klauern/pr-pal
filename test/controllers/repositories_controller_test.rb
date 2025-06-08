@@ -33,15 +33,37 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
     post session_url, params: { email_address: @user.email_address, password: "password" }
 
     # Create some pull request reviews for the repository
+    pull_request1 = PullRequest.create!(
+      repository: @repository,
+      github_pr_id: 1,
+      github_pr_url: "https://github.com/test/repo/pull/1",
+      title: "Test PR 1",
+      state: "open",
+      author: "testuser",
+      github_created_at: 2.days.ago,
+      github_updated_at: 1.day.ago
+    )
     pr1 = @repository.pull_request_reviews.create!(
       user: @user,
+      pull_request: pull_request1,
       github_pr_id: 1,
       github_pr_url: "https://github.com/test/repo/pull/1",
       github_pr_title: "Test PR 1",
       status: "in_progress"
     )
+    pull_request2 = PullRequest.create!(
+      repository: @repository,
+      github_pr_id: 2,
+      github_pr_url: "https://github.com/test/repo/pull/2",
+      title: "Test PR 2",
+      state: "open",
+      author: "testuser",
+      github_created_at: 3.days.ago,
+      github_updated_at: 2.hours.ago
+    )
     pr2 = @repository.pull_request_reviews.create!(
       user: @user,
+      pull_request: pull_request2,
       github_pr_id: 2,
       github_pr_url: "https://github.com/test/repo/pull/2",
       github_pr_title: "Test PR 2",
@@ -159,27 +181,60 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
     post session_url, params: { email_address: @user.email_address, password: "password" }
 
     # Create PR reviews for the repository
+    pull_request1 = PullRequest.create!(
+      repository: @repository,
+      github_pr_id: 101,
+      github_pr_url: "https://github.com/test/repo/pull/101",
+      title: "Test PR 1",
+      state: "open",
+      author: "testuser",
+      github_created_at: 2.days.ago,
+      github_updated_at: 1.day.ago
+    )
     pr1 = @repository.pull_request_reviews.create!(
       user: @user,
-      github_pr_id: 1,
-      github_pr_url: "https://github.com/test/repo/pull/1",
+      pull_request: pull_request1,
+      github_pr_id: 101,
+      github_pr_url: "https://github.com/test/repo/pull/101",
       github_pr_title: "Test PR 1",
       status: "in_progress"
     )
+    pull_request2 = PullRequest.create!(
+      repository: @repository,
+      github_pr_id: 102,
+      github_pr_url: "https://github.com/test/repo/pull/102",
+      title: "Test PR 2",
+      state: "open",
+      author: "testuser",
+      github_created_at: 3.days.ago,
+      github_updated_at: 2.hours.ago
+    )
     pr2 = @repository.pull_request_reviews.create!(
       user: @user,
-      github_pr_id: 2,
-      github_pr_url: "https://github.com/test/repo/pull/2",
+      pull_request: pull_request2,
+      github_pr_id: 102,
+      github_pr_url: "https://github.com/test/repo/pull/102",
       github_pr_title: "Test PR 2",
       status: "in_progress"
     )
 
     # Create another repository with a PR review that should NOT be affected
     other_repo = @user.repositories.create!(owner: "other", name: "repo")
+    other_pull_request = PullRequest.create!(
+      repository: other_repo,
+      github_pr_id: 103,
+      github_pr_url: "https://github.com/other/repo/pull/103",
+      title: "Other PR",
+      state: "open",
+      author: "testuser",
+      github_created_at: 1.day.ago,
+      github_updated_at: 12.hours.ago
+    )
     other_pr = other_repo.pull_request_reviews.create!(
       user: @user,
-      github_pr_id: 3,
-      github_pr_url: "https://github.com/other/repo/pull/3",
+      pull_request: other_pull_request,
+      github_pr_id: 103,
+      github_pr_url: "https://github.com/other/repo/pull/103",
       github_pr_title: "Other PR",
       status: "in_progress"
     )
@@ -208,10 +263,21 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
     post session_url, params: { email_address: @user.email_address, password: "password" }
 
     # Create PR review for the repository
+    pull_request = PullRequest.create!(
+      repository: @repository,
+      github_pr_id: 104,
+      github_pr_url: "https://github.com/test/repo/pull/104",
+      title: "Test PR",
+      state: "open",
+      author: "testuser",
+      github_created_at: 2.days.ago,
+      github_updated_at: 1.day.ago
+    )
     pr = @repository.pull_request_reviews.create!(
       user: @user,
-      github_pr_id: 1,
-      github_pr_url: "https://github.com/test/repo/pull/1",
+      pull_request: pull_request,
+      github_pr_id: 104,
+      github_pr_url: "https://github.com/test/repo/pull/104",
       github_pr_title: "Test PR",
       status: "in_progress"
     )
@@ -240,17 +306,39 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
     initial_pr_count = @repository.pull_request_reviews.count
 
     # Create additional PR reviews for the repository
+    pull_request1 = PullRequest.create!(
+      repository: @repository,
+      github_pr_id: 105,
+      github_pr_url: "https://github.com/test/repo/pull/105",
+      title: "Test PR 1",
+      state: "open",
+      author: "testuser",
+      github_created_at: 2.days.ago,
+      github_updated_at: 1.day.ago
+    )
     pr1 = @repository.pull_request_reviews.create!(
       user: @user,
-      github_pr_id: 1,
-      github_pr_url: "https://github.com/test/repo/pull/1",
+      pull_request: pull_request1,
+      github_pr_id: 105,
+      github_pr_url: "https://github.com/test/repo/pull/105",
       github_pr_title: "Test PR 1",
       status: "in_progress"
     )
+    pull_request2 = PullRequest.create!(
+      repository: @repository,
+      github_pr_id: 106,
+      github_pr_url: "https://github.com/test/repo/pull/106",
+      title: "Test PR 2",
+      state: "open",
+      author: "testuser",
+      github_created_at: 3.days.ago,
+      github_updated_at: 2.hours.ago
+    )
     pr2 = @repository.pull_request_reviews.create!(
       user: @user,
-      github_pr_id: 2,
-      github_pr_url: "https://github.com/test/repo/pull/2",
+      pull_request: pull_request2,
+      github_pr_id: 106,
+      github_pr_url: "https://github.com/test/repo/pull/106",
       github_pr_title: "Test PR 2",
       status: "in_progress"
     )
@@ -269,10 +357,21 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
     post session_url, params: { email_address: @user.email_address, password: "password" }
 
     # Create PR review for the repository
+    pull_request = PullRequest.create!(
+      repository: @repository,
+      github_pr_id: 107,
+      github_pr_url: "https://github.com/test/repo/pull/107",
+      title: "Test PR",
+      state: "open",
+      author: "testuser",
+      github_created_at: 2.days.ago,
+      github_updated_at: 1.day.ago
+    )
     pr = @repository.pull_request_reviews.create!(
       user: @user,
-      github_pr_id: 1,
-      github_pr_url: "https://github.com/test/repo/pull/1",
+      pull_request: pull_request,
+      github_pr_id: 107,
+      github_pr_url: "https://github.com/test/repo/pull/107",
       github_pr_title: "Test PR",
       status: "in_progress"
     )
@@ -287,5 +386,81 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to root_path(tab: "repositories")
+  end
+
+  test "should sync repository when authenticated" do
+    post session_url, params: { email_address: @user.email_address, password: "password" }
+
+    # Mock the job to prevent actual execution
+    assert_enqueued_with(job: PullRequestSyncJob, args: [ @repository.id ]) do
+      post sync_repository_url(@repository)
+    end
+
+    assert_redirected_to @repository
+    assert_equal "Repository sync started for #{@repository.full_name}. Pull requests will be updated in the background.", flash[:notice]
+  end
+
+  test "should sync all repositories when authenticated" do
+    post session_url, params: { email_address: @user.email_address, password: "password" }
+
+    # Create additional repository for the user
+    additional_repo = @user.repositories.create!(owner: "test", name: "additional")
+
+    # Instead of mocking, just verify the request succeeds
+    post sync_all_repositories_url
+
+    assert_redirected_to repositories_path
+    assert_equal "Sync started for all repositories. Pull requests will be updated in the background.", flash[:notice]
+  end
+
+  test "should not allow sync of another user's repository" do
+    other_user = users(:two)
+    other_repository = repositories(:two)
+
+    post session_url, params: { email_address: @user.email_address, password: "password" }
+
+    # Try to sync another user's repository
+    begin
+      post sync_repository_url(other_repository)
+      # If no exception is raised, check for error response
+      assert_response :not_found
+    rescue ActiveRecord::RecordNotFound
+      # This is also acceptable behavior
+      assert true
+    end
+  end
+
+  test "should redirect to login when syncing without authentication" do
+    post sync_repository_url(@repository)
+    assert_redirected_to demo_login_url
+  end
+
+  test "should redirect to login when syncing all without authentication" do
+    post sync_all_repositories_url
+    assert_redirected_to demo_login_url
+  end
+
+  test "should respond to turbo stream for individual repository sync" do
+    post session_url, params: { email_address: @user.email_address, password: "password" }
+
+    # Mock the job to prevent actual execution
+    assert_enqueued_with(job: PullRequestSyncJob, args: [ @repository.id ]) do
+      post sync_repository_url(@repository), headers: { "Accept" => "text/vnd.turbo-stream.html" }
+    end
+
+    assert_response :success
+    assert_match "turbo-stream", response.content_type
+    assert_includes response.body, "Repository sync started"
+  end
+
+  test "should respond to turbo stream for sync all repositories" do
+    post session_url, params: { email_address: @user.email_address, password: "password" }
+
+    # Just verify the request succeeds
+    post sync_all_repositories_url, headers: { "Accept" => "text/vnd.turbo-stream.html" }
+
+    assert_response :success
+    assert_match "turbo-stream", response.content_type
+    assert_includes response.body, "Sync started for all repositories"
   end
 end

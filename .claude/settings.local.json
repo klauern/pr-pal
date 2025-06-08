@@ -1,3 +1,24 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(bundle exec rake:*)",
+      "Bash(grep:*)",
+      "Bash(find:*)",
+      "Bash(rg:*)",
+      "Bash(bin/rails test:*)",
+      "Bash(bundle exec rails:*)",
+      "Bash(sed:*)",
+      "Bash(bin/rails:*)",
+      "Bash(rake test:*)",
+      "Bash(open:*)",
+      "Bash(rm:*)",
+      "Bash(./bin/rails test:coverage)",
+      "Bash(./bin/rails test)",
+      "Bash(mv:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh pr list:*)",
+      "Bash(gh api:*)"
+    ]
+  },
   "enableAllProjectMcpServers": false
 }

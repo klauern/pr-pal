@@ -347,7 +347,7 @@ class UserTest < ActiveSupport::TestCase
 
   def valid_user_attributes
     # Use a method to generate test credentials to avoid static analysis warnings
-    test_password = ["secure", "password", "123"].join
+    test_password = [ "secure", "password", "123" ].join
     {
       email_address: "test@example.com",
       password: test_password,

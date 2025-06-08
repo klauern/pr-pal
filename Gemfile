@@ -47,6 +47,9 @@ gem "thruster", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
+# Add ruby_llm gem for LLM management integration
+gem "ruby_llm"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
@@ -58,7 +61,7 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false
 
   # Generate RBI files for better Sorbet integration [https://github.com/Shopify/tapioca]
-  gem "tapioca", require: false
+  gem "tapioca", ">= 0.17.1"
 end
 
 group :development do

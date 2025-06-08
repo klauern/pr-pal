@@ -33,19 +33,19 @@ module Selenium::WebDriver
     # @see Selenium::WebDriver::Firefox::Driver
     # @see Selenium::WebDriver::IE::Driver
     #
-    # source://selenium-webdriver//lib/selenium/webdriver.rb#88
-    def for(*args); end
+    # source://selenium-webdriver//lib/selenium/webdriver.rb#87
+    def for(*_arg0); end
 
     # Returns logger instance that can be used across the whole Selenium.
     #
     # @return [Logger]
     #
-    # source://selenium-webdriver//lib/selenium/webdriver.rb#98
-    def logger(**opts); end
+    # source://selenium-webdriver//lib/selenium/webdriver.rb#97
+    def logger(**_arg0); end
 
     # @api private
     #
-    # source://selenium-webdriver//lib/selenium/webdriver.rb#51
+    # source://selenium-webdriver//lib/selenium/webdriver.rb#50
     def root; end
   end
 end
@@ -234,7 +234,7 @@ module Selenium::WebDriver::Atoms
   private
 
   # source://selenium-webdriver//lib/selenium/webdriver/atoms.rb#34
-  def execute_atom(function_name, *arguments); end
+  def execute_atom(function_name, *_arg1); end
 
   # source://selenium-webdriver//lib/selenium/webdriver/atoms.rb#30
   def read_atom(function); end
@@ -420,7 +420,7 @@ class Selenium::WebDriver::BiDi::ConsoleLogEntry < ::Selenium::WebDriver::BiDi::
   # @return [ConsoleLogEntry] a new instance of ConsoleLogEntry
   #
   # source://selenium-webdriver//lib/selenium/webdriver/bidi/log/console_log_entry.rb#26
-  def initialize(method:, realm:, args:, **opts); end
+  def initialize(method:, realm:, args:, **_arg3); end
 
   # Returns the value of attribute args.
   #
@@ -1118,7 +1118,7 @@ class Selenium::WebDriver::Chrome::Driver < ::Selenium::WebDriver::Chromium::Dri
   # @return [Driver] a new instance of Driver
   #
   # source://selenium-webdriver//lib/selenium/webdriver/chrome/driver.rb#33
-  def initialize(options: T.unsafe(nil), service: T.unsafe(nil), url: T.unsafe(nil), **opts); end
+  def initialize(options: T.unsafe(nil), service: T.unsafe(nil), url: T.unsafe(nil), **_arg3); end
 
   # @api private
   #
@@ -1288,7 +1288,7 @@ class Selenium::WebDriver::Chromium::Options < ::Selenium::WebDriver::Options
   # @return [Options] a new instance of Options
   #
   # source://selenium-webdriver//lib/selenium/webdriver/chromium/options.rb#70
-  def initialize(profile: T.unsafe(nil), **opts); end
+  def initialize(profile: T.unsafe(nil), **_arg1); end
 
   # Add a command-line argument to use when starting Chrome.
   #
@@ -1541,10 +1541,10 @@ class Selenium::WebDriver::Credential
     def from_json(opts); end
 
     # source://selenium-webdriver//lib/selenium/webdriver/common/virtual_authenticator/credential.rb#33
-    def non_resident(**opts); end
+    def non_resident(**_arg0); end
 
     # source://selenium-webdriver//lib/selenium/webdriver/common/virtual_authenticator/credential.rb#29
-    def resident(**opts); end
+    def resident(**_arg0); end
   end
 end
 
@@ -2070,7 +2070,7 @@ class Selenium::WebDriver::DevTools::Response
   end
 end
 
-# source://selenium-webdriver//lib/selenium/webdriver.rb#35
+# source://selenium-webdriver//lib/selenium/webdriver.rb#34
 class Selenium::WebDriver::Dimension < ::Struct
   # Returns the value of attribute height
   #
@@ -2122,7 +2122,7 @@ class Selenium::WebDriver::Driver
   # @return [Driver] a new instance of Driver
   #
   # source://selenium-webdriver//lib/selenium/webdriver/common/driver.rb#71
-  def initialize(bridge: T.unsafe(nil), listener: T.unsafe(nil), **opts); end
+  def initialize(bridge: T.unsafe(nil), listener: T.unsafe(nil), **_arg2); end
 
   # Get the first element matching the given selector. If given a
   # String or Symbol, it will be used as the id of the element.
@@ -2142,7 +2142,7 @@ class Selenium::WebDriver::Driver
   # @see ActionBuilder
   #
   # source://selenium-webdriver//lib/selenium/webdriver/common/driver.rb#134
-  def action(**opts); end
+  def action(**_arg0); end
 
   # @return [VirtualAuthenticator]
   # @see VirtualAuthenticator
@@ -2185,7 +2185,7 @@ class Selenium::WebDriver::Driver
   # @return [WebDriver::Element, Integer, Float, Boolean, NilClass, String, Array]
   #
   # source://selenium-webdriver//lib/selenium/webdriver/common/driver.rb#247
-  def execute_async_script(script, *args); end
+  def execute_async_script(script, *_arg1); end
 
   # Execute the given JavaScript
   #
@@ -2194,7 +2194,7 @@ class Selenium::WebDriver::Driver
   # @return [WebDriver::Element, Integer, Float, Boolean, NilClass, String, Array] The value returned from the script.
   #
   # source://selenium-webdriver//lib/selenium/webdriver/common/driver.rb#228
-  def execute_script(script, *args); end
+  def execute_script(script, *_arg1); end
 
   # driver.first(id: 'foo')
   #
@@ -2868,7 +2868,7 @@ class Selenium::WebDriver::Edge::Driver < ::Selenium::WebDriver::Chromium::Drive
   # @return [Driver] a new instance of Driver
   #
   # source://selenium-webdriver//lib/selenium/webdriver/edge/driver.rb#33
-  def initialize(options: T.unsafe(nil), service: T.unsafe(nil), url: T.unsafe(nil), **opts); end
+  def initialize(options: T.unsafe(nil), service: T.unsafe(nil), url: T.unsafe(nil), **_arg3); end
 
   # @api private
   #
@@ -3691,7 +3691,7 @@ class Selenium::WebDriver::Firefox::Driver < ::Selenium::WebDriver::Driver
   # @return [Driver] a new instance of Driver
   #
   # source://selenium-webdriver//lib/selenium/webdriver/firefox/driver.rb#39
-  def initialize(options: T.unsafe(nil), service: T.unsafe(nil), url: T.unsafe(nil), **opts); end
+  def initialize(options: T.unsafe(nil), service: T.unsafe(nil), url: T.unsafe(nil), **_arg3); end
 
   # @api private
   #
@@ -4127,7 +4127,7 @@ class Selenium::WebDriver::IE::Driver < ::Selenium::WebDriver::Driver
   # @return [Driver] a new instance of Driver
   #
   # source://selenium-webdriver//lib/selenium/webdriver/ie/driver.rb#34
-  def initialize(options: T.unsafe(nil), service: T.unsafe(nil), url: T.unsafe(nil), **opts); end
+  def initialize(options: T.unsafe(nil), service: T.unsafe(nil), url: T.unsafe(nil), **_arg3); end
 
   # @api private
   #
@@ -4482,17 +4482,17 @@ class Selenium::WebDriver::Interactions::PointerInput < ::Selenium::WebDriver::I
   # @api private
   #
   # source://selenium-webdriver//lib/selenium/webdriver/common/interactions/pointer_input.rb#56
-  def create_pointer_down(button, **opts); end
+  def create_pointer_down(button, **_arg1); end
 
   # @api private
   #
   # source://selenium-webdriver//lib/selenium/webdriver/common/interactions/pointer_input.rb#52
-  def create_pointer_move(duration: T.unsafe(nil), x: T.unsafe(nil), y: T.unsafe(nil), origin: T.unsafe(nil), **opts); end
+  def create_pointer_move(duration: T.unsafe(nil), x: T.unsafe(nil), y: T.unsafe(nil), origin: T.unsafe(nil), **_arg4); end
 
   # @api private
   #
   # source://selenium-webdriver//lib/selenium/webdriver/common/interactions/pointer_input.rb#60
-  def create_pointer_up(button, **opts); end
+  def create_pointer_up(button, **_arg1); end
 
   # @api private
   #
@@ -4699,7 +4699,7 @@ module Selenium::WebDriver::KeyActions
   # @return [ActionBuilder] A self reference
   #
   # source://selenium-webdriver//lib/selenium/webdriver/common/interactions/key_actions.rb#47
-  def key_down(*args, device: T.unsafe(nil)); end
+  def key_down(*_arg0, device: T.unsafe(nil)); end
 
   # Performs a key release.
   # Releasing a non-depressed key will yield undefined behaviour.
@@ -4716,7 +4716,7 @@ module Selenium::WebDriver::KeyActions
   # @return [ActionBuilder] A self reference
   #
   # source://selenium-webdriver//lib/selenium/webdriver/common/interactions/key_actions.rb#74
-  def key_up(*args, device: T.unsafe(nil)); end
+  def key_up(*_arg0, device: T.unsafe(nil)); end
 
   # Sends keys to the active element. This differs from calling
   # Element#send_keys(keys) on the active element in two ways:
@@ -5209,7 +5209,7 @@ class Selenium::WebDriver::Options
 
   class << self
     # source://selenium-webdriver//lib/selenium/webdriver/common/options.rb#32
-    def chrome(**opts); end
+    def chrome(**_arg0); end
 
     # Returns the value of attribute driver_path.
     #
@@ -5217,22 +5217,22 @@ class Selenium::WebDriver::Options
     def driver_path; end
 
     # source://selenium-webdriver//lib/selenium/webdriver/common/options.rb#45
-    def edge(**opts); end
+    def edge(**_arg0); end
 
     # source://selenium-webdriver//lib/selenium/webdriver/common/options.rb#36
-    def firefox(**opts); end
+    def firefox(**_arg0); end
 
     # source://selenium-webdriver//lib/selenium/webdriver/common/options.rb#40
-    def ie(**opts); end
+    def ie(**_arg0); end
 
     # source://selenium-webdriver//lib/selenium/webdriver/common/options.rb#40
-    def internet_explorer(**opts); end
+    def internet_explorer(**_arg0); end
 
     # source://selenium-webdriver//lib/selenium/webdriver/common/options.rb#45
-    def microsoftedge(**opts); end
+    def microsoftedge(**_arg0); end
 
     # source://selenium-webdriver//lib/selenium/webdriver/common/options.rb#50
-    def safari(**opts); end
+    def safari(**_arg0); end
 
     # source://selenium-webdriver//lib/selenium/webdriver/common/options.rb#54
     def set_capabilities; end
@@ -5515,7 +5515,7 @@ module Selenium::WebDriver::Platform
   end
 end
 
-# source://selenium-webdriver//lib/selenium/webdriver.rb#34
+# source://selenium-webdriver//lib/selenium/webdriver.rb#33
 class Selenium::WebDriver::Point < ::Struct
   # Returns the value of attribute x
   #
@@ -5692,7 +5692,7 @@ module Selenium::WebDriver::PointerActions
   # @return [ActionBuilder] A self reference.
   #
   # source://selenium-webdriver//lib/selenium/webdriver/common/interactions/pointer_actions.rb#125
-  def move_by(right_by, down_by, device: T.unsafe(nil), duration: T.unsafe(nil), **opts); end
+  def move_by(right_by, down_by, device: T.unsafe(nil), duration: T.unsafe(nil), **_arg4); end
 
   # Moves the pointer to the in-view center point of the given element.
   # Then the pointer is moved to optional offset coordinates.
@@ -5735,7 +5735,7 @@ module Selenium::WebDriver::PointerActions
   # @return [ActionBuilder] A self reference.
   #
   # source://selenium-webdriver//lib/selenium/webdriver/common/interactions/pointer_actions.rb#153
-  def move_to_location(x, y, device: T.unsafe(nil), duration: T.unsafe(nil), **opts); end
+  def move_to_location(x, y, device: T.unsafe(nil), duration: T.unsafe(nil), **_arg4); end
 
   # Presses (without releasing) at the current location of the PointerInput device. This is equivalent to:
   #
@@ -5750,7 +5750,7 @@ module Selenium::WebDriver::PointerActions
   # @return [ActionBuilder] A self reference.
   #
   # source://selenium-webdriver//lib/selenium/webdriver/common/interactions/pointer_actions.rb#49
-  def pointer_down(button = T.unsafe(nil), device: T.unsafe(nil), **opts); end
+  def pointer_down(button = T.unsafe(nil), device: T.unsafe(nil), **_arg2); end
 
   # Releases the pressed mouse button at the current mouse location of the PointerInput device.
   #
@@ -5763,7 +5763,7 @@ module Selenium::WebDriver::PointerActions
   # @return [ActionBuilder] A self reference.
   #
   # source://selenium-webdriver//lib/selenium/webdriver/common/interactions/pointer_actions.rb#66
-  def pointer_up(button = T.unsafe(nil), device: T.unsafe(nil), **opts); end
+  def pointer_up(button = T.unsafe(nil), device: T.unsafe(nil), **_arg2); end
 
   # Releases the depressed left mouse button at the current mouse location.
   #
@@ -5781,7 +5781,7 @@ module Selenium::WebDriver::PointerActions
   private
 
   # source://selenium-webdriver//lib/selenium/webdriver/common/interactions/pointer_actions.rb#339
-  def button_action(button, action, device: T.unsafe(nil), **opts); end
+  def button_action(button, action, device: T.unsafe(nil), **_arg3); end
 
   # source://selenium-webdriver//lib/selenium/webdriver/common/interactions/pointer_actions.rb#346
   def pointer_input(name = T.unsafe(nil)); end
@@ -6067,7 +6067,7 @@ Selenium::WebDriver::Proxy::ALLOWED = T.let(T.unsafe(nil), Hash)
 # source://selenium-webdriver//lib/selenium/webdriver/common/proxy.rb#23
 Selenium::WebDriver::Proxy::TYPES = T.let(T.unsafe(nil), Hash)
 
-# source://selenium-webdriver//lib/selenium/webdriver.rb#36
+# source://selenium-webdriver//lib/selenium/webdriver.rb#35
 class Selenium::WebDriver::Rectangle < ::Struct
   # Returns the value of attribute height
   #
@@ -7030,7 +7030,7 @@ class Selenium::WebDriver::Remote::Driver < ::Selenium::WebDriver::Driver
   # @return [Driver] a new instance of Driver
   #
   # source://selenium-webdriver//lib/selenium/webdriver/remote/driver.rb#33
-  def initialize(capabilities: T.unsafe(nil), options: T.unsafe(nil), service: T.unsafe(nil), url: T.unsafe(nil), **opts); end
+  def initialize(capabilities: T.unsafe(nil), options: T.unsafe(nil), service: T.unsafe(nil), url: T.unsafe(nil), **_arg4); end
 
   private
 
@@ -7360,7 +7360,7 @@ class Selenium::WebDriver::Safari::Driver < ::Selenium::WebDriver::Driver
   # @return [Driver] a new instance of Driver
   #
   # source://selenium-webdriver//lib/selenium/webdriver/safari/driver.rb#34
-  def initialize(options: T.unsafe(nil), service: T.unsafe(nil), url: T.unsafe(nil), **opts); end
+  def initialize(options: T.unsafe(nil), service: T.unsafe(nil), url: T.unsafe(nil), **_arg3); end
 
   # @api private
   #
@@ -7688,7 +7688,7 @@ class Selenium::WebDriver::Service
 
   class << self
     # source://selenium-webdriver//lib/selenium/webdriver/common/service.rb#31
-    def chrome(**opts); end
+    def chrome(**_arg0); end
 
     # Returns the value of attribute driver_path.
     #
@@ -7699,25 +7699,25 @@ class Selenium::WebDriver::Service
     def driver_path=(path); end
 
     # source://selenium-webdriver//lib/selenium/webdriver/common/service.rb#44
-    def edge(**opts); end
+    def edge(**_arg0); end
 
     # source://selenium-webdriver//lib/selenium/webdriver/common/service.rb#35
-    def firefox(**opts); end
+    def firefox(**_arg0); end
 
     # source://selenium-webdriver//lib/selenium/webdriver/common/service.rb#39
-    def ie(**opts); end
+    def ie(**_arg0); end
 
     # source://selenium-webdriver//lib/selenium/webdriver/common/service.rb#39
-    def internet_explorer(**opts); end
+    def internet_explorer(**_arg0); end
 
     # source://selenium-webdriver//lib/selenium/webdriver/common/service.rb#44
-    def microsoftedge(**opts); end
+    def microsoftedge(**_arg0); end
 
     # source://selenium-webdriver//lib/selenium/webdriver/common/service.rb#44
-    def msedge(**opts); end
+    def msedge(**_arg0); end
 
     # source://selenium-webdriver//lib/selenium/webdriver/common/service.rb#50
-    def safari(**opts); end
+    def safari(**_arg0); end
   end
 end
 
@@ -8082,7 +8082,7 @@ class Selenium::WebDriver::Support::BlockEventListener
   def initialize(callback); end
 
   # source://selenium-webdriver//lib/selenium/webdriver/support/block_event_listener.rb#28
-  def method_missing(meth, *args); end
+  def method_missing(meth, *_arg1); end
 end
 
 # source://selenium-webdriver//lib/selenium/webdriver/support/color.rb#23
@@ -8249,7 +8249,7 @@ class Selenium::WebDriver::Support::EventFiringBridge
   # @api private
   #
   # source://selenium-webdriver//lib/selenium/webdriver/support/event_firing_bridge.rb#115
-  def dispatch(name, *args); end
+  def dispatch(name, *_arg1); end
 
   # @api private
   #

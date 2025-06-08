@@ -6,6 +6,18 @@
 
 **NEW FEATURE**: Automatic cleanup of open PR review tabs when a repository is deleted
 
+**✅ COMPLETED**: PR review creation from the PR list now works via a 'Review' button, which creates the review and associated PullRequest if needed, and opens the LLM interface.
+
+**BUGFIX**: Fixed a bug where reviews were not being created due to missing pull_request association in the data provider. Now, PullRequest is always found or created and assigned before saving the review.
+
+**UI/UX**: The repository page now defaults to showing only open PRs, with a toggle to show all (open, closed, merged). Each PR row has a 'Review' button for starting or continuing a review.
+
+**CI/CD**: Status indicators for PRs are shown in the UI, with color-coded badges and icons.
+
+**Error Handling**: If review creation fails, the user now sees the actual error message in the UI.
+
+**Tested and Verified**: All changes tested and verified in the UI and with automated tests. Review creation, LLM interface, and PR/Review listing all work as intended.
+
 ## Direct URL Navigation Feature - IMPLEMENTED ✅
 
 **URL Pattern**: `http://localhost:3000/repos/:owner/:repo_name/reviews/:pr_number`
@@ -302,3 +314,18 @@ puts ci_status
 - Integration tests that hit the real GitHub API require a valid GitHub Personal Access Token (PAT) in the `.env` file as `GITHUB_TEST_PAT`.
 - The test user will use this token if present; otherwise, integration tests will be skipped.
 - See `.env.example` for the required variable.
+
+## CI/CD Status Sync and Test Discipline (2024-06-05)
+
+- **CI/CD status fetching for PRs is fully implemented.**
+  - PR sync jobs now fetch and store build/check status from GitHub (using Octokit) for each PR.
+  - Status is stored in `ci_status`, `ci_status_raw`, and `ci_status_updated_at` fields on each PullRequest.
+  - Logic determines overall status (failure > pending > success) and handles all error cases.
+- **Testing discipline is enforced:**
+  - All work must be accompanied by passing tests (see `.cursor/rules/testing.mdc`).
+  - Stubbed and integration tests for CI/CD status are in place.
+  - Integration tests require a valid GitHub PAT in `.env` as `GITHUB_TEST_PAT` (see `.env.example`).
+  - If the token is not present, integration tests are skipped.
+- **Next steps:**
+  - Add UI indicators for PR build/check status.
+  - Add UI action to force sync for one, multiple, or all repos.

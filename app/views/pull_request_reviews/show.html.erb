@@ -25,9 +25,9 @@
       <div class="p-6 bg-gray-50">
         <h3 class="text-sm font-medium text-gray-900 mb-2">Review Context</h3>
         <% if @pull_request_review.llm_context_summary.present? %>
-          <p class="text-sm text-gray-700"><%= @pull_request_review.llm_context_summary %></p>
+        <p class="text-sm text-gray-700"><%= @pull_request_review.llm_context_summary %></p>
         <% else %>
-          <p class="text-sm text-gray-500 italic">No context summary yet. Add one to help focus the conversation.</p>
+        <p class="text-sm text-gray-500 italic">No context summary yet. Add one to help focus the conversation.</p>
         <% end %>
         <button class="mt-2 text-xs text-blue-600 hover:text-blue-800" onclick="toggleContextEdit()">
           Edit Context
@@ -36,15 +36,15 @@
         <!-- Context Edit Form (hidden by default) -->
         <div id="context_edit_form" class="hidden mt-3">
           <%= form_with model: @pull_request_review, local: false, class: "space-y-2" do |f| %>
-            <%= f.text_area :llm_context_summary, rows: 3,
+          <%= f.text_area :llm_context_summary, rows: 3,
                 class: "w-full px-3 py-2 border border-gray-300 rounded-md text-sm",
                 placeholder: "Add context about this PR review (e.g., specific areas to focus on, concerns, etc.)" %>
-            <div class="flex space-x-2">
-              <%= f.submit "Save Context", class: "px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700" %>
-              <button type="button" onclick="toggleContextEdit()" class="px-3 py-1 bg-gray-300 text-gray-700 text-xs rounded hover:bg-gray-400">
-                Cancel
-              </button>
-            </div>
+          <div class="flex space-x-2">
+            <%= f.submit "Save Context", class: "px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700" %>
+            <button type="button" onclick="toggleContextEdit()" class="px-3 py-1 bg-gray-300 text-gray-700 text-xs rounded hover:bg-gray-400">
+              Cancel
+            </button>
+          </div>
           <% end %>
         </div>
       </div>
@@ -56,13 +56,13 @@
         <h3 class="text-lg font-medium text-gray-900 mb-4">Conversation</h3>
         <div id="conversation_messages" class="space-y-4 mb-6">
           <% if @messages.any? %>
-            <% @messages.each do |message| %>
-              <%= render "llm_conversation_messages/message", message: message %>
-            <% end %>
+          <% @messages.each do |message| %>
+          <%= render "llm_conversation_messages/message", message: message %>
+          <% end %>
           <% else %>
-            <div class="text-center py-8 text-gray-500">
-              <p>No conversation yet. Start by asking a question about this pull request.</p>
-            </div>
+          <div class="text-center py-8 text-gray-500">
+            <p>No conversation yet. Start by asking a question about this pull request.</p>
+          </div>
           <% end %>
         </div>
 
@@ -77,9 +77,11 @@
   </div>
 </div>
 
+<%= render "show_content", pull_request_review: @pull_request_review, messages: @messages, new_message: @new_message %>
+
 <script>
-function toggleContextEdit() {
-  const form = document.getElementById('context_edit_form');
-  form.classList.toggle('hidden');
-}
+  function toggleContextEdit() {
+    const form = document.getElementById('context_edit_form');
+    form.classList.toggle('hidden');
+  }
 </script>

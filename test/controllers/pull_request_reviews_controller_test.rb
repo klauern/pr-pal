@@ -465,4 +465,19 @@ class PullRequestReviewsControllerTest < ActionDispatch::IntegrationTest
   test "should handle data provider switching" do
     skip "Requires mocking infrastructure not available in test setup"
   end
+
+  test "should show CI/CD status indicator in show view" do
+    statuses = { "success" => "bg-green-100", "pending" => "bg-yellow-100", "failure" => "bg-red-100", "none" => "bg-gray-100" }
+    statuses.each do |status, css_class|
+      @pull_request_review.update!(ci_status: status)
+      get pull_request_review_url(@pull_request_review)
+      if status == "none"
+        # Should not render the badge at all
+        assert_no_match(/data-testid=\"ci-status-badge\"/, response.body, "Should not show CI/CD badge for 'none'")
+      else
+        assert_match(/<span[^>]*data-testid=\"ci-status-badge\"[^>]*class=\"[^"]*#{css_class}/, response.body, "Should show CI/CD badge for '#{status}'")
+        assert_match(/#{status.capitalize}/, response.body, "Should show status text for '#{status}'")
+      end
+    end
+  end
 end

@@ -31,11 +31,25 @@ class GithubPullRequestDataProvider < PullRequestDataProvider
       begin
         pr_data = fetch_pr_details(owner, name, pr_number, user)
 
+        # Find or create the PullRequest record
+        pull_request = repository.pull_requests.find_or_create_by!(
+          github_pr_id: pr_number
+        ) do |pr|
+          pr.title = pr_data[:title]
+          pr.body = pr_data[:body]
+          pr.state = pr_data[:state]
+          pr.author = pr_data[:user]
+          pr.github_pr_url = pr_data[:html_url]
+          pr.github_created_at = pr_data[:created_at]
+          pr.github_updated_at = pr_data[:updated_at]
+        end
+
         pull_request_review.assign_attributes(
           github_pr_title: pr_data[:title],
           github_pr_url: pr_data[:html_url],
           status: "in_progress",
-          last_synced_at: Time.current
+          last_synced_at: Time.current,
+          pull_request: pull_request
         )
 
         unless pull_request_review.save
@@ -100,6 +114,57 @@ class GithubPullRequestDataProvider < PullRequestDataProvider
       github_pr_title: pr_data[:title],
       last_synced_at: Time.current
     )
+  end
+
+  # Fetch CI/CD status checks for a PR (by head SHA)
+  def self.fetch_pr_ci_statuses(owner, repo, pr_number, user)
+    client = github_client(user)
+    repo_full_name = "#{owner}/#{repo}"
+
+    begin
+      pr = client.pull_request(repo_full_name, pr_number)
+      sha = pr.head.sha
+
+      # Fetch combined status (legacy status API)
+      combined_status = client.combined_status(repo_full_name, sha)
+      statuses = combined_status.statuses.map do |status|
+        {
+          type: :status,
+          context: status.context,
+          state: status.state, # success, failure, pending
+          description: status.description,
+          target_url: status.target_url
+        }
+      end
+
+      # Fetch check runs (GitHub Actions, etc.)
+      check_runs_resp = client.check_runs_for_ref(repo_full_name, sha)
+      check_runs = check_runs_resp.check_runs.map do |run|
+        {
+          type: :check_run,
+          name: run.name,
+          status: run.status, # queued, in_progress, completed
+          conclusion: run.conclusion, # success, failure, etc.
+          details_url: run.details_url,
+          output_title: run.output&.title,
+          output_summary: run.output&.summary
+        }
+      end
+
+      {
+        sha: sha,
+        statuses: statuses,
+        check_runs: check_runs
+      }
+    rescue Octokit::NotFound
+      raise NotFoundError, "PR or commit not found for CI status checks"
+    rescue Octokit::Unauthorized, Octokit::Forbidden
+      raise AuthenticationError, "Invalid GitHub token or insufficient permissions for CI status checks"
+    rescue Octokit::TooManyRequests
+      raise RateLimitError, "GitHub API rate limit exceeded for CI status checks"
+    rescue Octokit::Error => e
+      raise GitHubError, "GitHub API error (CI status checks): #{e.message}"
+    end
   end
 
   private

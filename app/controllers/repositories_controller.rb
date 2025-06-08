@@ -7,6 +7,13 @@ class RepositoriesController < ApplicationController
   end
 
   def show
+    show_all = params[:show] == "all"
+    @pull_requests = if show_all
+      @repository.pull_requests.by_recent
+    else
+      @repository.pull_requests.open.by_recent
+    end
+    @show_all_prs = show_all
     @pull_request_reviews = @repository.pull_request_reviews.order(:github_pr_id)
   end
 

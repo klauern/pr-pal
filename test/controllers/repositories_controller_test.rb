@@ -463,4 +463,36 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
     assert_match "turbo-stream", response.content_type
     assert_includes response.body, "Sync started for all repositories"
   end
+
+  test "should show CI/CD status indicator in repository show view" do
+    post session_url, params: { email_address: @user.email_address, password: "password" }
+    pr = @repository.pull_request_reviews.create!(
+      user: @user,
+      pull_request: PullRequest.create!(
+        repository: @repository,
+        github_pr_id: 999,
+        github_pr_url: "https://github.com/test/repo/pull/999",
+        title: "Test PR CI Status",
+        state: "open",
+        author: "testuser",
+        github_created_at: 1.day.ago,
+        github_updated_at: 1.hour.ago
+      ),
+      github_pr_id: 999,
+      github_pr_url: "https://github.com/test/repo/pull/999",
+      github_pr_title: "Test PR CI Status",
+      status: "in_progress"
+    )
+    statuses = { "success" => "bg-green-100", "pending" => "bg-yellow-100", "failure" => "bg-red-100", "none" => "bg-gray-100" }
+    statuses.each do |status, css_class|
+      pr.update!(ci_status: status)
+      get repository_url(@repository)
+      if status == "none"
+        assert_no_match(/data-testid=\"ci-status-badge\"/, response.body, "Should not show CI/CD badge for 'none'")
+      else
+        assert_match(/<span[^>]*data-testid=\"ci-status-badge\"[^>]*class=\"[^"]*#{css_class}/, response.body, "Should show CI/CD badge for '#{status}'")
+        assert_match(/#{status.capitalize}/, response.body, "Should show status text for '#{status}'")
+      end
+    end
+  end
 end

@@ -116,7 +116,11 @@ class PullRequestReviewsController < ApplicationController
         user: Current.user
       )
     rescue => e
-      redirect_to root_path, alert: "Failed to create review: #{e.message}"
+      error_message = "Failed to create review: #{e.message}"
+      if e.respond_to?(:record) && e.record && e.record.errors.any?
+        error_message += ". Validation errors: #{e.record.errors.full_messages.join(', ')}"
+      end
+      redirect_to root_path, alert: error_message
       return
     end
 

@@ -54,6 +54,12 @@ class RepositoryTest < ActiveSupport::TestCase
     assert other_repository.valid?
   end
 
+  test "should allow same owner with different names for same user" do
+    Repository.create!(@valid_attributes.merge(owner: "klauern", name: "repo1"))
+    repo2 = Repository.new(@valid_attributes.merge(owner: "klauern", name: "repo2"))
+    assert repo2.valid?, "Should allow same owner with different names for same user"
+  end
+
   # Note: Repository model currently doesn't have format validations
   # These would be good to add in the future for security and GitHub API compatibility
 

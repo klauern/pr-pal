@@ -6,13 +6,22 @@ class LlmConversationMessagesController < ApplicationController
     @message.sender = "user"
 
     if @message.save
+      # Call the LLM service to get a response
+      llm_response = RubyLlmService.new(@pull_request_review).send_user_message(@message.content)
+      llm_message = @pull_request_review.llm_conversation_messages.by_llm.order(:order).last
+
       respond_to do |format|
         format.turbo_stream do
-          render turbo_stream: turbo_stream.append("conversation_messages",
-            partial: "llm_conversation_messages/message",
-            locals: { message: @message })
+          render turbo_stream: [
+            turbo_stream.append("conversation_messages",
+              partial: "llm_conversation_messages/message",
+              locals: { message: @message }),
+            turbo_stream.append("conversation_messages",
+              partial: "llm_conversation_messages/message",
+              locals: { message: llm_message })
+          ]
         end
-        format.json { render json: { status: "success", message: "Message added" } }
+        format.json { render json: { status: "success", message: "Message added", llm_response: llm_response } }
       end
     else
       respond_to do |format|
@@ -23,6 +32,16 @@ class LlmConversationMessagesController < ApplicationController
         end
         format.json { render json: { status: "error", errors: @message.errors.full_messages } }
       end
+    end
+  end
+
+  def reset
+    @pull_request_review.llm_conversation_messages.destroy_all
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace("conversation_messages", partial: "llm_conversation_messages/empty")
+      end
+      format.json { render json: { status: "success", message: "Conversation reset" } }
     end
   end
 

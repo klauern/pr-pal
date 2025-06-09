@@ -13,6 +13,10 @@ class PullRequestReview < ApplicationRecord
   scope :in_progress, -> { where(status: "in_progress") }
   scope :completed, -> { where(status: "completed") }
 
+  # Hidden field for storing the raw PR diff for LLM context
+  # This is not exposed in the UI
+  # attr_accessor :pr_diff # (handled by migration)
+
   def mark_as_completed!
     update!(status: "completed")
   end

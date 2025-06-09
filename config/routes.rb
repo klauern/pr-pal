@@ -15,6 +15,7 @@ Rails.application.routes.draw do
       get :show_by_details
       post :reset_tabs
     end
+    post "reset_conversation", to: "llm_conversation_messages#reset"
   end
 
 
@@ -57,4 +58,13 @@ Rails.application.routes.draw do
   root "dashboard#index"
 
   get "/repos/:repo_owner/:repo_name/reviews/:pr_number", to: "pull_request_reviews#show_by_details", as: :direct_pr_review
+
+  resources :settings, only: [ :index, :update ] do
+    collection do
+      post :add_llm_api_key
+      post :update_llm_api_key
+      delete :delete_llm_api_key
+      post :update_llm_preferences
+    end
+  end
 end

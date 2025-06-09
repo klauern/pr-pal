@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_04_165101) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_08_233024) do
   create_table "llm_api_keys", force: :cascade do |t|
     t.string "llm_provider"
     t.text "api_key"
@@ -58,6 +58,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_04_165101) do
     t.string "ci_url"
     t.integer "github_comment_count"
     t.string "github_review_status"
+    t.text "pr_diff"
     t.index ["pull_request_id"], name: "index_pull_request_reviews_on_pull_request_id"
     t.index ["repository_id", "github_pr_id"], name: "index_pull_request_reviews_on_repository_id_and_github_pr_id", unique: true
     t.index ["repository_id"], name: "index_pull_request_reviews_on_repository_id"
@@ -118,6 +119,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_04_165101) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "github_token"
+    t.string "default_llm_provider"
+    t.string "default_llm_model"
+    t.text "llm_params"
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 

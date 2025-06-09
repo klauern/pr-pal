@@ -55,6 +55,10 @@
 7. ✅ **Security Implementation** - Encrypted tokens, 0 Brakeman warnings
 8. ✅ **Comprehensive Documentation** - Complete setup and troubleshooting guide
 
+### LLM Chat Interactivity (2025-06)
+
+- The LLM chat interface now automatically sends user messages to the LLM and appends the LLM's response to the conversation in real time using Turbo Streams. This makes the chat fully interactive and closes the conversational loop for review discussions. This is a major milestone for conversational review in PR Pal.
+
 ## 🚧 In Progress
 
 - None (GitHub API integration completed successfully)

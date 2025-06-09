@@ -30,6 +30,7 @@ class GithubPullRequestDataProvider < PullRequestDataProvider
     if pull_request_review.new_record? || should_sync_pr_data?(pull_request_review)
       begin
         pr_data = fetch_pr_details(owner, name, pr_number, user)
+        pr_diff = fetch_pr_diff(owner, name, pr_number, user)
 
         # Find or create the PullRequest record
         pull_request = repository.pull_requests.find_or_create_by!(
@@ -49,7 +50,8 @@ class GithubPullRequestDataProvider < PullRequestDataProvider
           github_pr_url: pr_data[:html_url],
           status: "in_progress",
           last_synced_at: Time.current,
-          pull_request: pull_request
+          pull_request: pull_request,
+          pr_diff: pr_diff
         )
 
         unless pull_request_review.save
@@ -165,6 +167,14 @@ class GithubPullRequestDataProvider < PullRequestDataProvider
     rescue Octokit::Error => e
       raise GitHubError, "GitHub API error (CI status checks): #{e.message}"
     end
+  end
+
+  def self.fetch_pr_diff(owner, repo, pr_number, user)
+    client = github_client(user)
+    client.get("/repos/#{owner}/#{repo}/pulls/#{pr_number}", {}, accept: "application/vnd.github.v3.diff")
+  rescue Octokit::Error => e
+    Rails.logger.warn "Failed to fetch PR diff: #{e.message}"
+    nil
   end
 
   private

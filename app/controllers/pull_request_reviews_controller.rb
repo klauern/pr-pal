@@ -7,10 +7,10 @@ class PullRequestReviewsController < ApplicationController
 
   def show
     @pull_request_review.mark_as_viewed!
-    
+
     # Trigger auto-sync if needed
     trigger_auto_sync_if_needed(@pull_request_review)
-    
+
     @messages = @pull_request_review.llm_conversation_messages.ordered
     @new_message = @pull_request_review.llm_conversation_messages.build
 
@@ -130,10 +130,10 @@ class PullRequestReviewsController < ApplicationController
 
     # Mark as viewed and set up instance variables for the view
     @pull_request_review.mark_as_viewed!
-    
+
     # Trigger auto-sync if needed
     trigger_auto_sync_if_needed(@pull_request_review)
-    
+
     @messages = @pull_request_review.llm_conversation_messages.ordered
     @new_message = @pull_request_review.llm_conversation_messages.build
 
@@ -150,32 +150,32 @@ class PullRequestReviewsController < ApplicationController
         # Use the data provider to sync the latest PR data
         repository = @pull_request_review.repository
         provider = DataProviders.pull_request_provider
-        
+
         if provider.name == "GithubPullRequestDataProvider"
           # For GitHub provider, fetch latest data
           pr_data = provider.fetch_pr_details(
             repository.owner,
-            repository.name, 
+            repository.name,
             @pull_request_review.github_pr_id,
             Current.user
           )
-          
+
           pr_diff = provider.fetch_pr_diff(
             repository.owner,
             repository.name,
             @pull_request_review.github_pr_id,
             Current.user
           )
-          
+
           # Update the review with latest data
           @pull_request_review.update!(
             github_pr_title: pr_data[:title],
             github_pr_url: pr_data[:html_url],
             last_synced_at: Time.current,
             pr_diff: pr_diff,
-            sync_status: 'completed'
+            sync_status: "completed"
           )
-          
+
           # Update the associated PullRequest if it exists
           if @pull_request_review.pull_request
             @pull_request_review.pull_request.update!(
@@ -187,33 +187,33 @@ class PullRequestReviewsController < ApplicationController
               github_updated_at: pr_data[:updated_at]
             )
           end
-          
+
           success_message = "PR data synced successfully. Updated diff (#{pr_diff&.length || 0} characters)"
         else
           # For dummy provider, refresh the dummy data
           @pull_request_review.update!(
             pr_diff: provider.generate_dummy_pr_diff(repository, @pull_request_review.github_pr_id),
             last_synced_at: Time.current,
-            sync_status: 'completed'
+            sync_status: "completed"
           )
           success_message = "Dummy PR data refreshed successfully"
         end
-        
+
         format.html { redirect_to @pull_request_review, notice: success_message }
         format.turbo_stream do
           render turbo_stream: [
-            turbo_stream.prepend("flash-messages", 
+            turbo_stream.prepend("flash-messages",
               "<div class='bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4'>#{success_message}</div>"),
             turbo_stream.replace("sync_status", partial: "sync_status", locals: { pull_request_review: @pull_request_review })
           ]
         end
         format.json { render json: { status: "synced", message: success_message } }
-        
+
       rescue => e
         error_message = "Failed to sync PR data: #{e.message}"
         Rails.logger.error "PR sync error: #{e.message}"
         Rails.logger.error e.backtrace.join("\n")
-        
+
         format.html { redirect_to @pull_request_review, alert: error_message }
         format.turbo_stream do
           render turbo_stream: turbo_stream.prepend("flash-messages",
@@ -270,7 +270,7 @@ class PullRequestReviewsController < ApplicationController
 
   def trigger_auto_sync_if_needed(pull_request_review)
     return unless pull_request_review.needs_auto_sync?
-    
+
     Rails.logger.info "AUTO_SYNC: Triggering auto sync for PR review #{pull_request_review.id}"
     AutoSyncPrJob.perform_later(pull_request_review.id)
   rescue => e

@@ -45,14 +45,14 @@ class PullRequestReview < ApplicationRecord
   end
 
   def syncing?
-    sync_status == 'syncing'
+    sync_status == "syncing"
   end
 
   def sync_completed?
-    sync_status == 'completed'
+    sync_status == "completed"
   end
 
   def sync_failed?
-    sync_status == 'failed'
+    sync_status == "failed"
   end
 end

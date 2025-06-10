@@ -19,7 +19,7 @@ class DummyPullRequestDataProvider < PullRequestDataProvider
       # Create the PullRequest record first
       pr_title = generate_dummy_pr_title(repository, pr_number)
       pr_url = "#{repository.github_url}/pull/#{pr_number}"
-      
+
       pull_request = repository.pull_requests.find_or_create_by!(
         github_pr_id: pr_number
       ) do |pr|
@@ -31,7 +31,7 @@ class DummyPullRequestDataProvider < PullRequestDataProvider
         pr.github_created_at = 3.days.ago
         pr.github_updated_at = 1.hour.ago
       end
-      
+
       pull_request_review.assign_attributes(
         github_pr_title: pr_title,
         github_pr_url: pr_url,
@@ -72,12 +72,12 @@ class DummyPullRequestDataProvider < PullRequestDataProvider
   def self.generate_dummy_pr_diff(repository, pr_number)
     # Generate realistic PR diff content based on the repository type
     language = detect_language_from_repo(repository.name)
-    
+
     case language
     when :ruby
       generate_ruby_diff(repository, pr_number)
     when :javascript
-      generate_javascript_diff(repository, pr_number) 
+      generate_javascript_diff(repository, pr_number)
     when :python
       generate_python_diff(repository, pr_number)
     else
@@ -86,9 +86,9 @@ class DummyPullRequestDataProvider < PullRequestDataProvider
   end
 
   def self.detect_language_from_repo(repo_name)
-    return :ruby if repo_name.include?('rails') || repo_name.include?('ruby')
-    return :javascript if repo_name.include?('js') || repo_name.include?('node') || repo_name.include?('react')
-    return :python if repo_name.include?('py') || repo_name.include?('django') || repo_name.include?('flask')
+    return :ruby if repo_name.include?("rails") || repo_name.include?("ruby")
+    return :javascript if repo_name.include?("js") || repo_name.include?("node") || repo_name.include?("react")
+    return :python if repo_name.include?("py") || repo_name.include?("django") || repo_name.include?("flask")
     :generic
   end
 
@@ -100,7 +100,7 @@ class DummyPullRequestDataProvider < PullRequestDataProvider
       +++ b/app/controllers/users_controller.rb
       @@ -15,8 +15,12 @@ class UsersController < ApplicationController
          end
-       
+      #{' '}
          def update
       -    if @user.update(user_params)
       +    if @user.update(user_params) && verify_user_permissions
@@ -119,7 +119,7 @@ class DummyPullRequestDataProvider < PullRequestDataProvider
       +    current_user.admin? || current_user == @user
       +  end
        end
-      
+
       diff --git a/test/controllers/users_controller_test.rb b/test/controllers/users_controller_test.rb
       index 9876543..fedcba9 100644
       --- a/test/controllers/users_controller_test.rb
@@ -132,9 +132,9 @@ class DummyPullRequestDataProvider < PullRequestDataProvider
       +  test "should not allow regular user to update other users" do
       +    other_user = users(:jane)
       +    sign_in_as users(:regular_user)
-      +    
+      +#{'    '}
       +    patch user_url(other_user), params: { user: { name: "Hacked Name" } }
-      +    
+      +#{'    '}
       +    assert_redirected_to other_user
       +    assert_match "Insufficient permissions", flash[:alert]
       +  end
@@ -152,19 +152,19 @@ class DummyPullRequestDataProvider < PullRequestDataProvider
        import React, { useState, useEffect } from 'react';
       +import { useAuth } from '../hooks/useAuth';
        import { Card, Button, Alert } from './ui';
-       
+      #{' '}
        const UserProfile = ({ userId }) => {
       @@ -6,6 +7,7 @@ const UserProfile = ({ userId }) => {
          const [loading, setLoading] = useState(true);
          const [error, setError] = useState(null);
          const [editing, setEditing] = useState(false);
       +  const { user: currentUser, hasPermission } = useAuth();
-       
+      #{' '}
          useEffect(() => {
            fetchUser();
       @@ -25,6 +27,11 @@ const UserProfile = ({ userId }) => {
          };
-       
+      #{' '}
          const handleEdit = () => {
       +    if (!hasPermission('user:edit', user)) {
       +      setError('You do not have permission to edit this user');
@@ -173,7 +173,7 @@ class DummyPullRequestDataProvider < PullRequestDataProvider
       +
            setEditing(true);
          };
-       
+      #{' '}
       @@ -45,7 +52,7 @@ const UserProfile = ({ userId }) => {
                <h2>{user.name}</h2>
                <p>{user.email}</p>
@@ -196,13 +196,13 @@ class DummyPullRequestDataProvider < PullRequestDataProvider
        from django.db import models
        from django.contrib.auth.models import AbstractUser
       +from django.core.exceptions import PermissionDenied
-       
+      #{' '}
        class User(AbstractUser):
            ROLE_CHOICES = [
       @@ -15,6 +16,15 @@ class User(AbstractUser):
            def __str__(self):
                return f"{self.username} ({self.get_role_display()})"
-       
+      #{' '}
       +    def can_edit_user(self, target_user):
       +        """Check if this user can edit the target user"""
       +        if self.role == 'admin':
@@ -214,7 +214,7 @@ class DummyPullRequestDataProvider < PullRequestDataProvider
            def save(self, *args, **kwargs):
                if not self.pk and not self.role:
                    self.role = 'user'
-      
+
       diff --git a/app/views.py b/app/views.py
       index 9876543..fedcba9 100644
       --- a/app/views.py
@@ -222,7 +222,7 @@ class DummyPullRequestDataProvider < PullRequestDataProvider
       @@ -25,6 +25,10 @@ def update_user(request, user_id):
            if request.method == 'POST':
                user = get_object_or_404(User, id=user_id)
-               
+      #{'         '}
       +        if not request.user.can_edit_user(user):
       +            messages.error(request, 'You do not have permission to edit this user.')
       +            return redirect('user_detail', user_id=user.id)
@@ -242,13 +242,13 @@ class DummyPullRequestDataProvider < PullRequestDataProvider
       @@ -1,4 +1,4 @@
       -# #{repository.name}
       +# #{repository.name} - Enhanced Security
-       
+      #{' '}
        A sample application demonstrating best practices.
-       
+      #{' '}
       @@ -15,6 +15,12 @@ To get started:
        3. Run the application
        4. Navigate to localhost:3000
-       
+      #{' '}
       +## Security Features
       +
       +This update includes:
@@ -257,9 +257,9 @@ class DummyPullRequestDataProvider < PullRequestDataProvider
       +- Better error handling for unauthorized actions
       +
        ## Contributing
-       
+      #{' '}
        Please read our contributing guidelines before submitting PRs.
-      
+
       diff --git a/config/security.yml b/config/security.yml
       new file mode 100644
       index 0000000..1234567
@@ -268,7 +268,7 @@ class DummyPullRequestDataProvider < PullRequestDataProvider
       @@ -0,0 +1,8 @@
       +security:
       +  permissions:
-      +    user_edit: 
+      +    user_edit:#{' '}
       +      - admin
       +      - self
       +  validation:

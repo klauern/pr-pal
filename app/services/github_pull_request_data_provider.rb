@@ -171,24 +171,24 @@ class GithubPullRequestDataProvider < PullRequestDataProvider
 
   def self.fetch_pr_diff(owner, repo, pr_number, user)
     client = github_client(user)
-    
+
     # Try fetching the diff with retry logic
     retries = 0
     max_retries = 2
-    
+
     begin
       Rails.logger.info "Fetching PR diff for #{owner}/#{repo}##{pr_number} (attempt #{retries + 1})"
-      
+
       diff_content = client.pull_request("#{owner}/#{repo}", pr_number, { accept: "application/vnd.github.v3.diff" })
-      
+
       if diff_content.nil? || diff_content.empty?
         Rails.logger.warn "Empty diff returned for #{owner}/#{repo}##{pr_number}"
         return generate_fallback_diff_message(owner, repo, pr_number)
       end
-      
+
       Rails.logger.info "Successfully fetched PR diff (#{diff_content.length} characters)"
       diff_content
-      
+
     rescue Octokit::NotFound
       Rails.logger.warn "PR #{owner}/#{repo}##{pr_number} not found for diff fetch"
       generate_fallback_diff_message(owner, repo, pr_number, "Pull request not found")
@@ -225,14 +225,14 @@ class GithubPullRequestDataProvider < PullRequestDataProvider
   def self.generate_fallback_diff_message(owner, repo, pr_number, reason = "Unknown error")
     <<~FALLBACK
       # PR Diff Unavailable
-      
+
       **Repository:** #{owner}/#{repo}
       **Pull Request:** ##{pr_number}
       **Reason:** #{reason}
-      
+
       The diff for this pull request could not be retrieved from GitHub.
       You can view it directly at: https://github.com/#{owner}/#{repo}/pull/#{pr_number}
-      
+
       Please ask me questions about the pull request and I'll do my best to help
       based on the context you provide in your messages.
     FALLBACK

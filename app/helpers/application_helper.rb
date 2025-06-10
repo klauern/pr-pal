@@ -1,5 +1,11 @@
 module ApplicationHelper
-  include MarkdownRenderer
+  def markdown_to_html(content)
+    return "" if content.blank?
+
+    # For now, just escape HTML and preserve line breaks
+    # In the future, we could add a proper markdown processor
+    html_escape(content).gsub("\n", "<br>").html_safe
+  end
 
   def safe_pr_link(pull_request_review)
     title = html_escape(pull_request_review.github_pr_title)

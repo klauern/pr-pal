@@ -16,7 +16,7 @@ class RubyLlmService
   def send_user_message(user_message)
     user = @review.user
     provider = user.preferred_llm_provider&.to_sym || :anthropic
-    model = user.preferred_llm_model || "claude-3-sonnet-20241022"
+    model = user.preferred_llm_model || "claude-3-5-sonnet-20241022"
 
     # Get the user's API key for this provider
     api_key = user.llm_api_keys.find_by(llm_provider: provider.to_s)&.api_key

@@ -132,3 +132,6 @@ Uses **Minitest** with parallel execution, **Capybara + Selenium** for system te
 - **Never leave work in progress with failing tests**
 - All new features, bug fixes, and refactors must have passing tests before completion
 - Custom rake tasks handle asset building, database preparation, and coverage reporting automatically
+
+### Workflow Reminders
+- Always run `bundle exec rubocop -A` after completing tasks to ensure we fix formatting/linting issues

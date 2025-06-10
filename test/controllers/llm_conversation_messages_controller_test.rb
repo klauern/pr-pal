@@ -5,7 +5,7 @@ class LlmConversationMessagesControllerTest < ActionDispatch::IntegrationTest
     @user = users(:one)
     @other_user = users(:two)
     @repository = repositories(:one)
-    @pull_request_review = pull_request_reviews(:sample_review)
+    @pull_request_review = pull_request_reviews(:one)
 
     # Authenticate as @user
     post session_url, params: { email_address: @user.email_address, password: "password" }

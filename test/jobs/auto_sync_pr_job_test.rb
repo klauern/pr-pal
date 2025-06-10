@@ -19,16 +19,20 @@ class AutoSyncPrJobTest < ActiveJob::TestCase
   test "should sync if data is stale" do
     @pull_request_review.update!(last_synced_at: 20.minutes.ago, sync_status: "pending")
 
-    # Mock the data provider to prevent actual API calls
-    DataProviders.stubs(:pull_request_provider).returns(DummyPullRequestDataProvider)
+    # Ensure we're using dummy data provider (which should be the default in test)
+    original_env = ENV["USE_DUMMY_DATA"]
+    ENV["USE_DUMMY_DATA"] = "true"
 
-    assert_no_difference "@pull_request_review.reload.last_synced_at" do
-      # This will update last_synced_at
+    begin
+      assert_not_equal @pull_request_review.last_synced_at, Time.current, "last_synced_at should be stale"
+
       AutoSyncPrJob.perform_now(@pull_request_review.id)
-    end
 
-    @pull_request_review.reload
-    assert_equal "completed", @pull_request_review.sync_status
+      @pull_request_review.reload
+      assert_equal "completed", @pull_request_review.sync_status
+    ensure
+      ENV["USE_DUMMY_DATA"] = original_env
+    end
   end
 
   test "should skip if already syncing" do

@@ -1,4 +1,4 @@
-sample_review:
+one:
   user: one
   repository: one
   pull_request_id: <%= ActiveRecord::FixtureSet.identify(:pr_one) %>
@@ -8,8 +8,9 @@ sample_review:
   status: "in_progress"
   llm_context_summary: "Focus on security implications and code quality"
   last_viewed_at: <%= 1.hour.ago %>
+  sync_status: "pending"
 
-completed_review:
+two:
   user: one
   repository: one
   pull_request_id: <%= ActiveRecord::FixtureSet.identify(:pr_two) %>
@@ -19,3 +20,4 @@ completed_review:
   status: "completed"
   llm_context_summary: "Review payment logic and error handling"
   last_viewed_at: <%= 2.days.ago %>
+  sync_status: "completed"

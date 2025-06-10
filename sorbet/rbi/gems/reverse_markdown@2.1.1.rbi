@@ -8,15 +8,15 @@
 # source://reverse_markdown//lib/reverse_markdown/version.rb#1
 module ReverseMarkdown
   class << self
-    # source://reverse_markdown//lib/reverse_markdown.rb#61
+    # source://reverse_markdown//lib/reverse_markdown.rb#60
     def cleaner; end
 
     # @yield [@config]
     #
-    # source://reverse_markdown//lib/reverse_markdown.rb#55
+    # source://reverse_markdown//lib/reverse_markdown.rb#54
     def config; end
 
-    # source://reverse_markdown//lib/reverse_markdown.rb#38
+    # source://reverse_markdown//lib/reverse_markdown.rb#37
     def convert(input, options = T.unsafe(nil)); end
   end
 end
@@ -144,9 +144,6 @@ class ReverseMarkdown::Converters::Base
   # source://reverse_markdown//lib/reverse_markdown/converters/base.rb#14
   def escape_keychars(string); end
 
-  # source://reverse_markdown//lib/reverse_markdown/converters/base.rb#23
-  def extract_src(node); end
-
   # source://reverse_markdown//lib/reverse_markdown/converters/base.rb#18
   def extract_title(node); end
 
@@ -252,12 +249,6 @@ end
 # source://reverse_markdown//lib/reverse_markdown/converters/hr.rb#3
 class ReverseMarkdown::Converters::Hr < ::ReverseMarkdown::Converters::Base
   # source://reverse_markdown//lib/reverse_markdown/converters/hr.rb#4
-  def convert(node, state = T.unsafe(nil)); end
-end
-
-# source://reverse_markdown//lib/reverse_markdown/converters/iframe.rb#3
-class ReverseMarkdown::Converters::Iframe < ::ReverseMarkdown::Converters::Base
-  # source://reverse_markdown//lib/reverse_markdown/converters/iframe.rb#4
   def convert(node, state = T.unsafe(nil)); end
 end
 

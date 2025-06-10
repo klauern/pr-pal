@@ -49,6 +49,7 @@ bin/rails test test/models/       # Run specific test directory
 bin/rails test test/models/user_test.rb  # Run single test file
 rake test:coverage                 # Run tests with coverage reporting
 rake test:coverage_open           # Run tests with coverage and open report
+rake test:coverage:upload         # Run tests with coverage and upload to Codecov
 ```
 
 ### Database Operations
@@ -89,6 +90,17 @@ bin/kamal dbc         # Production database console
 - **Docker** deployment using multi-stage builds with Thruster for asset serving
 - Modern Rails patterns: no Devise, no external auth gems, leveraging built-in features
 
+## Data Provider System
+
+### Environment-Based Data Sources
+- **Development/Test**: `USE_DUMMY_DATA=true` (default) - generates realistic dummy data
+- **Production**: `USE_DUMMY_DATA=false` (default) - uses real GitHub API data
+- Override with environment variable: `USE_DUMMY_DATA=true/false bin/rails server`
+
+### Visual Indicators
+- Dummy data mode shows "🎭 DUMMY DATA MODE" indicator in development
+- Logs show current data provider configuration on startup
+
 ## Service Layer Architecture
 
 ### Data Provider Pattern
@@ -114,3 +126,12 @@ User (1) ─── (many) Repository (1) ─── (many) PullRequest
 ## Testing Setup
 
 Uses **Minitest** with parallel execution, **Capybara + Selenium** for system tests, and fixture-based test data. Tests are organized in standard Rails structure under `test/`. SimpleCov provides coverage reporting with optional Codecov integration.
+
+### Test Discipline
+- **Tests must be run every time work is done**
+- **Never leave work in progress with failing tests**
+- All new features, bug fixes, and refactors must have passing tests before completion
+- Custom rake tasks handle asset building, database preparation, and coverage reporting automatically
+
+### Workflow Reminders
+- Always run `bundle exec rubocop -A` after completing tasks to ensure we fix formatting/linting issues

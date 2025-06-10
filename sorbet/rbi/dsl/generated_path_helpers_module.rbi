@@ -10,6 +10,9 @@ module GeneratedPathHelpersModule
   include ::ActionDispatch::Routing::PolymorphicRoutes
 
   sig { params(args: T.untyped).returns(String) }
+  def add_llm_api_key_settings_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def close_pr_tab_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -19,7 +22,13 @@ module GeneratedPathHelpersModule
   def dashboard_index_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def delete_llm_api_key_settings_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def demo_login_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def direct_pr_review_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def edit_password_path(*args); end
@@ -53,6 +62,9 @@ module GeneratedPathHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def pull_request_review_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def pull_request_review_reset_conversation_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def pull_request_reviews_path(*args); end
@@ -163,6 +175,9 @@ module GeneratedPathHelpersModule
   def session_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def setting_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def settings_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -182,6 +197,12 @@ module GeneratedPathHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def turbo_resume_historical_location_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def update_llm_api_key_settings_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def update_llm_preferences_settings_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def update_rails_disk_service_path(*args); end

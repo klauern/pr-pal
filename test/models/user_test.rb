@@ -343,6 +343,31 @@ class UserTest < ActiveSupport::TestCase
     assert results.all? { |result| result == true }
   end
 
+  # LLM Preferences Tests
+  test "preferred_llm_provider returns default if set" do
+    @user.update!(default_llm_provider: "openai")
+    assert_equal "openai", @user.preferred_llm_provider
+  end
+
+  test "preferred_llm_provider falls back to first llm_api_key if not set" do
+    @user.update!(default_llm_provider: nil)
+    @user.llm_api_keys.destroy_all
+    @user.llm_api_keys.create!(llm_provider: "anthropic", api_key: "k1")
+    assert_equal "anthropic", @user.preferred_llm_provider
+  end
+
+  test "preferred_llm_model returns default if set" do
+    @user.update!(default_llm_model: "gpt-4")
+    assert_equal "gpt-4", @user.preferred_llm_model
+  end
+
+  test "set_preferred_llm sets provider and model" do
+    @user.set_preferred_llm(provider: "anthropic", model: "claude-3-opus")
+    @user.reload
+    assert_equal "anthropic", @user.default_llm_provider
+    assert_equal "claude-3-opus", @user.default_llm_model
+  end
+
   private
 
   def valid_user_attributes

@@ -1,0 +1,40 @@
+<div id="sync_status" class="flex items-center justify-between text-xs text-gray-500 bg-gray-50 px-3 py-2 rounded border">
+  <div class="flex items-center space-x-2">
+    <% if pull_request_review.syncing? %>
+    <span class="text-blue-600 flex items-center">
+      <svg class="animate-spin w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+      </svg>
+      Syncing...
+    </span>
+    <% elsif pull_request_review.last_synced_at %>
+    <span>Last synced: <%= time_ago_in_words(pull_request_review.last_synced_at) %> ago</span>
+    <% if pull_request_review.pr_diff.present? %>
+    <span class="text-green-600">• Diff: <%= number_to_human_size(pull_request_review.pr_diff.bytesize) %></span>
+    <% else %>
+    <span class="text-yellow-600">• No diff available</span>
+    <% end %>
+    <% if pull_request_review.sync_failed? %>
+    <span class="text-red-600">• Last sync failed</span>
+    <% end %>
+    <% else %>
+    <span class="text-yellow-600">Never synced</span>
+    <% end %>
+  </div>
+  
+  <div class="flex items-center space-x-2">
+    <% if pull_request_review.stale_data? %>
+    <span class="text-orange-600 font-medium">⚠️ Data may be stale</span>
+    <% end %>
+    
+    <%= button_to sync_pull_request_review_path(pull_request_review), 
+        method: :post,
+        class: "inline-flex items-center px-2 py-1 text-xs font-medium rounded border border-blue-300 text-blue-600 bg-white hover:bg-blue-50 transition-colors",
+        data: { turbo_method: :post, confirm: "Sync latest PR data? This may take a moment." } do %>
+      <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+      </svg>
+      Sync PR
+    <% end %>
+  </div>
+</div>

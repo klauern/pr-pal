@@ -13,6 +13,16 @@ class LlmConversationMessage < ApplicationRecord
   before_validation :set_timestamp, on: :create
   before_validation :set_order, on: :create
 
+  attr_accessor :placeholder, :parent_id
+
+  def self.placeholder_for(user_message)
+    new(sender: "ruby_llm", content: "", placeholder: true, parent_id: user_message.id)
+  end
+
+  def placeholder?
+    !!self.placeholder
+  end
+
   def from_user?
     sender == "user"
   end

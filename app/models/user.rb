@@ -23,4 +23,19 @@ class User < ApplicationRecord
     return "Not configured" unless github_token_configured?
     "***#{github_token.last(4)}"
   end
+
+  # LLM preferences
+  def preferred_llm_provider
+    default_llm_provider.presence || llm_api_keys.first&.llm_provider
+  end
+
+  def preferred_llm_model
+    default_llm_model.presence
+  end
+
+  def set_preferred_llm(provider:, model: nil)
+    self.default_llm_provider = provider
+    self.default_llm_model = model
+    save!
+  end
 end

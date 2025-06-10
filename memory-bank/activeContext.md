@@ -18,6 +18,9 @@
 
 **Tested and Verified**: All changes tested and verified in the UI and with automated tests. Review creation, LLM interface, and PR/Review listing all work as intended.
 
+- The LLM chat interface is now fully interactive: after a user sends a message, the system automatically sends it to the LLM, receives a response, and appends it to the conversation in real time using Turbo Streams.
+- Next steps may include streaming LLM responses, loading indicators, or advanced LLM features.
+
 ## Direct URL Navigation Feature - IMPLEMENTED ✅
 
 **URL Pattern**: `http://localhost:3000/repos/:owner/:repo_name/reviews/:pr_number`
@@ -96,6 +99,7 @@
 - ✅ **PR Tab System**: Complete session-based tab management implemented
 - ✅ **Database**: All models and relationships working properly
 - ✅ **Security**: Clean Brakeman scan with 0 security warnings
+- LLM chat interface is fully interactive and closes the conversational loop for review discussions.
 
 ## Next Development Phase
 
@@ -329,3 +333,7 @@ puts ci_status
 - **Next steps:**
   - Add UI indicators for PR build/check status.
   - Add UI action to force sync for one, multiple, or all repos.
+
+## Recent Changes
+
+**NEW FEATURE**: LLM chat interface is now fully interactive. When a user sends a message in a pull request review, the system automatically sends the message and conversation history to the LLM (via RubyLlmService), receives the LLM's response, and appends it to the conversation in real time using Turbo Streams. This closes the conversational loop for review discussions and sets the stage for future enhancements (streaming, loading indicators, advanced LLM features).

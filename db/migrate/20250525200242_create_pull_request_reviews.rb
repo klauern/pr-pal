@@ -8,6 +8,7 @@ class CreatePullRequestReviews < ActiveRecord::Migration[8.0]
       t.string :github_pr_title, null: false
       t.string :status, null: false, default: 'in_progress'
       t.text :llm_context_summary
+      t.text :pr_diff
       t.string :active_llm_session_id
       t.datetime :last_viewed_at
 

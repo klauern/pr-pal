@@ -127,4 +127,40 @@ class SettingsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to settings_url
     assert_equal "Invalid form submission.", flash[:alert]
   end
+
+  test "should add llm api key" do
+    assert_difference -> { @user.llm_api_keys.count }, 1 do
+      post add_llm_api_key_settings_url, params: { llm_provider: "test-provider", api_key: "test-key" }
+    end
+    assert_redirected_to settings_url
+    assert_equal "LLM API key saved.", flash[:notice]
+    assert_equal "test-key", @user.llm_api_keys.find_by(llm_provider: "test-provider").api_key
+  end
+
+  test "should update llm api key" do
+    key = @user.llm_api_keys.create!(llm_provider: "anthropic", api_key: "old-key")
+    post update_llm_api_key_settings_url, params: { llm_provider: "anthropic", api_key: "new-key" }
+    assert_redirected_to settings_url
+    assert_equal "LLM API key updated.", flash[:notice]
+    key.reload
+    assert_equal "new-key", key.api_key
+  end
+
+  test "should delete llm api key" do
+    key = @user.llm_api_keys.create!(llm_provider: "anthropic", api_key: "to-delete")
+    assert_difference -> { @user.llm_api_keys.count }, -1 do
+      delete delete_llm_api_key_settings_url, params: { llm_provider: "anthropic" }
+    end
+    assert_redirected_to settings_url
+    assert_equal "LLM API key deleted.", flash[:notice]
+  end
+
+  test "should update llm preferences" do
+    post update_llm_preferences_settings_url, params: { default_llm_provider: "openai", default_llm_model: "gpt-4" }
+    assert_redirected_to settings_url
+    assert_equal "LLM preferences updated.", flash[:notice]
+    @user.reload
+    assert_equal "openai", @user.default_llm_provider
+    assert_equal "gpt-4", @user.default_llm_model
+  end
 end

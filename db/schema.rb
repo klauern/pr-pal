@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_08_233024) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_10_012318) do
   create_table "llm_api_keys", force: :cascade do |t|
     t.string "llm_provider"
     t.text "api_key"
@@ -59,9 +59,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_08_233024) do
     t.integer "github_comment_count"
     t.string "github_review_status"
     t.text "pr_diff"
+    t.string "sync_status", default: "pending", null: false
     t.index ["pull_request_id"], name: "index_pull_request_reviews_on_pull_request_id"
     t.index ["repository_id", "github_pr_id"], name: "index_pull_request_reviews_on_repository_id_and_github_pr_id", unique: true
     t.index ["repository_id"], name: "index_pull_request_reviews_on_repository_id"
+    t.index ["sync_status"], name: "index_pull_request_reviews_on_sync_status"
     t.index ["user_id", "status"], name: "index_pull_request_reviews_on_user_id_and_status"
     t.index ["user_id"], name: "index_pull_request_reviews_on_user_id"
   end

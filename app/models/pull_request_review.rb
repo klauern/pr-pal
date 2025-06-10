@@ -32,4 +32,27 @@ class PullRequestReview < ApplicationRecord
   def last_message
     llm_conversation_messages.order(:order).last
   end
+
+  def stale_data?
+    return true unless last_synced_at
+    last_synced_at < 1.hour.ago
+  end
+
+  def needs_auto_sync?
+    return false if syncing?
+    return true unless last_synced_at
+    last_synced_at < 15.minutes.ago
+  end
+
+  def syncing?
+    sync_status == 'syncing'
+  end
+
+  def sync_completed?
+    sync_status == 'completed'
+  end
+
+  def sync_failed?
+    sync_status == 'failed'
+  end
 end

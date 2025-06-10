@@ -11,6 +11,9 @@ Rails.application.routes.draw do
   end
   resources :pull_request_reviews, only: [ :index, :show, :create, :update, :destroy ] do
     resources :llm_conversation_messages, only: [ :create ]
+    member do
+      post :sync
+    end
     collection do
       get :show_by_details
       post :reset_tabs

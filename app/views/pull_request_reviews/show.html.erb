@@ -48,6 +48,11 @@
           <% end %>
         </div>
       </div>
+
+      <!-- PR Sync Status -->
+      <div class="px-6 py-3 border-t border-gray-200 bg-gray-50">
+        <%= render "sync_status", pull_request_review: @pull_request_review %>
+      </div>
     </div>
 
     <!-- Conversation Messages -->

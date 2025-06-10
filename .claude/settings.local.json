@@ -17,7 +17,10 @@
       "Bash(mv:*)",
       "Bash(gh pr view:*)",
       "Bash(gh pr list:*)",
-      "Bash(gh api:*)"
+      "Bash(gh api:*)",
+      "Bash(./bin/rails test:*)",
+      "Bash(./bin/rails generate migration:*)",
+      "Bash(./bin/rails:*)"
     ]
   },
   "enableAllProjectMcpServers": false

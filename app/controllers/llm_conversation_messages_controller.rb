@@ -6,9 +6,8 @@ class LlmConversationMessagesController < ApplicationController
     @message.sender = "user"
 
     if @message.save
-      # Call the LLM service to get a response
-      llm_response = RubyLlmService.new(@pull_request_review).send_user_message(@message.content)
-      llm_message = @pull_request_review.llm_conversation_messages.by_llm.order(:order).last
+      # Prepare a placeholder for the LLM response
+      placeholder = LlmConversationMessage.placeholder_for(@message)
 
       respond_to do |format|
         format.turbo_stream do
@@ -18,11 +17,17 @@ class LlmConversationMessagesController < ApplicationController
               locals: { message: @message }),
             turbo_stream.append("conversation_messages",
               partial: "llm_conversation_messages/message",
-              locals: { message: llm_message })
+              locals: { message: placeholder }),
+            turbo_stream.replace("message_form",
+              partial: "pull_request_reviews/message_form",
+              locals: { pull_request_review: @pull_request_review, new_message: @pull_request_review.llm_conversation_messages.build })
           ]
         end
-        format.json { render json: { status: "success", message: "Message added", llm_response: llm_response } }
+        format.json { render json: { status: "success", message: "Message added" } }
       end
+
+      # Process LLM response in a background job to avoid blocking
+      ProcessLlmResponseJob.perform_later(@pull_request_review.id, @message.id)
     else
       respond_to do |format|
         format.turbo_stream do

@@ -171,10 +171,71 @@ class GithubPullRequestDataProvider < PullRequestDataProvider
 
   def self.fetch_pr_diff(owner, repo, pr_number, user)
     client = github_client(user)
-    client.get("/repos/#{owner}/#{repo}/pulls/#{pr_number}", {}, accept: "application/vnd.github.v3.diff")
-  rescue Octokit::Error => e
-    Rails.logger.warn "Failed to fetch PR diff: #{e.message}"
-    nil
+    
+    # Try fetching the diff with retry logic
+    retries = 0
+    max_retries = 2
+    
+    begin
+      Rails.logger.info "Fetching PR diff for #{owner}/#{repo}##{pr_number} (attempt #{retries + 1})"
+      
+      diff_content = client.pull_request("#{owner}/#{repo}", pr_number, { accept: "application/vnd.github.v3.diff" })
+      
+      if diff_content.nil? || diff_content.empty?
+        Rails.logger.warn "Empty diff returned for #{owner}/#{repo}##{pr_number}"
+        return generate_fallback_diff_message(owner, repo, pr_number)
+      end
+      
+      Rails.logger.info "Successfully fetched PR diff (#{diff_content.length} characters)"
+      diff_content
+      
+    rescue Octokit::NotFound
+      Rails.logger.warn "PR #{owner}/#{repo}##{pr_number} not found for diff fetch"
+      generate_fallback_diff_message(owner, repo, pr_number, "Pull request not found")
+    rescue Octokit::Unauthorized, Octokit::Forbidden
+      Rails.logger.warn "Unauthorized access to PR diff #{owner}/#{repo}##{pr_number}"
+      generate_fallback_diff_message(owner, repo, pr_number, "Access denied - check GitHub token permissions")
+    rescue Octokit::TooManyRequests
+      if retries < max_retries
+        retries += 1
+        sleep_time = 2 ** retries # Exponential backoff
+        Rails.logger.warn "Rate limited fetching PR diff, retrying in #{sleep_time}s (attempt #{retries}/#{max_retries})"
+        sleep(sleep_time)
+        retry
+      else
+        Rails.logger.error "Rate limit exceeded for PR diff after #{max_retries} retries"
+        generate_fallback_diff_message(owner, repo, pr_number, "GitHub API rate limit exceeded")
+      end
+    rescue Octokit::Error => e
+      if retries < max_retries
+        retries += 1
+        Rails.logger.warn "GitHub API error fetching PR diff, retrying: #{e.message} (attempt #{retries}/#{max_retries})"
+        sleep(1)
+        retry
+      else
+        Rails.logger.error "Failed to fetch PR diff after #{max_retries} retries: #{e.message}"
+        generate_fallback_diff_message(owner, repo, pr_number, "GitHub API error: #{e.message}")
+      end
+    rescue => e
+      Rails.logger.error "Unexpected error fetching PR diff: #{e.message}"
+      generate_fallback_diff_message(owner, repo, pr_number, "Unexpected error")
+    end
+  end
+
+  def self.generate_fallback_diff_message(owner, repo, pr_number, reason = "Unknown error")
+    <<~FALLBACK
+      # PR Diff Unavailable
+      
+      **Repository:** #{owner}/#{repo}
+      **Pull Request:** ##{pr_number}
+      **Reason:** #{reason}
+      
+      The diff for this pull request could not be retrieved from GitHub.
+      You can view it directly at: https://github.com/#{owner}/#{repo}/pull/#{pr_number}
+      
+      Please ask me questions about the pull request and I'll do my best to help
+      based on the context you provide in your messages.
+    FALLBACK
   end
 
   private

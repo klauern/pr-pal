@@ -5,4 +5,9 @@
 import { application } from "./application"
 
 import HelloController from "./hello_controller"
+import ChatInputController from "./chat_input_controller"
+import ConversationController from "./conversation_controller"
+
 application.register("hello", HelloController)
+application.register("chat-input", ChatInputController)
+application.register("conversation", ConversationController)

@@ -80,7 +80,7 @@ GEM
     bcrypt (3.1.20)
     bcrypt_pbkdf (1.1.1)
     benchmark (0.4.1)
-    bigdecimal (3.2.1)
+    bigdecimal (3.2.2)
     bindex (0.8.1)
     bootsnap (1.18.6)
       msgpack (~> 1.2)
@@ -99,6 +99,11 @@ GEM
     codecov (0.2.12)
       json
       simplecov
+    commonmarker (2.3.0-aarch64-linux)
+    commonmarker (2.3.0-aarch64-linux-musl)
+    commonmarker (2.3.0-arm64-darwin)
+    commonmarker (2.3.0-x86_64-linux)
+    commonmarker (2.3.0-x86_64-linux-musl)
     concurrent-ruby (1.3.5)
     connection_pool (2.5.3)
     crass (1.0.6)
@@ -293,7 +298,7 @@ GEM
     reverse_markdown (2.1.1)
       nokogiri
     rexml (3.4.1)
-    rubocop (1.75.8)
+    rubocop (1.76.1)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.1.0)
@@ -301,10 +306,10 @@ GEM
       parser (>= 3.3.0.2)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 2.9.3, < 3.0)
-      rubocop-ast (>= 1.44.0, < 2.0)
+      rubocop-ast (>= 1.45.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 4.0)
-    rubocop-ast (1.45.0)
+    rubocop-ast (1.45.1)
       parser (>= 3.3.7.2)
       prism (~> 1.4)
     rubocop-performance (1.25.0)
@@ -363,9 +368,9 @@ GEM
       thor (~> 1.0)
       tilt (~> 2.0)
       yard (~> 0.9, >= 0.9.24)
-    solargraph-rails (1.1.0)
+    solargraph-rails (1.1.2)
       activesupport
-      solargraph
+      solargraph (>= 0.48.0, < 0.53.0)
     solid_cable (3.0.8)
       actioncable (>= 7.2)
       activejob (>= 7.2)
@@ -426,7 +431,6 @@ GEM
       thor (>= 1.2.0)
       yard-sorbet
     thor (1.3.2)
-    thruster (0.1.13)
     thruster (0.1.13-aarch64-linux)
     thruster (0.1.13-arm64-darwin)
     thruster (0.1.13-x86_64-linux)
@@ -475,6 +479,7 @@ DEPENDENCIES
   brakeman
   capybara
   codecov
+  commonmarker (~> 2.3)
   cssbundling-rails
   debug
   faraday-retry

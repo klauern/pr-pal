@@ -51,16 +51,25 @@
     </div>
 
     <!-- Conversation Messages -->
-    <div class="bg-white shadow rounded-lg">
+    <div class="bg-white shadow rounded-lg" data-controller="conversation">
       <div class="p-6">
-        <h3 class="text-lg font-medium text-gray-900 mb-4">Conversation</h3>
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-medium text-gray-900">Conversation</h3>
+          <button data-action="click->conversation#scrollToBottomManually" 
+                  class="text-xs text-blue-600 hover:text-blue-800 px-2 py-1 border border-blue-300 rounded">
+            ↓ Scroll to Bottom
+          </button>
+        </div>
         <%= button_to "Reset Conversation",
           pull_request_review_reset_conversation_path(@pull_request_review),
           method: :post,
           class: "inline-flex items-center px-3 py-2 border border-red-600 text-sm leading-4 font-medium rounded-md text-red-600 bg-white hover:bg-red-50 mb-4",
           data: { turbo_method: :post, confirm: "Are you sure you want to reset this conversation? This cannot be undone." }
         %>
-        <div id="conversation_messages" class="space-y-4 mb-6">
+        <div id="conversation_messages" 
+             data-conversation-target="messages"
+             class="space-y-4 mb-6 max-h-96 overflow-y-auto border border-gray-200 rounded-lg p-4">
+          <%= turbo_stream_from "conversation_#{@pull_request_review.id}" %>
           <% if @messages.any? %>
           <% @messages.each do |message| %>
           <%= render "llm_conversation_messages/message", message: message %>
@@ -83,7 +92,6 @@
   </div>
 </div>
 
-<%= render "show_content", pull_request_review: @pull_request_review, messages: @messages, new_message: @new_message %>
 
 <script>
   function toggleContextEdit() {

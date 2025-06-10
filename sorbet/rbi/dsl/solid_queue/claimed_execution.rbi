@@ -7,7 +7,6 @@
 
 class SolidQueue::ClaimedExecution
   include GeneratedAssociationMethods
-  include GeneratedAttributeMethods
   extend CommonRelationMethods
   extend GeneratedRelationMethods
 
@@ -421,34 +420,34 @@ class SolidQueue::ClaimedExecution
   end
 
   module GeneratedAssociationMethods
-    sig { params(args: T.untyped, blk: T.untyped).returns(::SolidQueue::Job) }
+    sig { params(args: T.untyped, blk: T.untyped).returns(T.untyped) }
     def build_job(*args, &blk); end
 
-    sig { params(args: T.untyped, blk: T.untyped).returns(::SolidQueue::Process) }
+    sig { params(args: T.untyped, blk: T.untyped).returns(T.untyped) }
     def build_process(*args, &blk); end
 
-    sig { params(args: T.untyped, blk: T.untyped).returns(::SolidQueue::Job) }
+    sig { params(args: T.untyped, blk: T.untyped).returns(T.untyped) }
     def create_job(*args, &blk); end
 
-    sig { params(args: T.untyped, blk: T.untyped).returns(::SolidQueue::Job) }
+    sig { params(args: T.untyped, blk: T.untyped).returns(T.untyped) }
     def create_job!(*args, &blk); end
 
-    sig { params(args: T.untyped, blk: T.untyped).returns(::SolidQueue::Process) }
+    sig { params(args: T.untyped, blk: T.untyped).returns(T.untyped) }
     def create_process(*args, &blk); end
 
-    sig { params(args: T.untyped, blk: T.untyped).returns(::SolidQueue::Process) }
+    sig { params(args: T.untyped, blk: T.untyped).returns(T.untyped) }
     def create_process!(*args, &blk); end
 
-    sig { returns(T.nilable(::SolidQueue::Job)) }
+    sig { returns(T.untyped) }
     def job; end
 
-    sig { params(value: T.nilable(::SolidQueue::Job)).void }
+    sig { params(value: T.untyped).void }
     def job=(value); end
 
-    sig { returns(T.nilable(::SolidQueue::Process)) }
+    sig { returns(T.untyped) }
     def process; end
 
-    sig { params(value: T.nilable(::SolidQueue::Process)).void }
+    sig { params(value: T.untyped).void }
     def process=(value); end
 
     sig { returns(T::Boolean) }
@@ -457,10 +456,10 @@ class SolidQueue::ClaimedExecution
     sig { returns(T::Boolean) }
     def process_previously_changed?; end
 
-    sig { returns(T.nilable(::SolidQueue::Job)) }
+    sig { returns(T.untyped) }
     def reload_job; end
 
-    sig { returns(T.nilable(::SolidQueue::Process)) }
+    sig { returns(T.untyped) }
     def reload_process; end
 
     sig { void }
@@ -623,293 +622,6 @@ class SolidQueue::ClaimedExecution
 
     sig { params(args: T.untyped, blk: T.untyped).returns(PrivateAssociationRelation) }
     def without(*args, &blk); end
-  end
-
-  module GeneratedAttributeMethods
-    sig { returns(::ActiveSupport::TimeWithZone) }
-    def created_at; end
-
-    sig { params(value: ::ActiveSupport::TimeWithZone).returns(::ActiveSupport::TimeWithZone) }
-    def created_at=(value); end
-
-    sig { returns(T::Boolean) }
-    def created_at?; end
-
-    sig { returns(T.nilable(::ActiveSupport::TimeWithZone)) }
-    def created_at_before_last_save; end
-
-    sig { returns(T.untyped) }
-    def created_at_before_type_cast; end
-
-    sig { returns(T::Boolean) }
-    def created_at_came_from_user?; end
-
-    sig { returns(T.nilable([::ActiveSupport::TimeWithZone, ::ActiveSupport::TimeWithZone])) }
-    def created_at_change; end
-
-    sig { returns(T.nilable([::ActiveSupport::TimeWithZone, ::ActiveSupport::TimeWithZone])) }
-    def created_at_change_to_be_saved; end
-
-    sig { params(from: ::ActiveSupport::TimeWithZone, to: ::ActiveSupport::TimeWithZone).returns(T::Boolean) }
-    def created_at_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::ActiveSupport::TimeWithZone)) }
-    def created_at_in_database; end
-
-    sig { returns(T.nilable([::ActiveSupport::TimeWithZone, ::ActiveSupport::TimeWithZone])) }
-    def created_at_previous_change; end
-
-    sig { params(from: ::ActiveSupport::TimeWithZone, to: ::ActiveSupport::TimeWithZone).returns(T::Boolean) }
-    def created_at_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::ActiveSupport::TimeWithZone)) }
-    def created_at_previously_was; end
-
-    sig { returns(T.nilable(::ActiveSupport::TimeWithZone)) }
-    def created_at_was; end
-
-    sig { void }
-    def created_at_will_change!; end
-
-    sig { returns(::Integer) }
-    def id; end
-
-    sig { params(value: ::Integer).returns(::Integer) }
-    def id=(value); end
-
-    sig { returns(T::Boolean) }
-    def id?; end
-
-    sig { returns(T.nilable(::Integer)) }
-    def id_before_last_save; end
-
-    sig { returns(T.untyped) }
-    def id_before_type_cast; end
-
-    sig { returns(T::Boolean) }
-    def id_came_from_user?; end
-
-    sig { returns(T.nilable([::Integer, ::Integer])) }
-    def id_change; end
-
-    sig { returns(T.nilable([::Integer, ::Integer])) }
-    def id_change_to_be_saved; end
-
-    sig { params(from: ::Integer, to: ::Integer).returns(T::Boolean) }
-    def id_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::Integer)) }
-    def id_in_database; end
-
-    sig { returns(T.nilable([::Integer, ::Integer])) }
-    def id_previous_change; end
-
-    sig { params(from: ::Integer, to: ::Integer).returns(T::Boolean) }
-    def id_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::Integer)) }
-    def id_previously_was; end
-
-    sig { returns(::Integer) }
-    def id_value; end
-
-    sig { params(value: ::Integer).returns(::Integer) }
-    def id_value=(value); end
-
-    sig { returns(T::Boolean) }
-    def id_value?; end
-
-    sig { returns(T.nilable(::Integer)) }
-    def id_value_before_last_save; end
-
-    sig { returns(T.untyped) }
-    def id_value_before_type_cast; end
-
-    sig { returns(T::Boolean) }
-    def id_value_came_from_user?; end
-
-    sig { returns(T.nilable([::Integer, ::Integer])) }
-    def id_value_change; end
-
-    sig { returns(T.nilable([::Integer, ::Integer])) }
-    def id_value_change_to_be_saved; end
-
-    sig { params(from: ::Integer, to: ::Integer).returns(T::Boolean) }
-    def id_value_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::Integer)) }
-    def id_value_in_database; end
-
-    sig { returns(T.nilable([::Integer, ::Integer])) }
-    def id_value_previous_change; end
-
-    sig { params(from: ::Integer, to: ::Integer).returns(T::Boolean) }
-    def id_value_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::Integer)) }
-    def id_value_previously_was; end
-
-    sig { returns(T.nilable(::Integer)) }
-    def id_value_was; end
-
-    sig { void }
-    def id_value_will_change!; end
-
-    sig { returns(T.nilable(::Integer)) }
-    def id_was; end
-
-    sig { void }
-    def id_will_change!; end
-
-    sig { returns(::Integer) }
-    def job_id; end
-
-    sig { params(value: ::Integer).returns(::Integer) }
-    def job_id=(value); end
-
-    sig { returns(T::Boolean) }
-    def job_id?; end
-
-    sig { returns(T.nilable(::Integer)) }
-    def job_id_before_last_save; end
-
-    sig { returns(T.untyped) }
-    def job_id_before_type_cast; end
-
-    sig { returns(T::Boolean) }
-    def job_id_came_from_user?; end
-
-    sig { returns(T.nilable([::Integer, ::Integer])) }
-    def job_id_change; end
-
-    sig { returns(T.nilable([::Integer, ::Integer])) }
-    def job_id_change_to_be_saved; end
-
-    sig { params(from: ::Integer, to: ::Integer).returns(T::Boolean) }
-    def job_id_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::Integer)) }
-    def job_id_in_database; end
-
-    sig { returns(T.nilable([::Integer, ::Integer])) }
-    def job_id_previous_change; end
-
-    sig { params(from: ::Integer, to: ::Integer).returns(T::Boolean) }
-    def job_id_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::Integer)) }
-    def job_id_previously_was; end
-
-    sig { returns(T.nilable(::Integer)) }
-    def job_id_was; end
-
-    sig { void }
-    def job_id_will_change!; end
-
-    sig { returns(T.nilable(::Integer)) }
-    def process_id; end
-
-    sig { params(value: T.nilable(::Integer)).returns(T.nilable(::Integer)) }
-    def process_id=(value); end
-
-    sig { returns(T::Boolean) }
-    def process_id?; end
-
-    sig { returns(T.nilable(::Integer)) }
-    def process_id_before_last_save; end
-
-    sig { returns(T.untyped) }
-    def process_id_before_type_cast; end
-
-    sig { returns(T::Boolean) }
-    def process_id_came_from_user?; end
-
-    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
-    def process_id_change; end
-
-    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
-    def process_id_change_to_be_saved; end
-
-    sig { params(from: T.nilable(::Integer), to: T.nilable(::Integer)).returns(T::Boolean) }
-    def process_id_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::Integer)) }
-    def process_id_in_database; end
-
-    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
-    def process_id_previous_change; end
-
-    sig { params(from: T.nilable(::Integer), to: T.nilable(::Integer)).returns(T::Boolean) }
-    def process_id_previously_changed?(from: T.unsafe(nil), to: T.unsafe(nil)); end
-
-    sig { returns(T.nilable(::Integer)) }
-    def process_id_previously_was; end
-
-    sig { returns(T.nilable(::Integer)) }
-    def process_id_was; end
-
-    sig { void }
-    def process_id_will_change!; end
-
-    sig { void }
-    def restore_created_at!; end
-
-    sig { void }
-    def restore_id!; end
-
-    sig { void }
-    def restore_id_value!; end
-
-    sig { void }
-    def restore_job_id!; end
-
-    sig { void }
-    def restore_process_id!; end
-
-    sig { returns(T.nilable([::ActiveSupport::TimeWithZone, ::ActiveSupport::TimeWithZone])) }
-    def saved_change_to_created_at; end
-
-    sig { returns(T::Boolean) }
-    def saved_change_to_created_at?; end
-
-    sig { returns(T.nilable([::Integer, ::Integer])) }
-    def saved_change_to_id; end
-
-    sig { returns(T::Boolean) }
-    def saved_change_to_id?; end
-
-    sig { returns(T.nilable([::Integer, ::Integer])) }
-    def saved_change_to_id_value; end
-
-    sig { returns(T::Boolean) }
-    def saved_change_to_id_value?; end
-
-    sig { returns(T.nilable([::Integer, ::Integer])) }
-    def saved_change_to_job_id; end
-
-    sig { returns(T::Boolean) }
-    def saved_change_to_job_id?; end
-
-    sig { returns(T.nilable([T.nilable(::Integer), T.nilable(::Integer)])) }
-    def saved_change_to_process_id; end
-
-    sig { returns(T::Boolean) }
-    def saved_change_to_process_id?; end
-
-    sig { returns(T::Boolean) }
-    def will_save_change_to_created_at?; end
-
-    sig { returns(T::Boolean) }
-    def will_save_change_to_id?; end
-
-    sig { returns(T::Boolean) }
-    def will_save_change_to_id_value?; end
-
-    sig { returns(T::Boolean) }
-    def will_save_change_to_job_id?; end
-
-    sig { returns(T::Boolean) }
-    def will_save_change_to_process_id?; end
   end
 
   module GeneratedRelationMethods

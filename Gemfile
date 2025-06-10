@@ -87,3 +87,5 @@ group :test do
   # For controller testing helpers like assigns [https://github.com/rails/rails-controller-testing]
   gem "rails-controller-testing"
 end
+
+gem "commonmarker", "~> 2.3"

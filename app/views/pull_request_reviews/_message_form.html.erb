@@ -1,25 +1,26 @@
-<%= form_with model: [pull_request_review, new_message], local: false, class: "space-y-3" do |f| %>
-  <div>
-    <%= f.text_area :content, rows: 3,
+<%= form_with model: [pull_request_review, new_message], local: false, class: "space-y-3", data: { controller: "chat-input", chat_input_target: "form" } do |f| %>
+<div>
+  <%= f.text_area :content, rows: 3,
         class: "w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-blue-500 focus:border-blue-500",
-        placeholder: "Ask a question about this pull request or provide feedback..." %>
-  </div>
+        placeholder: "Ask a question about this pull request or provide feedback...",
+        data: { chat_input_target: "textarea" } %>
+</div>
 
-  <% if new_message.errors.any? %>
-    <div class="text-red-600 text-sm">
-      <ul>
-        <% new_message.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+<% if new_message.errors.any? %>
+<div class="text-red-600 text-sm">
+  <ul>
+    <% new_message.errors.full_messages.each do |message| %>
+    <li><%= message %></li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
 
-  <div class="flex justify-between items-center">
-    <p class="text-xs text-gray-500">
-      Messages will be saved to continue the conversation.
-    </p>
-    <%= f.submit "Send Message",
+<div class="flex justify-between items-center">
+  <p class="text-xs text-gray-500">
+    Messages will be saved to continue the conversation.
+  </p>
+  <%= f.submit "Send Message",
         class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
-  </div>
+</div>
 <% end %>

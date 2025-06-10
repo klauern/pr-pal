@@ -1,4 +1,6 @@
 module ApplicationHelper
+  include MarkdownRenderer
+
   def safe_pr_link(pull_request_review)
     title = html_escape(pull_request_review.github_pr_title)
     url = safe_pr_url(pull_request_review.github_pr_url)

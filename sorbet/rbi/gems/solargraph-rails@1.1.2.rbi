@@ -8,10 +8,10 @@
 # source://solargraph-rails//lib/solargraph/rails/util.rb#1
 module Solargraph
   class << self
-    # source://solargraph/0.54.5/lib/solargraph.rb#58
+    # source://solargraph/0.48.0/lib/solargraph.rb#53
     def logger; end
 
-    # source://solargraph/0.54.5/lib/solargraph.rb#64
+    # source://solargraph/0.48.0/lib/solargraph.rb#61
     def with_clean_env(&block); end
   end
 end
@@ -52,17 +52,17 @@ class Solargraph::Rails::Autoload
   end
 end
 
-# source://solargraph-rails//lib/solargraph-rails.rb#23
+# source://solargraph-rails//lib/solargraph-rails.rb#25
 class Solargraph::Rails::Convention < ::Solargraph::Convention::Base
-  # source://solargraph-rails//lib/solargraph-rails.rb#24
+  # source://solargraph-rails//lib/solargraph-rails.rb#26
   def global(yard_map); end
 
-  # source://solargraph-rails//lib/solargraph-rails.rb#35
+  # source://solargraph-rails//lib/solargraph-rails.rb#37
   def local(source_map); end
 
   private
 
-  # source://solargraph-rails//lib/solargraph-rails.rb#59
+  # source://solargraph-rails//lib/solargraph-rails.rb#61
   def run_feature(&block); end
 end
 
@@ -129,17 +129,22 @@ class Solargraph::Rails::Model
   end
 end
 
-# source://solargraph-rails//lib/solargraph-rails.rb#19
+# source://solargraph-rails//lib/solargraph-rails.rb#21
 class Solargraph::Rails::NodeParser
-  extend ::Solargraph::Parser::ParserGem::ClassMethods
+  extend ::Solargraph::Parser::Legacy::ClassMethods
 end
 
 # source://solargraph-rails//lib/solargraph/rails/rails_api.rb#3
 class Solargraph::Rails::RailsApi
   # source://solargraph-rails//lib/solargraph/rails/rails_api.rb#8
-  def global(yard_map); end
+  def extra_source_maps; end
 
-  # source://solargraph-rails//lib/solargraph/rails/rails_api.rb#74
+  # @param yard_map [YardMap]
+  #
+  # source://solargraph-rails//lib/solargraph/rails/rails_api.rb#18
+  def global(_yard_map); end
+
+  # source://solargraph-rails//lib/solargraph/rails/rails_api.rb#22
   def local(source_map, ns); end
 
   class << self
@@ -152,31 +157,31 @@ end
 class Solargraph::Rails::Schema
   # @return [Schema] a new instance of Schema
   #
-  # source://solargraph-rails//lib/solargraph/rails/schema.rb#33
+  # source://solargraph-rails//lib/solargraph/rails/schema.rb#34
   def initialize; end
 
-  # source://solargraph-rails//lib/solargraph/rails/schema.rb#37
+  # source://solargraph-rails//lib/solargraph/rails/schema.rb#38
   def process(source_map, ns); end
 
   private
 
-  # source://solargraph-rails//lib/solargraph/rails/schema.rb#96
+  # source://solargraph-rails//lib/solargraph/rails/schema.rb#97
   def extract_schema(ast); end
 
-  # source://solargraph-rails//lib/solargraph/rails/schema.rb#73
+  # source://solargraph-rails//lib/solargraph/rails/schema.rb#74
   def find_table(source_map, ns); end
 
-  # source://solargraph-rails//lib/solargraph/rails/schema.rb#87
+  # source://solargraph-rails//lib/solargraph/rails/schema.rb#88
   def infer_table_names(ns); end
 
-  # source://solargraph-rails//lib/solargraph/rails/schema.rb#65
+  # source://solargraph-rails//lib/solargraph/rails/schema.rb#66
   def schema; end
 
   class << self
-    # source://solargraph-rails//lib/solargraph/rails/schema.rb#25
+    # source://solargraph-rails//lib/solargraph/rails/schema.rb#26
     def instance; end
 
-    # source://solargraph-rails//lib/solargraph/rails/schema.rb#29
+    # source://solargraph-rails//lib/solargraph/rails/schema.rb#30
     def reset; end
   end
 end
@@ -258,37 +263,35 @@ Solargraph::Rails::VERSION = T.let(T.unsafe(nil), String)
 class Solargraph::Rails::Walker
   # @return [Walker] a new instance of Walker
   #
-  # source://solargraph-rails//lib/solargraph/rails/walker.rb#68
+  # source://solargraph-rails//lib/solargraph/rails/walker.rb#61
   def initialize(ast, comments = T.unsafe(nil)); end
 
   # Returns the value of attribute ast.
   #
-  # source://solargraph-rails//lib/solargraph/rails/walker.rb#67
+  # source://solargraph-rails//lib/solargraph/rails/walker.rb#60
   def ast; end
 
   # Returns the value of attribute comments.
   #
-  # source://solargraph-rails//lib/solargraph/rails/walker.rb#67
+  # source://solargraph-rails//lib/solargraph/rails/walker.rb#60
   def comments; end
 
-  # source://solargraph-rails//lib/solargraph/rails/walker.rb#74
+  # source://solargraph-rails//lib/solargraph/rails/walker.rb#67
   def on(node_type, args = T.unsafe(nil), &block); end
 
-  # source://solargraph-rails//lib/solargraph/rails/walker.rb#78
+  # source://solargraph-rails//lib/solargraph/rails/walker.rb#71
   def walk; end
 
   private
 
-  # source://solargraph-rails//lib/solargraph/rails/walker.rb#84
+  # source://solargraph-rails//lib/solargraph/rails/walker.rb#77
   def traverse(node); end
 
   class << self
-    # source://solargraph-rails//lib/solargraph/rails/walker.rb#63
+    # source://solargraph-rails//lib/solargraph/rails/walker.rb#56
     def from_source(source); end
 
-    # https://github.com/castwide/solargraph/issues/522
-    #
-    # source://solargraph-rails//lib/solargraph/rails/walker.rb#53
+    # source://solargraph-rails//lib/solargraph/rails/walker.rb#52
     def normalize_ast(source); end
   end
 end

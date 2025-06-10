@@ -190,9 +190,11 @@ class LlmConversationMessagesControllerTest < ActionDispatch::IntegrationTest
          headers: { "Accept" => "text/vnd.turbo-stream.html" }
 
     assert_response :success
-    # Ensure script tags are escaped in the response
+    # Ensure script tags are safely handled in the response
     assert_no_match /<script>alert/, response.body
-    assert_includes response.body, "&lt;script&gt;"
+    # Commonmarker safely omits raw HTML, so either escaped HTML or raw HTML omitted comment should be present
+    assert(response.body.include?("&lt;script&gt;") || response.body.include?("raw HTML omitted"),
+           "HTML should be escaped or safely omitted")
   end
 
   test "should prevent SQL injection in message content" do

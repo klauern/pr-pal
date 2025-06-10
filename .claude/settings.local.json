@@ -21,7 +21,8 @@
       "Bash(./bin/rails test:*)",
       "Bash(./bin/rails generate migration:*)",
       "Bash(./bin/rails:*)",
-      "Bash(bundle exec rubocop:*)"
+      "Bash(bundle exec rubocop:*)",
+      "Bash(timeout:*)"
     ]
   },
   "enableAllProjectMcpServers": false

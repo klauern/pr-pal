@@ -2,9 +2,21 @@ module ApplicationHelper
   def markdown_to_html(content)
     return "" if content.blank?
 
-    # For now, just escape HTML and preserve line breaks
-    # In the future, we could add a proper markdown processor
-    html_escape(content).gsub("\n", "<br>").html_safe
+    begin
+      require "commonmarker"
+
+      # Use commonmarker to render markdown to HTML
+      # The to_html method handles safe rendering by default
+      doc = Commonmarker.to_html(content)
+      doc.html_safe
+    rescue LoadError
+      # Fallback if commonmarker is not available
+      html_escape(content).gsub("\n", "<br>").html_safe
+    rescue => e
+      # Fallback if markdown parsing fails
+      Rails.logger.warn "Markdown parsing failed: #{e.message}"
+      html_escape(content).gsub("\n", "<br>").html_safe
+    end
   end
 
   def safe_pr_link(pull_request_review)

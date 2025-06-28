@@ -2,7 +2,7 @@ ENV["RAILS_ENV"] ||= "test"
 require "simplecov"
 
 # Always generate .resultset.json for GitHub Actions artifact upload
-# Disable automatic Codecov uploads - handled by separate job
+# SimpleCov automatically generates .resultset.json, so we only need HTML formatter
 SimpleCov.formatter = SimpleCov::Formatter::HTMLFormatter
 
 SimpleCov.start "rails" do

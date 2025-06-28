@@ -14,7 +14,7 @@ class PullRequestSyncJobTest < ActiveJob::TestCase
 
     PullRequestSyncer.stub :new, mock_syncer do
       result = PullRequestSyncJob.perform_now(@repository.id)
-      
+
       assert_equal :success, result[:status]
       assert_equal 5, result[:synced]
       assert_empty result[:errors]
@@ -25,11 +25,11 @@ class PullRequestSyncJobTest < ActiveJob::TestCase
 
   test "should handle partial success" do
     mock_syncer = Minitest::Mock.new
-    mock_syncer.expect :sync!, { status: :partial_success, synced: 3, errors: ["Error 1", "Error 2"] }
+    mock_syncer.expect :sync!, { status: :partial_success, synced: 3, errors: [ "Error 1", "Error 2" ] }
 
     PullRequestSyncer.stub :new, mock_syncer do
       result = PullRequestSyncJob.perform_now(@repository.id)
-      
+
       assert_equal :partial_success, result[:status]
       assert_equal 3, result[:synced]
       assert_equal 2, result[:errors].size
@@ -44,7 +44,7 @@ class PullRequestSyncJobTest < ActiveJob::TestCase
 
     PullRequestSyncer.stub :new, mock_syncer do
       result = PullRequestSyncJob.perform_now(@repository.id)
-      
+
       assert_equal :no_prs, result[:status]
       assert_equal 0, result[:synced]
     end
@@ -54,11 +54,11 @@ class PullRequestSyncJobTest < ActiveJob::TestCase
 
   test "should handle sync error" do
     mock_syncer = Minitest::Mock.new
-    mock_syncer.expect :sync!, { status: :error, synced: 0, errors: ["API rate limit exceeded"] }
+    mock_syncer.expect :sync!, { status: :error, synced: 0, errors: [ "API rate limit exceeded" ] }
 
     PullRequestSyncer.stub :new, mock_syncer do
       result = PullRequestSyncJob.perform_now(@repository.id)
-      
+
       assert_equal :error, result[:status]
       assert_equal 0, result[:synced]
       assert_includes result[:errors], "API rate limit exceeded"
@@ -69,7 +69,7 @@ class PullRequestSyncJobTest < ActiveJob::TestCase
 
   test "should handle repository not found" do
     result = PullRequestSyncJob.perform_now(999999)
-    
+
     assert_equal :error, result[:status]
     assert_equal 0, result[:synced]
     assert_includes result[:errors], "Repository not found"
@@ -81,7 +81,7 @@ class PullRequestSyncJobTest < ActiveJob::TestCase
 
     PullRequestSyncer.stub :new, mock_syncer do
       result = PullRequestSyncJob.perform_now(@repository.id)
-      
+
       assert_equal :error, result[:status]
       assert_equal 0, result[:synced]
       assert_includes result[:errors], "Connection timeout"
@@ -107,13 +107,13 @@ class PullRequestSyncJobTest < ActiveJob::TestCase
       elsif repo_id == @repository2.id
         { status: :success, synced: 2, errors: [] }
       else
-        { status: :error, synced: 0, errors: ["Unknown repository"] }
+        { status: :error, synced: 0, errors: [ "Unknown repository" ] }
       end
     end
 
     PullRequestSyncJob.stub :perform_now, mock_perform_now do
       results = PullRequestSyncJob.sync_user_repositories(@user)
-      
+
       assert_equal 2, results.size
       assert_equal @repository.full_name, results.first[:repository]
       assert_equal @repository2.full_name, results.last[:repository]
@@ -146,7 +146,7 @@ class PullRequestSyncJobTest < ActiveJob::TestCase
 
     PullRequestSyncJob.stub :perform_now, mock_perform_now do
       results = PullRequestSyncJob.sync_user_repositories(@user)
-      
+
       assert_equal 2, results.size
       assert_equal :success, results.first[:result][:status]
       assert_equal :error, results.last[:result][:status]
@@ -171,13 +171,13 @@ class PullRequestSyncJobTest < ActiveJob::TestCase
 
     PullRequestSyncJob.stub :perform_later, mock_perform_later do
       result = PullRequestSyncJob.sync_all_repositories
-      
+
       # Should include our existing repository plus the new ones
       expected_count = Repository.count
       assert_equal expected_count, result[:total]
       assert_equal expected_count, result[:queued]
       assert_equal 0, result[:errors]
-      
+
       # Should have queued jobs for all repositories
       assert_includes queued_repo_ids, @repository.id
       assert_includes queued_repo_ids, repo1.id
@@ -206,7 +206,7 @@ class PullRequestSyncJobTest < ActiveJob::TestCase
 
     PullRequestSyncJob.stub :perform_later, mock_perform_later do
       result = PullRequestSyncJob.sync_all_repositories
-      
+
       total_repos = Repository.count
       assert_equal total_repos, result[:total]
       assert_equal 1, result[:queued]  # Only one succeeded

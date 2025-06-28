@@ -4,7 +4,7 @@ class AutoSyncPrJobTest < ActiveJob::TestCase
   def setup
     @user = users(:one)
     @repository = repositories(:one)
-    @pull_request_review = pull_request_reviews(:one)
+    @pull_request_review = pull_request_reviews(:review_pr_one)
   end
 
   test "should skip sync if data is fresh" do

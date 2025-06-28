@@ -3,7 +3,7 @@ require "minitest/mock"
 
 class ApplicationHelperTest < ActionView::TestCase
   def setup
-    @pull_request_review = pull_request_reviews(:one)
+    @pull_request_review = pull_request_reviews(:review_pr_one)
     # Set up mock data for the PR review
     @pull_request_review.define_singleton_method(:github_pr_title) { "Test PR Title" }
     @pull_request_review.define_singleton_method(:github_pr_url) { "https://github.com/owner/repo/pull/123" }

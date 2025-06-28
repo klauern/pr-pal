@@ -5,8 +5,8 @@ class PullRequestTest < ActiveSupport::TestCase
     @repository = repositories(:one)
     @valid_attributes = {
       repository: @repository,
-      github_pr_id: 999,
-      github_pr_url: "https://github.com/octocat/hello-world/pull/999",
+      github_pr_id: 9999,
+      github_pr_url: "https://github.com/octocat/hello-world/pull/9999",
       title: "Test pull request",
       state: "open",
       author: "test_author",
@@ -118,47 +118,41 @@ class PullRequestTest < ActiveSupport::TestCase
   # Scope tests
   test "open scope returns only open pull requests" do
     open_pr = pull_requests(:pr_one) # fixture has state: "open"
-    closed_pr = PullRequest.create!(@valid_attributes.merge(
-      github_pr_id: 888,
-      github_pr_url: "https://github.com/octocat/hello-world/pull/888",
-      state: "closed"
-    ))
-    merged_pr = PullRequest.create!(@valid_attributes.merge(
-      github_pr_id: 777,
-      github_pr_url: "https://github.com/octocat/hello-world/pull/777",
-      state: "merged"
-    ))
+    another_open_pr = pull_requests(:pr_two) # fixture has state: "open"
+    closed_pr = pull_requests(:pr_closed) # fixture has state: "closed"
+    merged_pr = pull_requests(:pr_merged) # fixture has state: "merged"
 
     open_prs = PullRequest.open
     assert_includes open_prs, open_pr
+    assert_includes open_prs, another_open_pr
     assert_not_includes open_prs, closed_pr
     assert_not_includes open_prs, merged_pr
   end
 
   test "closed scope returns only closed pull requests" do
-    open_pr = pull_requests(:pr_one)
-    closed_pr = PullRequest.create!(@valid_attributes.merge(
-      github_pr_id: 888,
-      github_pr_url: "https://github.com/octocat/hello-world/pull/888",
-      state: "closed"
-    ))
+    open_pr = pull_requests(:pr_one) # fixture has state: "open"
+    closed_pr = pull_requests(:pr_closed) # fixture has state: "closed"
+    old_closed_pr = pull_requests(:pr_old) # fixture has state: "closed"
+    merged_pr = pull_requests(:pr_merged) # fixture has state: "merged"
 
     closed_prs = PullRequest.closed
     assert_includes closed_prs, closed_pr
+    assert_includes closed_prs, old_closed_pr
     assert_not_includes closed_prs, open_pr
+    assert_not_includes closed_prs, merged_pr
   end
 
   test "merged scope returns only merged pull requests" do
-    open_pr = pull_requests(:pr_one)
-    merged_pr = PullRequest.create!(@valid_attributes.merge(
-      github_pr_id: 777,
-      github_pr_url: "https://github.com/octocat/hello-world/pull/777",
-      state: "merged"
-    ))
+    open_pr = pull_requests(:pr_one) # fixture has state: "open"
+    closed_pr = pull_requests(:pr_closed) # fixture has state: "closed"
+    merged_pr = pull_requests(:pr_merged) # fixture has state: "merged"
+    minimal_merged_pr = pull_requests(:pr_minimal) # fixture has state: "merged"
 
     merged_prs = PullRequest.merged
     assert_includes merged_prs, merged_pr
+    assert_includes merged_prs, minimal_merged_pr
     assert_not_includes merged_prs, open_pr
+    assert_not_includes merged_prs, closed_pr
   end
 
   test "by_recent scope orders by github_updated_at descending" do

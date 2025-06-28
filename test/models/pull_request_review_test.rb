@@ -9,8 +9,8 @@ class PullRequestReviewTest < ActiveSupport::TestCase
       user: @user,
       repository: @repository,
       pull_request: @pull_request,
-      github_pr_id: 999,
-      github_pr_url: "https://github.com/octocat/hello-world/pull/999",
+      github_pr_id: 12345, # Use a unique ID not in fixtures
+      github_pr_url: "https://github.com/octocat/hello-world/pull/12345",
       github_pr_title: "Test PR Review",
       status: "in_progress"
     }
@@ -138,8 +138,8 @@ class PullRequestReviewTest < ActiveSupport::TestCase
 
   # Scope tests
   test "in_progress scope returns only in_progress reviews" do
-    in_progress_review = pull_request_reviews(:one) # fixture has status: "in_progress"
-    completed_review = pull_request_reviews(:two)   # fixture has status: "completed"
+    in_progress_review = pull_request_reviews(:review_pr_one) # fixture has status: "in_progress"
+    completed_review = pull_request_reviews(:review_pr_two)   # fixture has status: "completed"
 
     in_progress_reviews = PullRequestReview.in_progress
     assert_includes in_progress_reviews, in_progress_review
@@ -147,8 +147,8 @@ class PullRequestReviewTest < ActiveSupport::TestCase
   end
 
   test "completed scope returns only completed reviews" do
-    in_progress_review = pull_request_reviews(:one) # fixture has status: "in_progress"
-    completed_review = pull_request_reviews(:two)   # fixture has status: "completed"
+    in_progress_review = pull_request_reviews(:review_pr_one) # fixture has status: "in_progress"
+    completed_review = pull_request_reviews(:review_pr_two)   # fixture has status: "completed"
 
     completed_reviews = PullRequestReview.completed
     assert_includes completed_reviews, completed_review
@@ -316,27 +316,27 @@ class PullRequestReviewTest < ActiveSupport::TestCase
 
   # Fixture integration tests
   test "fixture one is valid and in_progress" do
-    review = pull_request_reviews(:one)
+    review = pull_request_reviews(:review_pr_one)
     assert review.valid?
     assert_equal "in_progress", review.status
   end
 
   test "fixture two is valid and completed" do
-    review = pull_request_reviews(:two)
+    review = pull_request_reviews(:review_pr_two)
     assert review.valid?
     assert_equal "completed", review.status
   end
 
   test "fixtures have unique github_pr_ids within same repository" do
-    review_one = pull_request_reviews(:one)
-    review_two = pull_request_reviews(:two)
+    review_one = pull_request_reviews(:review_pr_one)
+    review_two = pull_request_reviews(:review_pr_two)
 
     assert_equal review_one.repository, review_two.repository
     assert_not_equal review_one.github_pr_id, review_two.github_pr_id
   end
 
   test "fixtures have associated conversation messages" do
-    review = pull_request_reviews(:one)
+    review = pull_request_reviews(:review_pr_one)
     messages = review.llm_conversation_messages
 
     assert messages.any?, "Review should have conversation messages"
@@ -366,7 +366,7 @@ class PullRequestReviewTest < ActiveSupport::TestCase
   end
 
   test "deleting review cascades to messages" do
-    review = pull_request_reviews(:one)
+    review = pull_request_reviews(:review_pr_one)
     message_count = review.llm_conversation_messages.count
 
     assert message_count > 0, "Fixture should have messages"

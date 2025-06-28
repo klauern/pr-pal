@@ -3,10 +3,7 @@ require "simplecov"
 
 # Always generate .resultset.json for GitHub Actions artifact upload
 # Disable automatic Codecov uploads - handled by separate job
-SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new([
-  SimpleCov::Formatter::HTMLFormatter,
-  SimpleCov::Formatter::JSONFormatter
-])
+SimpleCov.formatter = SimpleCov::Formatter::HTMLFormatter
 
 SimpleCov.start "rails" do
   enable_coverage :branch

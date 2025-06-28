@@ -1,5 +1,6 @@
 <% password_digest = BCrypt::Password.create("password") %>
 
+# Basic users (original fixtures)
 one:
   email_address: one@example.com
   password_digest: <%= password_digest %>
@@ -7,3 +8,79 @@ one:
 two:
   email_address: two@example.com
   password_digest: <%= password_digest %>
+
+# User with GitHub token configured
+github_user:
+  email_address: github.user@example.com
+  password_digest: <%= password_digest %>
+  github_token: "ghp_test_token_123456789"
+
+# User with OpenAI configuration
+openai_user:
+  email_address: openai.user@example.com
+  password_digest: <%= password_digest %>
+  default_llm_provider: "openai"
+  default_llm_model: "gpt-4"
+  llm_params: '{"temperature": 0.7, "max_tokens": 1000}'
+
+# User with Anthropic configuration  
+anthropic_user:
+  email_address: anthropic.user@example.com
+  password_digest: <%= password_digest %>
+  default_llm_provider: "anthropic"
+  default_llm_model: "claude-3-5-sonnet-20241022"
+  llm_params: '{"temperature": 0.3, "max_tokens": 2000}'
+
+# User with both GitHub and LLM configuration
+complete_user:
+  email_address: complete.user@example.com
+  password_digest: <%= password_digest %>
+  github_token: "ghp_complete_user_token_987654321"
+  default_llm_provider: "anthropic"
+  default_llm_model: "claude-3-5-sonnet-20241022"
+  llm_params: '{"temperature": 0.5, "max_tokens": 1500}'
+
+# User for testing LLM preferences without API keys
+preferences_user:
+  email_address: preferences.user@example.com
+  password_digest: <%= password_digest %>
+  default_llm_provider: "openai"
+  default_llm_model: "gpt-3.5-turbo"
+
+# Developer user for testing edge cases
+developer_user:
+  email_address: dev.user@example.com
+  password_digest: <%= password_digest %>
+  github_token: "ghp_developer_token_111222333"
+
+# User with minimal configuration for validation testing
+minimal_user:
+  email_address: minimal@test.com
+  password_digest: <%= password_digest %>
+
+# User with special characters in email for edge case testing
+special_email_user:
+  email_address: test+special@example.com
+  password_digest: <%= password_digest %>
+
+# User for testing authentication edge cases
+auth_test_user:
+  email_address: auth.test@example.com
+  password_digest: <%= password_digest %>
+  github_token: "ghp_auth_test_token_555666777"
+  default_llm_provider: "openai"
+  default_llm_model: "gpt-4"
+
+# User for testing concurrent scenarios
+concurrent_user:
+  email_address: concurrent@example.com
+  password_digest: <%= password_digest %>
+
+# User with very long configuration for testing limits
+config_heavy_user:
+  email_address: heavy.config@example.com
+  password_digest: <%= password_digest %>
+  github_token: "ghp_very_long_token_for_testing_storage_limits_999888777"
+  default_llm_provider: "anthropic"
+  default_llm_model: "claude-3-5-sonnet-20241022"
+  llm_params: '{"temperature": 0.8, "max_tokens": 4000, "top_p": 0.9, "frequency_penalty": 0.1, "presence_penalty": 0.1, "custom_param": "test_value"}'

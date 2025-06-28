@@ -20,20 +20,14 @@
       "Bash(bun run:*)",
       "Bash(bin/rake:*)",
       "Bash(bundle exec rubocop:*)",
-<<<<<<< HEAD
       "Bash(gh pr list:*)",
       "Bash(gh pr view:*)",
-      "Bash(gh pr merge:*)"
-=======
-      "Bash(timeout:*)",
-      "Bash(git:*)",
-      "Bash(ls:*)",
-      "Bash(bundle install)",
-      "Bash(bun install:*)",
-      "Bash(bin/dev:*)",
-      "Bash(bun run:*)",
-      "Bash(bin/rake:*)"
->>>>>>> 0ce109bbb8ce2205f14fa7aeec97ba1ad6eed4ed
+      "Bash(gh pr merge:*)",
+      "Bash(time:*)",
+      "Bash(gh run list:*)",
+      "Bash(gh run view:*)",
+      "Bash(./bin/rails test)",
+      "Bash(./bin/rails test:*)"
     ]
   },
   "enableAllProjectMcpServers": false

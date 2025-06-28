@@ -2,7 +2,7 @@ require "test_helper"
 
 class LlmConversationMessageTest < ActiveSupport::TestCase
   def setup
-    @pull_request_review = pull_request_reviews(:one)
+    @pull_request_review = pull_request_reviews(:review_pr_one)
     # Use order 4 since fixtures use orders 1, 2, 3
     @valid_attributes = {
       pull_request_review: @pull_request_review,
@@ -62,7 +62,7 @@ class LlmConversationMessageTest < ActiveSupport::TestCase
 
   test "should validate order is greater than 0" do
     # Create a new message to avoid fixture conflicts
-    review = pull_request_reviews(:two) # Different review to avoid order conflicts
+    review = pull_request_reviews(:review_pr_two) # Different review to avoid order conflicts
     msg = LlmConversationMessage.new(
       pull_request_review: review,
       sender: "user",
@@ -77,7 +77,8 @@ class LlmConversationMessageTest < ActiveSupport::TestCase
     assert_not msg.valid?
     assert_includes msg.errors[:order], "must be greater than 0"
 
-    msg.order = 1
+    # Use an order that doesn't conflict with existing fixtures
+    msg.order = 10
     assert msg.valid?
   end
 
@@ -98,7 +99,7 @@ class LlmConversationMessageTest < ActiveSupport::TestCase
   test "should allow same order for different pull request reviews" do
     @message.save!
 
-    other_review = pull_request_reviews(:two)
+    other_review = pull_request_reviews(:review_pr_two)
     other_message = LlmConversationMessage.new(@valid_attributes.merge(
       pull_request_review: other_review
     ))
@@ -269,18 +270,18 @@ class LlmConversationMessageTest < ActiveSupport::TestCase
   end
 
   test "handles decimal order values" do
-    # Use a different review to avoid order conflicts
-    review = pull_request_reviews(:two)
+    # Use a different review to avoid order conflicts and use a higher order
+    review = pull_request_reviews(:review_pr_two)
     msg = LlmConversationMessage.new(
       pull_request_review: review,
       sender: "user",
       content: "Test content",
-      order: 1.5
+      order: 10.5
     )
-    # Rails will convert 1.5 to 1 for integer column
+    # Rails will convert 10.5 to 10 for integer column
     assert msg.valid?
     msg.save!
-    assert_equal 1, msg.order
+    assert_equal 10, msg.order
   end
 
   test "handles optional fields" do
@@ -310,7 +311,7 @@ class LlmConversationMessageTest < ActiveSupport::TestCase
   end
 
   test "fixtures are properly ordered" do
-    review = pull_request_reviews(:one)
+    review = pull_request_reviews(:review_pr_one)
     messages = review.llm_conversation_messages.ordered
 
     assert_equal 3, messages.count
@@ -323,14 +324,14 @@ class LlmConversationMessageTest < ActiveSupport::TestCase
   end
 
   test "fixtures maintain unique orders within review" do
-    review = pull_request_reviews(:one)
+    review = pull_request_reviews(:review_pr_one)
     orders = review.llm_conversation_messages.pluck(:order)
     assert_equal orders.uniq, orders, "Orders should be unique within review"
   end
 
   # Integration tests
   test "creating message without order auto-assigns next order" do
-    review = pull_request_reviews(:one)
+    review = pull_request_reviews(:review_pr_one)
     existing_max_order = review.llm_conversation_messages.maximum(:order)
 
     new_message = review.llm_conversation_messages.build(
@@ -343,7 +344,7 @@ class LlmConversationMessageTest < ActiveSupport::TestCase
   end
 
   test "destroying message does not affect other message orders" do
-    review = pull_request_reviews(:one)
+    review = pull_request_reviews(:review_pr_one)
     messages = review.llm_conversation_messages.ordered.to_a
     middle_message = messages[1] # Order 2
 
@@ -355,7 +356,7 @@ class LlmConversationMessageTest < ActiveSupport::TestCase
 
   test "messages are properly associated with pull request review" do
     msg = llm_conversation_messages(:user_message)
-    review = pull_request_reviews(:one)
+    review = pull_request_reviews(:review_pr_one)
 
     assert_equal review, msg.pull_request_review
     assert_includes review.llm_conversation_messages, msg

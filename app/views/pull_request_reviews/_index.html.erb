@@ -12,11 +12,25 @@
                 <%= review.repository.full_name %> - PR #<%= review.github_pr_id %>
               </p>
               <% if review.ci_status.present? %>
-                <p class="text-xs mt-1 <%= case review.ci_status
-                                          when 'success' then 'text-green-600'
-                                          when 'failure', 'error' then 'text-red-600'
-                                          when 'pending' then 'text-yellow-600'
-                                          else 'text-gray-600'
+                <p class="text-xs mt-1 <%= ci_status_class(review.ci_status) %>">
+                                              case ci_status
+                                              when 'success' then 'text-green-600'
+                                              when 'failure', 'error' then 'text-red-600'
+                                              when 'pending' then 'text-yellow-600'
+                                              else 'text-gray-600'
+                                              end
+                                            end
+
+                                            def review_status_class(review_status)
+                                              case review_status
+                                              when 'review_requested' then 'text-yellow-600'
+                                              when 'approved' then 'text-green-600'
+                                              when 'changes_requested' then 'text-red-600'
+                                              when 'merged' then 'text-purple-600'
+                                              when 'closed' then 'text-gray-600'
+                                              else 'text-gray-600'
+                                              end
+                                            end
                                           end %>">
                   CI Status:
                   <% if review.ci_url.present? %>

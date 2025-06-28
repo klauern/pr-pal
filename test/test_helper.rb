@@ -1,19 +1,12 @@
 ENV["RAILS_ENV"] ||= "test"
 require "simplecov"
 
-# Only configure automatic Codecov uploads in true CI environments
-# Manual uploads are handled by rake tasks
-if ENV["CI"] == "true" && ENV["GITHUB_ACTIONS"] == "true"
-  require "codecov"
-  codecov_formatter = SimpleCov::Formatter.const_get("Codecov")
-  SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new([
-    SimpleCov::Formatter::HTMLFormatter,
-    codecov_formatter
-  ])
-else
-  # Use only HTML formatter for local development and manual uploads
-  SimpleCov.formatter = SimpleCov::Formatter::HTMLFormatter
-end
+# Always generate .resultset.json for GitHub Actions artifact upload
+# Disable automatic Codecov uploads - handled by separate job
+SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new([
+  SimpleCov::Formatter::HTMLFormatter,
+  SimpleCov::Formatter::JSONFormatter
+])
 
 SimpleCov.start "rails" do
   enable_coverage :branch

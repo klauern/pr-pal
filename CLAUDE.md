@@ -12,22 +12,16 @@ PR Pal is a Rails 8.0 web application for managing pull requests with LLM integr
 - **User**: Authentication with normalized emails and secure passwords, encrypted GitHub tokens
 - **Session**: Session management with IP/user agent tracking  
 - **LlmApiKey**: Encrypted storage for different LLM provider API keys
-<<<<<<< HEAD
 - **Repository**: GitHub repository tracking (owner/name)
-- **PullRequestReview**: Core PR data with GitHub sync, CI status, comments
-- **LlmConversationMessage**: Conversation threads for PR discussions
+- **PullRequest**: Individual PRs with GitHub metadata
+- **PullRequestReview**: Central entity linking users to PR reviews and LLM conversations
+- **LlmConversationMessage**: Individual messages in LLM conversations
 
 ### GitHub Integration Architecture
 - **Data Provider Pattern**: Configurable GitHub API vs dummy data via `USE_DUMMY_DATA` env var
 - **Background Sync**: `PullRequestSyncJob` + `PullRequestSyncer` for automated PR updates
 - **GitHub API Client**: Octokit-based with retry logic and rate limiting
 - **PR Status Tracking**: CI status, comments, reviews synced from GitHub API
-=======
-- **Repository**: GitHub repositories linked to users
-- **PullRequest**: Individual PRs with GitHub metadata
-- **PullRequestReview**: Central entity linking users to PR reviews and LLM conversations
-- **LlmConversationMessage**: Individual messages in LLM conversations
->>>>>>> main
 
 ### Authentication System
 - Custom authentication using `Authentication` concern in controllers
@@ -58,16 +52,11 @@ bin/dev  # Starts Rails server + asset watchers (uses Procfile.dev)
 bin/rails test                    # Run all tests
 bin/rails test:system             # Run system tests only
 bin/rails test test/models/       # Run specific test directory
-<<<<<<< HEAD
+bin/rails test test/models/user_test.rb  # Run single test file
 bin/rails test test/models/user_test.rb:15  # Run specific test method/line
 rake test:coverage                # Run tests with coverage reporting
 rake test:coverage_open           # Run tests with coverage and open report
-=======
-bin/rails test test/models/user_test.rb  # Run single test file
-rake test:coverage                 # Run tests with coverage reporting
-rake test:coverage_open           # Run tests with coverage and open report
 rake test:coverage:upload         # Run tests with coverage and upload to Codecov
->>>>>>> main
 ```
 
 ### Database Operations
@@ -87,16 +76,10 @@ bun run build:css     # TailwindCSS compilation
 
 ### Code Quality & Type Checking
 ```bash
-<<<<<<< HEAD
-bundle exec rubocop              # Ruby linting
-bundle exec rubocop -a           # Auto-fix linting issues
+bundle exec rubocop -A           # Ruby linting with auto-fix
 bundle exec brakeman             # Security scanning
 bundle exec tapioca generate     # Generate RBI files for Sorbet
 srb tc                          # Run Sorbet type checker
-=======
-bundle exec rubocop -A  # Ruby linting with auto-fix
-bundle exec brakeman    # Security scanning
->>>>>>> main
 ```
 
 ## Deployment (Kamal)

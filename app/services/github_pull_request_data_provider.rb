@@ -90,7 +90,6 @@ class GithubPullRequestDataProvider < PullRequestDataProvider
         base_sha: pr.base.sha,
         # Fetch comments and reviews count
         comment_count: pr.comments,
-        review_comment_count: pr.review_comments,
         # Determine review status (simplified for now)
         review_status: determine_review_status(pr.requested_reviewers, pr.state)
       }

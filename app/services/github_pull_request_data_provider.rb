@@ -105,10 +105,12 @@ class GithubPullRequestDataProvider < PullRequestDataProvider
     end
   end
 
-  # Determine a simplified review status based on requested reviewers and PR state
-  def self.determine_review_status(requested_reviewers, pr_state)
-    if pr_state == "closed" || pr_state == "merged"
-      pr_state
+  # Determine a simplified review status based on requested reviewers, PR state, and merged_at field
+  def self.determine_review_status(requested_reviewers, pr_state, merged_at)
+    if !merged_at.nil?
+      "merged"
+    elsif pr_state == "closed"
+      "closed"
     elsif requested_reviewers.any?
       "review_requested"
     else

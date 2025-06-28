@@ -1,27 +1,16 @@
 {
   "permissions": {
     "allow": [
-      "Bash(bundle exec rake:*)",
-      "Bash(grep:*)",
+      "Bash(bundle exec *:*)",
       "Bash(find:*)",
+      "Bash(grep:*)",
       "Bash(rg:*)",
-      "Bash(bin/rails test:*)",
-      "Bash(bundle exec rails:*)",
-      "Bash(sed:*)",
-      "Bash(bin/rails:*)",
+      "Bash(bin/rails*)",
       "Bash(rake test:*)",
       "Bash(open:*)",
       "Bash(rm:*)",
-      "Bash(./bin/rails test:coverage)",
-      "Bash(./bin/rails test)",
       "Bash(mv:*)",
-      "Bash(gh pr view:*)",
-      "Bash(gh pr list:*)",
-      "Bash(gh api:*)",
-      "Bash(./bin/rails test:*)",
-      "Bash(./bin/rails generate migration:*)",
-      "Bash(./bin/rails:*)",
-      "Bash(bundle exec rubocop:*)",
+      "Bash(gh*)",
       "Bash(timeout:*)",
       "Bash(git:*)",
       "Bash(ls:*)",
@@ -29,7 +18,11 @@
       "Bash(bun install:*)",
       "Bash(bin/dev:*)",
       "Bash(bun run:*)",
-      "Bash(bin/rake:*)"
+      "Bash(bin/rake:*)",
+      "Bash(bundle exec rubocop:*)",
+      "Bash(gh pr list:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh pr merge:*)"
     ]
   },
   "enableAllProjectMcpServers": false

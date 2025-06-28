@@ -22,3 +22,17 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+## CLI Usage
+
+A Thor-based CLI is available for interacting with pull request reviews from the command line. Run commands via `bin/prpal`.
+
+Example commands:
+
+```
+bin/prpal reviews list           # List all pull request reviews
+bin/prpal reviews show <id>      # Show details for a review
+```
+
+The CLI loads the Rails environment so it has access to all models and services.
+

@@ -68,8 +68,8 @@ bun run build:css     # TailwindCSS compilation
 
 ### Code Quality
 ```bash
-bundle exec rubocop   # Ruby linting
-bundle exec brakeman  # Security scanning
+bundle exec rubocop -A  # Ruby linting with auto-fix
+bundle exec brakeman    # Security scanning
 ```
 
 ## Deployment (Kamal)
@@ -89,6 +89,7 @@ bin/kamal dbc         # Production database console
 - **Propshaft** asset pipeline with Bun instead of traditional Webpacker
 - **Docker** deployment using multi-stage builds with Thruster for asset serving
 - Modern Rails patterns: no Devise, no external auth gems, leveraging built-in features
+- **Security**: CSRF protection, encrypted token storage, Content Security Policy, Brakeman scanning
 
 ## Data Provider System
 
@@ -111,6 +112,7 @@ bin/kamal dbc         # Production database console
 
 ### Core Services
 - **PullRequestSyncer**: Main service for syncing PRs from external sources to database
+- **RubyLlmService**: LLM integration service for AI-powered PR analysis
 
 ### Model Relationships
 ```

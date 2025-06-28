@@ -22,7 +22,14 @@
       "Bash(./bin/rails generate migration:*)",
       "Bash(./bin/rails:*)",
       "Bash(bundle exec rubocop:*)",
-      "Bash(timeout:*)"
+      "Bash(timeout:*)",
+      "Bash(git:*)",
+      "Bash(ls:*)",
+      "Bash(bundle install)",
+      "Bash(bun install:*)",
+      "Bash(bin/dev:*)",
+      "Bash(bun run:*)",
+      "Bash(bin/rake:*)"
     ]
   },
   "enableAllProjectMcpServers": false

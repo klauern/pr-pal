@@ -5,6 +5,9 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: read
+
 env:
   CI: true
 
@@ -86,10 +89,12 @@ jobs:
       - name: Run unit and integration tests
         env:
           RAILS_ENV: test
+          COVERAGE: true
           # REDIS_URL: redis://localhost:6379/0
         run: |
-          echo "Starting test run..."
+          echo "Starting test run with coverage..."
           echo "Rails environment: $RAILS_ENV"
+          echo "Coverage enabled: $COVERAGE"
           echo "Current directory: $(pwd)"
           echo "Checking Rails application files..."
           ls -la config/
@@ -106,6 +111,7 @@ jobs:
       - name: Run system tests
         env:
           RAILS_ENV: test
+          COVERAGE: true
           # REDIS_URL: redis://localhost:6379/0
         run: |
           if [ -d "test/system" ]; then
@@ -114,16 +120,28 @@ jobs:
             echo "No system tests found, skipping..."
           fi
 
-      - name: List coverage directory
-        run: ls -l coverage
+      - name: Check coverage file generation
+        run: |
+          echo "Checking coverage directory contents..."
+          ls -la coverage/ || echo "Coverage directory doesn't exist"
+          if [ -f "coverage/.resultset.json" ]; then
+            echo "✅ .resultset.json found"
+            echo "File size: $(du -h coverage/.resultset.json)"
+            echo "First few lines:"
+            head -5 coverage/.resultset.json
+          else
+            echo "❌ .resultset.json not found"
+            echo "Available files in coverage/:"
+            find coverage/ -type f 2>/dev/null || echo "No files found"
+          fi
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5
+      - name: Upload coverage artifacts
+        uses: actions/upload-artifact@v4
+        if: success() && hashFiles('coverage/.resultset.json') != ''
         with:
-          token: ${{ secrets.CODECOV_TOKEN }} # Only needed for private repos
-          files: ./coverage/.resultset.json
-          flags: unittests
-          name: codecov-umbrella
+          name: coverage-data
+          path: ./coverage/.resultset.json
+          retention-days: 1
 
       - name: Keep screenshots from failed system tests
         uses: actions/upload-artifact@v4
@@ -132,3 +150,48 @@ jobs:
           name: screenshots
           path: ${{ github.workspace }}/tmp/screenshots
           if-no-files-found: ignore
+
+  codecov:
+    runs-on: ubuntu-latest
+    needs: [scan_ruby, lint, test]
+    if: always() && needs.test.result == 'success'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download coverage artifacts
+        uses: actions/download-artifact@v4
+        id: download-coverage
+        continue-on-error: true
+        with:
+          name: coverage-data
+          path: ./coverage
+
+      - name: Check coverage file after download
+        run: |
+          if [ -f "./coverage/.resultset.json" ]; then
+            echo "✅ Coverage file downloaded successfully"
+            echo "File size: $(du -h ./coverage/.resultset.json)"
+          else
+            echo "❌ Coverage file not found after download"
+            echo "Available files:"
+            find ./coverage -type f 2>/dev/null || echo "No coverage directory or files"
+          fi
+
+      - name: Upload coverage to Codecov
+        if: steps.download-coverage.outcome == 'success' && hashFiles('./coverage/.resultset.json') != ''
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} # Only needed for private repos
+          files: ./coverage/.resultset.json
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: false
+          verbose: true
+
+      - name: Skip codecov upload
+        if: steps.download-coverage.outcome != 'success' || hashFiles('./coverage/.resultset.json') == ''
+        run: |
+          echo "⚠️ Skipping codecov upload - coverage file not available"
+          echo "This is not a failure, it just means coverage data wasn't generated"

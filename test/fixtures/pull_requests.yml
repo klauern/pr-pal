@@ -1,0 +1,189 @@
+# Basic open PRs (original fixtures)
+pr_one:
+  repository: one
+  github_pr_id: 50001
+  github_pr_url: "https://github.com/octocat/hello-world/pull/50001"
+  title: "Add new feature for user authentication"
+  state: "open"
+  author: "testuser"
+  github_created_at: <%= 2.days.ago %>
+  github_updated_at: <%= 1.day.ago %>
+  body: "This PR adds secure authentication using JWT tokens with proper validation."
+  additions: 150
+  deletions: 25
+  changed_files: 8
+  base_branch: "main"
+  head_branch: "feature/auth-improvements"
+  ci_status: "success"
+  labels: '["authentication", "security"]'
+  last_synced_at: <%= 1.hour.ago %>
+
+pr_two:
+  repository: one
+  github_pr_id: 50002
+  github_pr_url: "https://github.com/octocat/hello-world/pull/50002"
+  title: "Fix bug in payment processing"
+  state: "open"
+  author: "testuser"
+  github_created_at: <%= 3.days.ago %>
+  github_updated_at: <%= 1.hour.ago %>
+  body: "Resolves issue with failed payment transactions not being properly handled."
+  additions: 45
+  deletions: 12
+  changed_files: 3
+  base_branch: "main"
+  head_branch: "fix/payment-bug"
+  ci_status: "pending"
+  labels: '["bug", "payment"]'
+  last_synced_at: <%= 30.minutes.ago %>
+
+# Closed/Merged PRs
+pr_closed:
+  repository: one
+  github_pr_id: 50003
+  github_pr_url: "https://github.com/octocat/hello-world/pull/50003"
+  title: "Update documentation for API endpoints"
+  state: "closed"
+  author: "docwriter"
+  github_created_at: <%= 1.week.ago %>
+  github_updated_at: <%= 5.days.ago %>
+  body: "Comprehensive update to API documentation with examples and error codes."
+  additions: 200
+  deletions: 50
+  changed_files: 15
+  base_branch: "main"
+  head_branch: "docs/api-update"
+  ci_status: "success"
+  labels: '["documentation"]'
+  last_synced_at: <%= 5.days.ago %>
+
+pr_merged:
+  repository: one
+  github_pr_id: 50004
+  github_pr_url: "https://github.com/octocat/hello-world/pull/50004"
+  title: "Add database migration for user preferences"
+  state: "merged"
+  author: "dbadmin"
+  github_created_at: <%= 2.weeks.ago %>
+  github_updated_at: <%= 1.week.ago %>
+  body: "Migration adds user_preferences table with JSON column for flexible settings."
+  additions: 85
+  deletions: 5
+  changed_files: 4
+  base_branch: "main"
+  head_branch: "feature/user-preferences"
+  ci_status: "success"
+  labels: '["database", "migration"]'
+  last_synced_at: <%= 1.week.ago %>
+
+# Draft PR
+pr_draft:
+  repository: one
+  github_pr_id: 50005
+  github_pr_url: "https://github.com/octocat/hello-world/pull/50005"
+  title: "WIP: Implement advanced search functionality"
+  state: "open"
+  author: "developer"
+  github_created_at: <%= 1.day.ago %>
+  github_updated_at: <%= 2.hours.ago %>
+  body: "Work in progress implementation of full-text search with filters."
+  additions: 300
+  deletions: 10
+  changed_files: 12
+  draft: true
+  base_branch: "main"
+  head_branch: "feature/advanced-search"
+  ci_status: "running"
+  labels: '["enhancement", "search", "wip"]'
+  last_synced_at: <%= 1.hour.ago %>
+
+# Failed CI PR
+pr_failed_ci:
+  repository: one
+  github_pr_id: 50006
+  github_pr_url: "https://github.com/octocat/hello-world/pull/50006"
+  title: "Refactor payment service architecture"
+  state: "open"
+  author: "architect"
+  github_created_at: <%= 4.days.ago %>
+  github_updated_at: <%= 3.hours.ago %>
+  body: "Major refactoring of payment service to improve maintainability and testing."
+  additions: 500
+  deletions: 300
+  changed_files: 25
+  base_branch: "main"
+  head_branch: "refactor/payment-service"
+  ci_status: "failure"
+  labels: '["refactoring", "payment", "architecture"]'
+  last_synced_at: <%= 2.hours.ago %>
+
+# Large PR with many changes
+pr_large:
+  repository: one
+  github_pr_id: 50008
+  github_pr_url: "https://github.com/octocat/hello-world/pull/50008"
+  title: "Major UI overhaul with new design system"
+  state: "open"
+  author: "designer"
+  github_created_at: <%= 1.week.ago %>
+  github_updated_at: <%= 6.hours.ago %>
+  body: "Complete redesign of the user interface using our new design system components."
+  additions: 1500
+  deletions: 800
+  changed_files: 45
+  base_branch: "main"
+  head_branch: "feature/design-system"
+  ci_status: "success"
+  labels: '["ui", "design", "major"]'
+  last_synced_at: <%= 5.hours.ago %>
+
+# Different repository PR
+pr_different_repo:
+  repository: two
+  github_pr_id: 50007
+  github_pr_url: "https://github.com/github/docs/pull/50007"
+  title: "Add troubleshooting guide"
+  state: "open"
+  author: "contributor"
+  github_created_at: <%= 3.days.ago %>
+  github_updated_at: <%= 1.day.ago %>
+  body: "Comprehensive troubleshooting guide for common user issues."
+  additions: 120
+  deletions: 8
+  changed_files: 6
+  base_branch: "main"
+  head_branch: "docs/troubleshooting"
+  ci_status: "success"
+  labels: '["documentation", "help"]'
+  last_synced_at: <%= 1.day.ago %>
+
+# Edge case: Very old PR
+pr_old:
+  repository: one
+  github_pr_id: 111
+  github_pr_url: "https://github.com/octocat/hello-world/pull/111"
+  title: "Legacy feature cleanup"
+  state: "closed"
+  author: "maintainer"
+  github_created_at: <%= 6.months.ago %>
+  github_updated_at: <%= 5.months.ago %>
+  body: "Cleanup of legacy features that are no longer needed."
+  additions: 50
+  deletions: 500
+  changed_files: 20
+  base_branch: "main"
+  head_branch: "cleanup/legacy-features"
+  ci_status: "success"
+  labels: '["cleanup", "legacy"]'
+  last_synced_at: <%= 5.months.ago %>
+
+# Edge case: Minimal PR (just the required fields)
+pr_minimal:
+  repository: two
+  github_pr_id: 1
+  github_pr_url: "https://github.com/github/docs/pull/1"
+  title: "Fix typo"
+  state: "merged"
+  author: "typo-fixer"
+  github_created_at: <%= 1.month.ago %>
+  github_updated_at: <%= 1.month.ago %>

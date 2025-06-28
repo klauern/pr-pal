@@ -1,19 +1,102 @@
-sample_review:
+# Reviews for basic open PRs
+review_pr_one:
   user: one
   repository: one
-  github_pr_id: 123
-  github_pr_url: "https://github.com/octocat/hello-world/pull/123"
+  pull_request_id: <%= ActiveRecord::FixtureSet.identify(:pr_one) %>
+  github_pr_id: 50001
+  github_pr_url: "https://github.com/octocat/hello-world/pull/50001"
   github_pr_title: "Add new feature for user authentication"
   status: "in_progress"
   llm_context_summary: "Focus on security implications and code quality"
   last_viewed_at: <%= 1.hour.ago %>
+  sync_status: "pending"
 
-completed_review:
+review_pr_two:
   user: one
   repository: one
-  github_pr_id: 456
-  github_pr_url: "https://github.com/octocat/hello-world/pull/456"
+  pull_request_id: <%= ActiveRecord::FixtureSet.identify(:pr_two) %>
+  github_pr_id: 50002
+  github_pr_url: "https://github.com/octocat/hello-world/pull/50002"
   github_pr_title: "Fix bug in payment processing"
   status: "completed"
   llm_context_summary: "Review payment logic and error handling"
   last_viewed_at: <%= 2.days.ago %>
+  sync_status: "completed"
+
+# Review for closed PR
+review_pr_closed:
+  user: one
+  repository: one
+  pull_request_id: <%= ActiveRecord::FixtureSet.identify(:pr_closed) %>
+  github_pr_id: 50003
+  github_pr_url: "https://github.com/octocat/hello-world/pull/50003"
+  github_pr_title: "Update documentation for API endpoints"
+  status: "completed"
+  llm_context_summary: "Documentation quality and completeness review"
+  last_viewed_at: <%= 5.days.ago %>
+  sync_status: "completed"
+
+# Review for merged PR
+review_pr_merged:
+  user: one
+  repository: one
+  pull_request_id: <%= ActiveRecord::FixtureSet.identify(:pr_merged) %>
+  github_pr_id: 50004
+  github_pr_url: "https://github.com/octocat/hello-world/pull/50004"
+  github_pr_title: "Add database migration for user preferences"
+  status: "completed"
+  llm_context_summary: "Database schema changes and migration safety"
+  last_viewed_at: <%= 1.week.ago %>
+  sync_status: "completed"
+
+# Review for draft PR (in progress)
+review_pr_draft:
+  user: one
+  repository: one
+  pull_request_id: <%= ActiveRecord::FixtureSet.identify(:pr_draft) %>
+  github_pr_id: 50005
+  github_pr_url: "https://github.com/octocat/hello-world/pull/50005"
+  github_pr_title: "WIP: Implement advanced search functionality"
+  status: "in_progress"
+  llm_context_summary: "Early review of search implementation approach"
+  last_viewed_at: <%= 2.hours.ago %>
+  sync_status: "pending"
+
+# Review for failed CI PR
+review_pr_failed:
+  user: one
+  repository: one
+  pull_request_id: <%= ActiveRecord::FixtureSet.identify(:pr_failed_ci) %>
+  github_pr_id: 50006
+  github_pr_url: "https://github.com/octocat/hello-world/pull/50006"
+  github_pr_title: "Refactor payment service architecture"
+  status: "in_progress"
+  llm_context_summary: "Architectural review and refactoring guidance"
+  last_viewed_at: <%= 3.hours.ago %>
+  sync_status: "failed"
+
+# Review for different repository
+review_different_repo:
+  user: two
+  repository: two
+  pull_request_id: <%= ActiveRecord::FixtureSet.identify(:pr_different_repo) %>
+  github_pr_id: 50007
+  github_pr_url: "https://github.com/github/docs/pull/50007"
+  github_pr_title: "Add troubleshooting guide"
+  status: "completed"
+  llm_context_summary: "Documentation clarity and user experience"
+  last_viewed_at: <%= 1.day.ago %>
+  sync_status: "completed"
+
+# Review with no activity (not started)
+review_pr_large:
+  user: one
+  repository: one
+  pull_request_id: <%= ActiveRecord::FixtureSet.identify(:pr_large) %>
+  github_pr_id: 50008
+  github_pr_url: "https://github.com/octocat/hello-world/pull/50008"
+  github_pr_title: "Major UI overhaul with new design system"
+  status: "in_progress"
+  llm_context_summary: null
+  last_viewed_at: null
+  sync_status: "pending"

@@ -4,8 +4,8 @@ class DashboardAndSidebarTest < ActionDispatch::IntegrationTest
   setup do
     @user = users(:one)
     @repository = repositories(:one)
-    @pull_request_review = pull_request_reviews(:sample_review)
-    @completed_review = pull_request_reviews(:completed_review)
+    @pull_request_review = pull_request_reviews(:review_pr_one)
+    @completed_review = pull_request_reviews(:review_pr_two)
 
     # Authenticate user for all tests
     post session_url, params: { email_address: @user.email_address, password: "password" }
@@ -139,9 +139,20 @@ class DashboardAndSidebarTest < ActionDispatch::IntegrationTest
 
   test "should show multiple open reviews correctly" do
     # Create additional review
+    pull_request2 = PullRequest.create!(
+      repository: @repository,
+      github_pr_id: 1002,
+      github_pr_url: "https://github.com/test/test/pull/1002",
+      title: "Second test PR review",
+      state: "open",
+      author: "testuser",
+      github_created_at: 2.days.ago,
+      github_updated_at: 1.day.ago
+    )
     review2 = PullRequestReview.create!(
       user: @user,
       repository: @repository,
+      pull_request: pull_request2,
       github_pr_id: 1002,
       github_pr_url: "https://github.com/test/test/pull/1002",
       github_pr_title: "Second test PR review"
@@ -161,17 +172,39 @@ class DashboardAndSidebarTest < ActionDispatch::IntegrationTest
 
   test "should preserve tab order in sidebar display" do
     # Create additional reviews
+    pull_request2 = PullRequest.create!(
+      repository: @repository,
+      github_pr_id: 1002,
+      github_pr_url: "https://github.com/test/test/pull/1002",
+      title: "Second PR",
+      state: "open",
+      author: "testuser",
+      github_created_at: 2.days.ago,
+      github_updated_at: 1.day.ago
+    )
     review2 = PullRequestReview.create!(
       user: @user,
       repository: @repository,
+      pull_request: pull_request2,
       github_pr_id: 1002,
       github_pr_url: "https://github.com/test/test/pull/1002",
       github_pr_title: "Second PR"
     )
 
+    pull_request3 = PullRequest.create!(
+      repository: @repository,
+      github_pr_id: 1003,
+      github_pr_url: "https://github.com/test/test/pull/1003",
+      title: "Third PR",
+      state: "open",
+      author: "testuser",
+      github_created_at: 3.days.ago,
+      github_updated_at: 2.hours.ago
+    )
     review3 = PullRequestReview.create!(
       user: @user,
       repository: @repository,
+      pull_request: pull_request3,
       github_pr_id: 1003,
       github_pr_url: "https://github.com/test/test/pull/1003",
       github_pr_title: "Third PR"
@@ -194,9 +227,20 @@ class DashboardAndSidebarTest < ActionDispatch::IntegrationTest
   test "should handle long PR titles with truncation" do
     long_title = "This is a very long pull request title that should be truncated to 25 characters in the sidebar display"
 
+    pull_request_long = PullRequest.create!(
+      repository: @repository,
+      github_pr_id: 1004,
+      github_pr_url: "https://github.com/test/test/pull/1004",
+      title: long_title,
+      state: "open",
+      author: "testuser",
+      github_created_at: 2.days.ago,
+      github_updated_at: 1.day.ago
+    )
     review_with_long_title = PullRequestReview.create!(
       user: @user,
       repository: @repository,
+      pull_request: pull_request_long,
       github_pr_id: 1004,
       github_pr_url: "https://github.com/test/test/pull/1004",
       github_pr_title: long_title

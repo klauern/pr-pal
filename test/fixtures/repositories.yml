@@ -1,5 +1,6 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
+# Basic repositories (original fixtures)
 one:
   owner: octocat
   name: hello-world
@@ -9,3 +10,63 @@ two:
   owner: github
   name: docs
   user: two
+
+# Additional repositories for user one (testing multi-repo scenarios)
+user_one_second_repo:
+  owner: octocat
+  name: spoon-knife
+  user: one
+
+user_one_org_repo:
+  owner: myorg
+  name: project-alpha
+  user: one
+
+user_one_private_repo:
+  owner: octocat
+  name: private-project
+  user: one
+
+# Additional repositories for user two
+user_two_second_repo:
+  owner: github
+  name: cli
+  user: two
+
+user_two_fork:
+  owner: github
+  name: documentation-fork
+  user: two
+
+# Edge case repositories for testing
+empty_repo:
+  owner: testuser
+  name: empty-repo
+  user: one
+
+large_repo:
+  owner: enterprise
+  name: monolith
+  user: one
+
+special_chars_repo:
+  owner: test-user
+  name: special-chars_repo.test
+  user: two
+
+# Repository with different naming patterns
+dotfiles_repo:
+  owner: developer
+  name: .dotfiles
+  user: one
+
+api_repo:
+  owner: company
+  name: api-v2
+  user: two
+
+# Repository for testing sync scenarios
+sync_testing_repo:
+  owner: synctest
+  name: sync-testing
+  user: one

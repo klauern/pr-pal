@@ -1,0 +1,12 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Testing Discipline Rule
+
+- **Tests must be run every time work is done.**
+- **Never leave work in progress with failing tests.**
+- All new features, bug fixes, and refactors must be accompanied by passing tests before considering the work complete.
+- If a test fails, fix the code or the test before proceeding with further development or committing changes.
+- This rule applies to all contributors and all parts of the codebase.

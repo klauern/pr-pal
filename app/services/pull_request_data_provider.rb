@@ -7,6 +7,12 @@ class PullRequestDataProvider
     raise NotImplementedError, "Subclasses must implement fetch_or_create_pr_review"
   end
 
+  # Fetch all pull requests for a repository
+  # Returns array of pull request data hashes
+  def self.fetch_repository_pull_requests(repository, user)
+    raise NotImplementedError, "Subclasses must implement fetch_repository_pull_requests"
+  end
+
   # Additional methods can be added here as the interface evolves
   # def self.sync_pr_data(pull_request_review)
   #   raise NotImplementedError, "Subclasses must implement sync_pr_data"

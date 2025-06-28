@@ -1,5 +1,11 @@
-<div class="<%= message.from_user? ? 'flex justify-end' : 'flex justify-start' %>">
+<div id="<%= message.placeholder? ? "llm_placeholder_#{message.parent_id}" : (message.parent_id ? "llm_placeholder_#{message.parent_id}" : "message_#{message.id}") %>" class="<%= message.from_user? ? 'flex justify-end' : 'flex justify-start' %>">
   <div class="<%= message.from_user? ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-900' %> rounded-lg px-4 py-2 max-w-lg">
+    <% if message.placeholder? %>
+    <div class="flex items-center space-x-2">
+      <span class="animate-spin">⏳</span>
+      <span class="text-sm text-gray-500">Waiting for LLM response...</span>
+    </div>
+    <% else %>
     <div class="flex items-center justify-between mb-1">
       <span class="text-xs font-medium <%= message.from_user? ? 'text-blue-100' : 'text-gray-600' %>">
         <%= message.from_user? ? 'You' : message.sender.humanize %>
@@ -9,15 +15,16 @@
       </span>
     </div>
     <div class="text-sm whitespace-pre-wrap">
-      <%= message.content %>
+      <%= markdown_to_html(message.content) %>
     </div>
     <% if message.from_llm? && message.llm_model_used.present? %>
-      <div class="text-xs mt-1 <%= message.from_user? ? 'text-blue-100' : 'text-gray-500' %>">
-        Model: <%= message.llm_model_used %>
-        <% if message.token_count %>
-          | Tokens: <%= message.token_count %>
-        <% end %>
-      </div>
+    <div class="text-xs mt-1 <%= message.from_user? ? 'text-blue-100' : 'text-gray-500' %>">
+      Model: <%= message.llm_model_used %>
+      <% if message.token_count %>
+      | Tokens: <%= message.token_count %>
+      <% end %>
+    </div>
+    <% end %>
     <% end %>
   </div>
 </div>

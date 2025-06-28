@@ -24,8 +24,10 @@ class Rails::Conductor::BaseController
     include ::ActionText::ContentHelper
     include ::ActionText::TagHelper
     include ::ActionController::Base::HelperMethods
+    include ::MarkdownRenderer
     include ::ApplicationHelper
     include ::DashboardHelper
+    include ::SettingsHelper
   end
 
   class HelperProxy < ::ActionView::Base

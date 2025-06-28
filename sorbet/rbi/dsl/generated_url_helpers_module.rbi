@@ -10,6 +10,9 @@ module GeneratedUrlHelpersModule
   include ::ActionDispatch::Routing::PolymorphicRoutes
 
   sig { params(args: T.untyped).returns(String) }
+  def add_llm_api_key_settings_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def close_pr_tab_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -19,7 +22,13 @@ module GeneratedUrlHelpersModule
   def dashboard_index_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def delete_llm_api_key_settings_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def demo_login_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def direct_pr_review_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def edit_password_url(*args); end
@@ -50,6 +59,9 @@ module GeneratedUrlHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def pull_request_review_llm_conversation_messages_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def pull_request_review_reset_conversation_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def pull_request_review_url(*args); end
@@ -148,6 +160,9 @@ module GeneratedUrlHelpersModule
   def repository_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def reset_tabs_pull_request_reviews_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def reset_tabs_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
@@ -160,7 +175,22 @@ module GeneratedUrlHelpersModule
   def session_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def setting_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def settings_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def show_by_details_pull_request_reviews_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def sync_all_repositories_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def sync_pull_request_review_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def sync_repository_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def turbo_recede_historical_location_url(*args); end
@@ -170,6 +200,12 @@ module GeneratedUrlHelpersModule
 
   sig { params(args: T.untyped).returns(String) }
   def turbo_resume_historical_location_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def update_llm_api_key_settings_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
+  def update_llm_preferences_settings_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
   def update_rails_disk_service_url(*args); end

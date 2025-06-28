@@ -1,8 +1,36 @@
 {
-  "enableAllProjectMcpServers": false,
   "permissions": {
     "allow": [
-      "Bash(bundle exec rubocop:*)"
+      "Bash(bundle exec *:*)",
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(rg:*)",
+      "Bash(bin/rails*)",
+      "Bash(rake test:*)",
+      "Bash(open:*)",
+      "Bash(rm:*)",
+      "Bash(mv:*)",
+      "Bash(gh*)",
+      "Bash(timeout:*)",
+      "Bash(git:*)",
+      "Bash(ls:*)",
+      "Bash(bundle install)",
+      "Bash(bun install:*)",
+      "Bash(bin/dev:*)",
+      "Bash(bun run:*)",
+      "Bash(bin/rake:*)",
+      "Bash(bundle exec rubocop:*)",
+      "Bash(gh pr list:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh pr merge:*)",
+      "Bash(time:*)",
+      "Bash(gh run list:*)",
+      "Bash(gh run view:*)",
+      "Bash(./bin/rails test)",
+      "Bash(./bin/rails test:*)",
+      "Bash(gh pr diff:*)",
+      "Bash(gh pr checkout:*)"
     ]
-  }
+  },
+  "enableAllProjectMcpServers": false
 }

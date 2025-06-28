@@ -25,6 +25,11 @@
           </div>
 
           <div class="flex items-center space-x-2">
+            <%= button_to "Sync", sync_repository_path(repository),
+                method: :post,
+                class: "bg-green-600 hover:bg-green-700 text-white text-xs font-medium py-1 px-2 rounded transition-colors",
+                data: { turbo_method: :post },
+                form: { data: { turbo_frame: "_top" } } %>
             <%= link_to "View PRs", repository_path(repository),
                 class: "text-blue-600 hover:text-blue-900 text-sm font-medium" %>
             <a href="https://github.com/<%= repository.owner %>/<%= repository.name %>"

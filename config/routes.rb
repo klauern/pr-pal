@@ -1,9 +1,24 @@
 Rails.application.routes.draw do
   get "settings", to: "settings#index"
   patch "settings", to: "settings#update"
-  resources :repositories, only: [ :index, :show, :new, :create, :destroy ]
+  resources :repositories, only: [ :index, :show, :new, :create, :destroy ] do
+    member do
+      post :sync
+    end
+    collection do
+      post :sync_all
+    end
+  end
   resources :pull_request_reviews, only: [ :index, :show, :create, :update, :destroy ] do
     resources :llm_conversation_messages, only: [ :create ]
+    member do
+      post :sync
+    end
+    collection do
+      get :show_by_details
+      post :reset_tabs
+    end
+    post "reset_conversation", to: "llm_conversation_messages#reset"
   end
 
 
@@ -44,4 +59,15 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "dashboard#index"
+
+  get "/repos/:repo_owner/:repo_name/reviews/:pr_number", to: "pull_request_reviews#show_by_details", as: :direct_pr_review
+
+  resources :settings, only: [ :index, :update ] do
+    collection do
+      post :add_llm_api_key
+      post :update_llm_api_key
+      delete :delete_llm_api_key
+      post :update_llm_preferences
+    end
+  end
 end

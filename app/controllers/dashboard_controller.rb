@@ -1,9 +1,9 @@
 class DashboardController < ApplicationController
   def index
-    if params[:tab]
+    if params[:tab].present?
       session[:active_tab] = params[:tab]
     end
-    session[:active_tab] ||= "home"
+    session[:active_tab] = "home" if session[:active_tab].blank?
     @active_tab = session[:active_tab]
 
     # Debug: Log current session state before cleanup

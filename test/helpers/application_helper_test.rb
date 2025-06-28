@@ -2,7 +2,6 @@ require "test_helper"
 require "minitest/mock"
 
 class ApplicationHelperTest < ActionView::TestCase
-
   def setup
     @pull_request_review = pull_request_reviews(:one)
     # Set up mock data for the PR review
@@ -50,7 +49,7 @@ class ApplicationHelperTest < ActionView::TestCase
     assert_equal "https://github.com/owner/repo/pull/123", send(:safe_pr_url, "https://github.com/owner/repo/pull/123")
   end
 
-  test "safe_pr_url should allow valid github http urls" do  
+  test "safe_pr_url should allow valid github http urls" do
     assert_equal "http://github.com/owner/repo/pull/123", send(:safe_pr_url, "http://github.com/owner/repo/pull/123")
   end
 

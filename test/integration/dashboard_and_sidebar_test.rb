@@ -4,8 +4,8 @@ class DashboardAndSidebarTest < ActionDispatch::IntegrationTest
   setup do
     @user = users(:one)
     @repository = repositories(:one)
-    @pull_request_review = pull_request_reviews(:one)
-    @completed_review = pull_request_reviews(:two)
+    @pull_request_review = pull_request_reviews(:review_pr_one)
+    @completed_review = pull_request_reviews(:review_pr_two)
 
     # Authenticate user for all tests
     post session_url, params: { email_address: @user.email_address, password: "password" }

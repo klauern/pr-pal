@@ -68,8 +68,8 @@ bun run build:css     # TailwindCSS compilation
 
 ### Code Quality
 ```bash
-bundle exec rubocop   # Ruby linting
-bundle exec brakeman  # Security scanning
+bundle exec rubocop -A  # Ruby linting with auto-fix
+bundle exec brakeman    # Security scanning
 ```
 
 ## Deployment (Kamal)
@@ -89,6 +89,7 @@ bin/kamal dbc         # Production database console
 - **Propshaft** asset pipeline with Bun instead of traditional Webpacker
 - **Docker** deployment using multi-stage builds with Thruster for asset serving
 - Modern Rails patterns: no Devise, no external auth gems, leveraging built-in features
+- **Security**: CSRF protection, encrypted token storage, Content Security Policy, Brakeman scanning
 
 ## Data Provider System
 
@@ -111,6 +112,7 @@ bin/kamal dbc         # Production database console
 
 ### Core Services
 - **PullRequestSyncer**: Main service for syncing PRs from external sources to database
+- **RubyLlmService**: LLM integration service for AI-powered PR analysis
 
 ### Model Relationships
 ```
@@ -133,5 +135,69 @@ Uses **Minitest** with parallel execution, **Capybara + Selenium** for system te
 - All new features, bug fixes, and refactors must have passing tests before completion
 - Custom rake tasks handle asset building, database preparation, and coverage reporting automatically
 
+### Fixture-Based Testing
+- Comprehensive fixtures cover realistic scenarios (open/closed/merged PRs, different user configurations)
+- Tests prefer fixtures over manual object creation for consistency and performance
+- Fixtures include complex association chains for integration testing
+- Use `users(:github_user)`, `pull_requests(:pr_closed)`, etc. for predefined scenarios
+
 ### Workflow Reminders
 - Always run `bundle exec rubocop -A` after completing tasks to ensure we fix formatting/linting issues
+
+## Background Job Architecture
+
+### Core Jobs
+- **PullRequestSyncJob**: Repository-wide PR synchronization from GitHub API
+- **AutoSyncPrJob**: Smart auto-sync with staleness detection and duplicate prevention logic
+- **ProcessLlmResponseJob**: Asynchronous LLM processing with real-time broadcasting via Turbo Streams
+
+### Job Patterns
+- Jobs use Rails 8 Solid Queue for background processing
+- Auto-sync jobs respect data freshness thresholds (15 minutes for reviews, 1 hour for stale data)
+- Duplicate job prevention through sync status checking
+
+## Real-Time Features
+
+### Turbo Streams Integration
+- Live updates during LLM conversation processing
+- Real-time sync status broadcasting to user interface
+- Progressive enhancement for conversation building
+
+### Session-Based Tab Management
+- Rails sessions track "open PR tabs" per user (`session[:open_pr_tabs]`)
+- `ApplicationController` includes automatic tab cleanup logic
+- Tab state persists across requests and is cleaned up on logout
+
+## LLM Integration Architecture
+
+### Multi-Provider Support
+- `RubyLlmService` handles OpenAI and Anthropic providers
+- User preferences stored in `default_llm_provider` and `default_llm_model` fields
+- Temporary API key injection during service calls for security
+- Provider-specific conversation message handling
+
+### LLM Conversation Threading
+- `LlmConversationMessage` model with ordering and timestamp indexing
+- Auto-assignment of message order for conversation flow
+- Support for placeholder messages during processing
+
+## Authentication & Security Details
+
+### Custom Authentication System
+- Uses `Authentication` concern instead of external gems like Devise
+- Session management with IP address and user agent tracking for security
+- `Current` (ActiveSupport::CurrentAttributes) for thread-safe user context
+- Rate limiting: 10 attempts per 3 minutes
+
+### Encryption & Security
+- GitHub tokens and LLM API keys encrypted at rest (disabled in test environment)
+- Content Security Policy configured
+- Brakeman security scanning integration
+- CSRF protection enabled
+
+## Development Configuration
+
+### Data Provider Switching
+- Environment variable `USE_DUMMY_DATA` controls data source
+- Development indicator "🎭 DUMMY DATA MODE" shown in UI when using dummy data
+- Runtime provider access via `DataProviders.pull_request_data_provider`

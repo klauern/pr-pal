@@ -1,12 +1,12 @@
 user_message:
-  pull_request_review: one
+  pull_request_review: review_pr_one
   sender: "user"
   content: "Can you review this PR for security vulnerabilities?"
   order: 1
   timestamp: <%= 1.hour.ago %>
 
 llm_response:
-  pull_request_review: one
+  pull_request_review: review_pr_one
   sender: "claude_3_opus"
   content: "I'll analyze this pull request for security vulnerabilities. Based on the authentication changes, I can see a few areas that need attention..."
   llm_model_used: "claude-3-opus-20240229"
@@ -15,8 +15,42 @@ llm_response:
   timestamp: <%= 55.minutes.ago %>
 
 follow_up_user:
-  pull_request_review: one
+  pull_request_review: review_pr_one
   sender: "user"
   content: "What about the password validation logic?"
   order: 3
   timestamp: <%= 50.minutes.ago %>
+
+# Additional conversation messages for other reviews
+pr_two_user_message:
+  pull_request_review: review_pr_two
+  sender: "user"
+  content: "Please check the payment processing logic for edge cases."
+  order: 1
+  timestamp: <%= 2.days.ago %>
+
+pr_two_llm_response:
+  pull_request_review: review_pr_two
+  sender: "claude_3_5_sonnet"
+  content: "I've reviewed the payment processing changes. The error handling looks comprehensive, but I'd suggest adding validation for..."
+  llm_model_used: "claude-3-5-sonnet-20241022"
+  token_count: 200
+  order: 2
+  timestamp: <%= 2.days.ago %>
+
+# Messages for draft PR review
+draft_pr_message:
+  pull_request_review: review_pr_draft
+  sender: "user"
+  content: "This is still a work in progress. What's your initial feedback on the search implementation?"
+  order: 1
+  timestamp: <%= 2.hours.ago %>
+
+draft_pr_response:
+  pull_request_review: review_pr_draft
+  sender: "gpt_4"
+  content: "For a WIP implementation, this shows good progress. The search architecture looks sound, but consider these optimizations..."
+  llm_model_used: "gpt-4"
+  token_count: 175
+  order: 2
+  timestamp: <%= 2.hours.ago %>

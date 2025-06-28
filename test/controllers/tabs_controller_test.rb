@@ -4,7 +4,7 @@ class TabsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @user = users(:one)
     @repository = repositories(:one)
-    @pull_request_review = pull_request_reviews(:one)
+    @pull_request_review = pull_request_reviews(:review_pr_one)
 
     # Authenticate as @user
     post session_url, params: { email_address: @user.email_address, password: "password" }
@@ -198,8 +198,8 @@ class TabsControllerTest < ActionDispatch::IntegrationTest
     # Create multiple reviews
     other_pull_request = PullRequest.create!(
       repository: @repository,
-      github_pr_id: 111,
-      github_pr_url: "https://github.com/test/repo/pull/111",
+      github_pr_id: 99111,
+      github_pr_url: "https://github.com/test/repo/pull/99111",
       title: "First PR",
       state: "open",
       author: "testuser",
@@ -210,8 +210,8 @@ class TabsControllerTest < ActionDispatch::IntegrationTest
       user: @user,
       repository: @repository,
       pull_request: other_pull_request,
-      github_pr_id: 111,
-      github_pr_url: "https://github.com/test/repo/pull/111",
+      github_pr_id: 99111,
+      github_pr_url: "https://github.com/test/repo/pull/99111",
       github_pr_title: "First PR"
     )
 

@@ -483,7 +483,8 @@ class PullRequestSyncerTest < ActiveSupport::TestCase
   end
 
   test "should store ci_status as pending if any check_run is in progress" do
-    pr_data = @sample_pr_data.merge(github_pr_number: 101)
+    # Use a unique PR number that doesn't conflict with fixtures
+    pr_data = @sample_pr_data.merge(github_pr_number: 99101)
     mock_provider = MockDataProvider.new([ pr_data ])
     def mock_provider.fetch_pr_ci_statuses(owner, repo, pr_number, user)
       {
@@ -499,7 +500,7 @@ class PullRequestSyncerTest < ActiveSupport::TestCase
     assert_difference "@repository.pull_requests.count", 1 do
       @syncer.sync!
     end
-    pr = @repository.pull_requests.find_by(github_pr_id: 101)
+    pr = @repository.pull_requests.find_by(github_pr_id: 99101)
     assert_equal "pending", pr.ci_status
     assert pr.ci_status_raw.include?("Deploying")
   end

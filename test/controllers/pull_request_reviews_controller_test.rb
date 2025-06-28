@@ -4,8 +4,8 @@ class PullRequestReviewsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @user = users(:one)
     @repository = repositories(:one)
-    @pull_request_review = pull_request_reviews(:one)
-    @completed_review = pull_request_reviews(:two)
+    @pull_request_review = pull_request_reviews(:review_pr_one)
+    @completed_review = pull_request_reviews(:review_pr_two)
 
     # Authenticate user for all tests
     post session_url, params: { email_address: @user.email_address, password: "password" }
@@ -96,8 +96,8 @@ class PullRequestReviewsControllerTest < ActionDispatch::IntegrationTest
       post pull_request_reviews_url, params: {
         repository_id: @repository.id,
         pull_request_review: {
-          github_pr_id: 999,
-          github_pr_url: "https://github.com/test/test/pull/999",
+          github_pr_id: 1001,
+          github_pr_url: "https://github.com/test/test/pull/1001",
           github_pr_title: "New test PR"
         }
       }
@@ -111,8 +111,8 @@ class PullRequestReviewsControllerTest < ActionDispatch::IntegrationTest
       post pull_request_reviews_url, params: {
         repository_id: @repository.id,
         pull_request_review: {
-          github_pr_id: 999,
-          github_pr_url: "https://github.com/test/test/pull/999",
+          github_pr_id: 1001,
+          github_pr_url: "https://github.com/test/test/pull/1001",
           github_pr_title: "New test PR"
         }
       }, headers: { "Accept" => "text/vnd.turbo-stream.html" }
@@ -123,15 +123,23 @@ class PullRequestReviewsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should add new PR to tabs after creation" do
-    post pull_request_reviews_url, params: {
-      repository_id: @repository.id,
-      pull_request_review: {
-        github_pr_id: 999,
-        github_pr_url: "https://github.com/test/test/pull/999",
-        github_pr_title: "New test PR"
+    # Use a unique PR ID to avoid conflicts with fixtures
+    unique_pr_id = 99999
+
+    assert_difference("PullRequestReview.count") do
+      post pull_request_reviews_url, params: {
+        repository_id: @repository.id,
+        pull_request_review: {
+          github_pr_id: unique_pr_id,
+          github_pr_url: "https://github.com/test/test/pull/#{unique_pr_id}",
+          github_pr_title: "New test PR"
+        }
       }
-    }
+    end
+
     new_review = PullRequestReview.last
+    # Check that the PR was added to tabs (controller should initialize session if nil)
+    assert_not_nil session[:open_pr_tabs], "Session tabs should be initialized"
     assert_includes session[:open_pr_tabs], "pr_#{new_review.id}"
   end
 

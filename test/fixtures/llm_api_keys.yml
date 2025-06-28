@@ -1,11 +1,63 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
+# Basic API keys (original fixtures)
+openai_key_user_one:
   llm_provider: openai
-  api_key: MyText
+  api_key: "sk-test-openai-key-user-one-123456789"
   user: one
 
-two:
+anthropic_key_user_two:
   llm_provider: anthropic
-  api_key: MyText
+  api_key: "sk-ant-test-anthropic-key-user-two-987654321"
   user: two
+
+# API keys for specialized users
+openai_key_openai_user:
+  llm_provider: openai
+  api_key: "sk-test-openai-specialized-user-111222333"
+  user: openai_user
+
+anthropic_key_anthropic_user:
+  llm_provider: anthropic
+  api_key: "sk-ant-test-anthropic-specialized-user-444555666"
+  user: anthropic_user
+
+# Multiple API keys for complete user
+openai_key_complete_user:
+  llm_provider: openai
+  api_key: "sk-test-openai-complete-user-777888999"
+  user: complete_user
+
+anthropic_key_complete_user:
+  llm_provider: anthropic
+  api_key: "sk-ant-test-anthropic-complete-user-000111222"
+  user: complete_user
+
+# API keys for auth test user
+openai_key_auth_user:
+  llm_provider: openai
+  api_key: "sk-test-openai-auth-user-333444555"
+  user: auth_test_user
+
+# API keys for config heavy user
+anthropic_key_heavy_user:
+  llm_provider: anthropic
+  api_key: "sk-ant-test-anthropic-heavy-config-user-666777888"
+  user: config_heavy_user
+
+openai_key_heavy_user:
+  llm_provider: openai
+  api_key: "sk-test-openai-heavy-config-user-999000111"
+  user: config_heavy_user
+
+# Edge case: User with only one provider configured
+github_user_openai_key:
+  llm_provider: openai
+  api_key: "sk-test-openai-github-user-222333444"
+  user: github_user
+
+# Edge case: Minimal configuration
+developer_user_anthropic_key:
+  llm_provider: anthropic
+  api_key: "sk-ant-test-anthropic-developer-555666777"
+  user: developer_user

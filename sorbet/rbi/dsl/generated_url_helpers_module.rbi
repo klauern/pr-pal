@@ -187,6 +187,9 @@ module GeneratedUrlHelpersModule
   def sync_all_repositories_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def sync_pull_request_review_url(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def sync_repository_url(*args); end
 
   sig { params(args: T.untyped).returns(String) }

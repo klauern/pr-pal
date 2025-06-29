@@ -27,7 +27,11 @@
       "Bash(gh run list:*)",
       "Bash(gh run view:*)",
       "Bash(./bin/rails test)",
-      "Bash(./bin/rails test:*)"
+      "Bash(./bin/rails test:*)",
+      "Bash(gh pr diff:*)",
+      "Bash(gh pr checkout:*)",
+      "Bash(./bin/rails:*)",
+      "Bash(gh api:*)"
     ]
   },
   "enableAllProjectMcpServers": false

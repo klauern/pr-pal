@@ -187,6 +187,9 @@ module GeneratedPathHelpersModule
   def sync_all_repositories_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }
+  def sync_pull_request_review_path(*args); end
+
+  sig { params(args: T.untyped).returns(String) }
   def sync_repository_path(*args); end
 
   sig { params(args: T.untyped).returns(String) }

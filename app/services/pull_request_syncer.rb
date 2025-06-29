@@ -75,7 +75,7 @@ class PullRequestSyncer
     pull_request = repository.pull_requests.find_or_initialize_by(
       github_pr_id: pr_data[:github_pr_number]
     )
-    Rails.logger.info "[PullRequestSyncer] Found or initialized PullRequest for GitHub PR ##{pr_data[:github_pr_number]} in repo \\#{@repository.full_name} (ID: \\#{@repository.id}). New record: \\#{pull_request.new_record?}"
+    Rails.logger.info "[PullRequestSyncer] Found or initialized PullRequest for GitHub PR ##{pr_data[:github_pr_number]} in repo #{@repository.full_name} (ID: #{@repository.id}). New record: #{pull_request.new_record?}"
 
     # Update attributes from fetched data
     pull_request.assign_attributes(
@@ -88,7 +88,7 @@ class PullRequestSyncer
       github_updated_at: pr_data[:github_updated_at],
       last_synced_at: Time.current
     )
-    Rails.logger.info "[PullRequestSyncer] Assigned attributes for PullRequest GitHub PR ##{pr_data[:github_pr_number]} in repo \\#{@repository.full_name} (ID: \\#{@repository.id})"
+    Rails.logger.info "[PullRequestSyncer] Assigned attributes for PullRequest GitHub PR ##{pr_data[:github_pr_number]} in repo #{@repository.full_name} (ID: #{@repository.id})"
 
     # Fetch and store CI/CD status
     begin
@@ -137,24 +137,24 @@ class PullRequestSyncer
         pull_request.ci_status_updated_at = Time.current
       end
     rescue => e
-      Rails.logger.warn "[PullRequestSyncer] Failed to fetch/store CI/CD status for PR ##{pr_data[:github_pr_number]}: \\#{e.message}"
+      Rails.logger.warn "[PullRequestSyncer] Failed to fetch/store CI/CD status for PR ##{pr_data[:github_pr_number]}: #{e.message}"
     end
 
     # Log whether this is a new or existing record
     if pull_request.new_record?
-      Rails.logger.info "[PullRequestSyncer] New PullRequest record for GitHub PR ##{pr_data[:github_pr_number]} in repo \\#{@repository.full_name} (ID: \\#{@repository.id})."
+      Rails.logger.info "[PullRequestSyncer] New PullRequest record for GitHub PR ##{pr_data[:github_pr_number]} in repo #{@repository.full_name} (ID: #{@repository.id})."
     else
-      Rails.logger.info "[PullRequestSyncer] Existing PullRequest record ID \\#{pull_request.id} for GitHub PR ##{pr_data[:github_pr_number]} in repo \\#{@repository.full_name} (ID: \\#{@repository.id})."
+      Rails.logger.info "[PullRequestSyncer] Existing PullRequest record ID #{pull_request.id} for GitHub PR ##{pr_data[:github_pr_number]} in repo #{@repository.full_name} (ID: #{@repository.id})."
     end
 
     unless pull_request.save
       # Log detailed validation errors
       error_details = pull_request.errors.full_messages.join(", ")
-      Rails.logger.error "[PullRequestSyncer] Validation failed for PullRequest GitHub PR ##{pr_data[:github_pr_number]} in repo \\#{@repository.full_name} (ID: \\#{@repository.id}): \\#{error_details}"
-      raise "Validation failed: \\#{error_details}"
+      Rails.logger.error "[PullRequestSyncer] Validation failed for PullRequest GitHub PR ##{pr_data[:github_pr_number]} in repo #{@repository.full_name} (ID: #{@repository.id}): #{error_details}"
+      raise "Validation failed: #{error_details}"
     end
 
-    Rails.logger.info "[PullRequestSyncer] ✓ Successfully saved PullRequest ID \\#{pull_request.id} (GitHub PR ##{pr_data[:github_pr_number]}): \\#{pr_data[:title]} for repo \\#{@repository.full_name} (ID: \\#{@repository.id})"
+    Rails.logger.info "[PullRequestSyncer] ✓ Successfully saved PullRequest ID #{pull_request.id} (GitHub PR ##{pr_data[:github_pr_number]}): #{pr_data[:title]} for repo #{@repository.full_name} (ID: #{@repository.id})"
     pull_request
   end
 end

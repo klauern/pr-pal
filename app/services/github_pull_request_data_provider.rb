@@ -87,7 +87,11 @@ class GithubPullRequestDataProvider < PullRequestDataProvider
         merged_at: pr.merged_at,
         user: pr.user.login,
         head_sha: pr.head.sha,
-        base_sha: pr.base.sha
+        base_sha: pr.base.sha,
+        # Fetch comments and reviews count
+        comment_count: pr.comments,
+        # Determine review status (simplified for now)
+        review_status: determine_review_status(pr.requested_reviewers, pr.state)
       }
     rescue Octokit::NotFound
       raise NotFoundError, "Pull request #{repo_full_name}##{pr_number} not found"
@@ -97,6 +101,86 @@ class GithubPullRequestDataProvider < PullRequestDataProvider
       raise RateLimitError, "GitHub API rate limit exceeded"
     rescue Octokit::Error => e
       raise GitHubError, "GitHub API error: #{e.message}"
+    end
+  end
+
+  # Determine a simplified review status based on requested reviewers, PR state, and merged_at field
+  def self.determine_review_status(requested_reviewers, pr_state, merged_at)
+    if !merged_at.nil?
+      "merged"
+    elsif pr_state == "closed"
+      "closed"
+    elsif requested_reviewers.any?
+      "review_requested"
+    else
+      "no_review_requested"
+    end
+  end
+
+  # Fetch combined CI status for a commit SHA
+  def self.fetch_combined_status(owner, repo, commit_sha, user)
+    Rails.logger.info "🔗 GitHub API provider: fetching combined status for #{owner}/#{repo}@#{commit_sha}"
+    client = github_client(user)
+    repo_full_name = "#{owner}/#{repo}"
+
+    begin
+      status = client.combined_status(repo_full_name, commit_sha)
+      {
+        state: status.state, # e.g., 'success', 'failure', 'pending', 'error'
+        url: status.url # URL to the status page (e.g., CI build page)
+      }
+    rescue Octokit::NotFound
+      Rails.logger.warn "Combined status not found for commit #{commit_sha} in #{repo_full_name}."
+      { state: "unknown", url: nil } # Return unknown status if not found
+    rescue Octokit::Unauthorized, Octokit::Forbidden
+      raise AuthenticationError, "Invalid GitHub token or insufficient permissions to fetch status for #{repo_full_name}"
+    rescue Octokit::TooManyRequests
+      raise RateLimitError, "GitHub API rate limit exceeded fetching status for #{repo_full_name}"
+    rescue Octokit::Error => e
+      raise GitHubError, "GitHub API error fetching status for #{repo_full_name}: #{e.message}"
+    end
+  end
+
+  # Fetch all open pull requests for a repository from GitHub API
+  def self.fetch_open_pull_requests(repository, user)
+    Rails.logger.info "🔗 GitHub API provider: fetching open PRs for #{repository.full_name}"
+    client = github_client(user)
+
+    begin
+      prs = client.pull_requests(repository.full_name, state: "open")
+      prs.map do |pr|
+        # Fetch combined status for the head commit of the PR
+        status_data = fetch_combined_status(repository.owner, repository.name, pr.head.sha, user)
+
+        {
+          id: pr.id, # Use GitHub's internal ID for uniqueness
+          title: pr.title,
+          body: pr.body,
+          html_url: pr.html_url,
+          state: pr.state,
+          created_at: pr.created_at,
+          updated_at: pr.updated_at,
+          merged_at: pr.merged_at,
+          user: pr.user.login,
+          head_sha: pr.head.sha,
+          base_sha: pr.base.sha,
+          number: pr.number, # Include PR number for linking/display
+          ci_status: status_data[:state], # Add CI status
+          ci_url: status_data[:url], # Add CI URL
+          comment_count: pr.comments, # Add comment count
+          review_comment_count: pr.review_comments, # Add review comment count
+          review_status: determine_review_status(pr.requested_reviewers, pr.state) # Add review status
+        }
+      end
+    rescue Octokit::NotFound
+      Rails.logger.warn "Repository #{repository.full_name} not found on GitHub."
+      [] # Return empty array if repo not found
+    rescue Octokit::Unauthorized, Octokit::Forbidden
+      raise AuthenticationError, "Invalid GitHub token or insufficient permissions for #{repository.full_name}"
+    rescue Octokit::TooManyRequests
+      raise RateLimitError, "GitHub API rate limit exceeded for #{repository.full_name}"
+    rescue Octokit::Error => e
+      raise GitHubError, "GitHub API error fetching open PRs for #{repository.full_name}: #{e.message}"
     end
   end
 
@@ -112,9 +196,16 @@ class GithubPullRequestDataProvider < PullRequestDataProvider
       pull_request_review.user
     )
 
+    # Fetch combined status for the head commit
+    status_data = fetch_combined_status(repository.owner, repository.name, pr_data[:head_sha], pull_request_review.user)
+
     pull_request_review.update!(
       github_pr_title: pr_data[:title],
-      last_synced_at: Time.current
+      last_synced_at: Time.current,
+      ci_status: status_data[:state], # Update CI status
+      ci_url: status_data[:url], # Update CI URL
+      github_comment_count: pr_data[:comment_count], # Update comment count
+      github_review_status: pr_data[:review_status] # Update review status
     )
   end
 
@@ -256,7 +347,10 @@ class GithubPullRequestDataProvider < PullRequestDataProvider
       pull_request_review.assign_attributes(
         github_pr_title: "PR ##{pr_number} in #{repository.full_name} (GitHub API not configured)",
         github_pr_url: "#{repository.github_url}/pull/#{pr_number}",
-        status: "in_progress"
+        status: "in_progress",
+        ci_status: "unknown", # Default CI status for basic creation
+        github_comment_count: 0, # Default comment count
+        github_review_status: "unknown" # Default review status
       )
 
       unless pull_request_review.save

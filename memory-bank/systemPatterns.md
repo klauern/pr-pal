@@ -2,7 +2,7 @@
 
 ## System Architecture
 
-Rails 8.0 monolithic application with Hotwire frontend using consistent Turbo patterns:
+Rails 8.0 monolithic application with Hotwire frontend using consistent Turbo patterns and background job processing:
 
 ```mermaid
 graph TD
@@ -13,6 +13,12 @@ graph TD
     E[User submits form/CRUD action] --> F[Turbo Stream request]
     F --> G[Controller responds with Turbo Stream]
     G --> H[Update specific DOM elements]
+
+    I[Scheduled Job/Event] --> J[PullRequestSyncJob]
+    J --> K[PullRequestSyncer Service]
+    K --> L[GitHub API]
+    L --> K
+    K --> M[Database Update]
 ```
 
 ## Key Technical Decisions

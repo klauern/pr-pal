@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "bundler/setup"
+require_relative "../config/environment"
+require_relative "../lib/cli/prpal_cli"
+
+Cli::PrpalCli.start(ARGV)
+

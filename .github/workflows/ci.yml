@@ -161,7 +161,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Download coverage artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         id: download-coverage
         continue-on-error: true
         with:

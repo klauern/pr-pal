@@ -504,6 +504,7 @@ DEPENDENCIES
   jbuilder
   jsbundling-rails
   kamal
+  minitest
   octokit (~> 10.0)
   propshaft
   puma (>= 5.0)

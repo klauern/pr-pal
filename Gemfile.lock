@@ -426,6 +426,7 @@ GEM
       sorbet (= 0.6.13306)
       sorbet-runtime (= 0.6.13306)
     sord (7.1.0)
+      commander (~> 5.0)
       parlour (~> 9.1)
       parser
       rbs (>= 3.0, < 5)

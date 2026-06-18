@@ -189,7 +189,10 @@ GEM
     marcel (1.2.1)
     matrix (0.4.2)
     mini_mime (1.1.5)
-    minitest (5.25.5)
+    minitest (6.0.6)
+      drb (~> 2.0)
+      prism (~> 1.5)
+    minitest-mock (5.27.0)
     msgpack (1.8.3)
     multipart-post (2.4.1)
     net-http (0.9.1)
@@ -526,6 +529,7 @@ DEPENDENCIES
   jsbundling-rails
   kamal
   minitest
+  minitest-mock (~> 5.27)
   octokit (~> 10.0)
   propshaft
   puma (>= 5.0)

@@ -60,6 +60,9 @@ group :development, :test do
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
 
+  # Minitest 6 extracts mock support to a separate gem.
+  gem "minitest-mock", "~> 5.27"
+
   # Generate RBI files for better Sorbet integration [https://github.com/Shopify/tapioca]
   gem "tapioca", ">= 0.17.1"
 end

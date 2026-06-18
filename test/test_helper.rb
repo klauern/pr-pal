@@ -8,7 +8,7 @@ SimpleCov.formatter = SimpleCov::Formatter::HTMLFormatter
 SimpleCov.start "rails" do
   enable_coverage :branch
   add_filter "/test/"
-  enable_coverage_for_eval
+  enable_coverage_for_eval if respond_to?(:enable_coverage_for_eval)
 end
 
 require_relative "../config/environment"

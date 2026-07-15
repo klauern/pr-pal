@@ -92,4 +92,4 @@ group :test do
   gem "rails-controller-testing"
 end
 
-gem "commonmarker", "~> 2.8"
+gem "commonmarker", "~> 2.9"
